@@ -130,17 +130,26 @@ public class Bird : MonoBehaviour
         isMoving = false;
         isDying = true;
         
-        StopCoroutine(drawLineCoroutine);
+        ResetPosition();
+        
         
         if (dieEffect != null)
         {
             Instantiate(dieEffect, transform.position, Quaternion.identity);
         }
-        SoundManager.instance.PlaySound(dieSound, 0.8f);
+
+        SphereCollider collider = GetComponent<SphereCollider>();
+        if (collider)
+        {
+            collider.enabled = false;
+        }
+        
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
         }
+        
+        SoundManager.instance.PlaySound(dieSound, 0.8f);
 
         if (type == BirdType.Bomb)
         {

@@ -7,7 +7,7 @@ public class Bomb : MonoBehaviour
 {
     public GameObject owner;
     private float radius;
-    public float bombPower = 50f;
+    public float bombPower = 15f;
 
     private void Start()
     {
@@ -21,13 +21,15 @@ public class Bomb : MonoBehaviour
             return;
         }
 
+        MapObject mapObject = other.GetComponent<MapObject>();
         Rigidbody otherRigid = other.GetComponent<Rigidbody>();
         if (otherRigid)
         {
             Vector3 dir = other.transform.position - transform.position;
-            float power = bombPower * (Math.Max(1f - dir.magnitude / radius, 0f));
+            float power =  Math.Max(1f - dir.magnitude / radius, 0f);
             dir.Normalize();
-            otherRigid.AddForce(dir * power, ForceMode.Impulse);
+            otherRigid.AddForce(otherRigid.mass * dir * bombPower* power, ForceMode.Impulse);
+            mapObject.OnDamage(power);
         }
         
         Destroy(gameObject);
