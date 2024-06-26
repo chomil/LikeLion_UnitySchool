@@ -5,7 +5,9 @@ using UnityEngine;
 
 public enum SlingShotState
 {
-    Idle,Charge,Shoot
+    Idle,
+    Charge,
+    Shoot
 }
 
 public class SlingShot : MonoBehaviour
@@ -13,12 +15,12 @@ public class SlingShot : MonoBehaviour
     private SlingShotState state = SlingShotState.Idle;
     public GameObject slingShotSeat;
     public Animator animator = null;
-    
-    
+
+
     public AudioClip stretchClip;
     public List<AudioClip> shootClips;
-    
-    
+
+
     private Vector3 mouseStartPos;
     private Vector3 mousePos;
     private Vector3 mouseDelta;
@@ -27,9 +29,37 @@ public class SlingShot : MonoBehaviour
     private Bird curBird;
     public List<GameObject> spheres = new List<GameObject>();
 
+    private LineRenderer lineRenderer;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        lineRenderer = GetComponent<LineRenderer>();
+    }
+
+
+    public void DrawLaunchLine(Vector3 startPosition, Vector3 velocity, float gravity)
+    {
+        int resolution = 20;
+        float timeStep = 0.1f;
+        Vector3[] points = new Vector3[resolution];
+
+        for (int i = 0; i < resolution; i++)
+        {
+            float time = i * timeStep;
+            points[i] = CalculatePositionAtTime(startPosition, velocity, gravity, time);
+        }
+
+        lineRenderer.positionCount = points.Length;
+        lineRenderer.SetPositions(points);
+    }
+
+    private Vector3 CalculatePositionAtTime(Vector3 startPosition, Vector3 velocity, float gravity, float time)
+    {
+        float x = startPosition.x + velocity.x * time;
+        float y = startPosition.y + velocity.y * time - 0.5f * gravity * time * time;
+        float z = startPosition.z + velocity.z * time;
+        return new Vector3(x, y, z);
     }
 
     public void SetState(SlingShotState _state)
@@ -38,13 +68,14 @@ public class SlingShot : MonoBehaviour
         {
             return;
         }
-        
+
         state = _state;
         switch (state)
         {
             case SlingShotState.Idle:
                 animator.SetTrigger("Cancled");
                 curBird.isDraging = false;
+                lineRenderer.positionCount = 0;
                 break;
             case SlingShotState.Charge:
                 curBird = GameManager.instance.curStage.curBird;
@@ -53,6 +84,7 @@ public class SlingShot : MonoBehaviour
                 curBird.isDraging = true;
                 curBird.ResetPosition();
                 SoundManager.instance.PlaySound(stretchClip, 0.3f);
+                SoundManager.instance.PlaySound(curBird.chargeSound, 0.8f);
                 break;
             case SlingShotState.Shoot:
                 if (mouseDelta.y <= 0 && mouseDelta.x <= 0)
@@ -66,9 +98,13 @@ public class SlingShot : MonoBehaviour
                     curBird.Shooting(mouseDelta);
                     SoundManager.instance.PlaySound(shootClips, 0.3f);
                 }
+
                 curBird.isDraging = false;
+                lineRenderer.positionCount = 0;
                 break;
         }
+
+        curBird.birdRigid.useGravity = !curBird.isDraging;
     }
 
     public void EraseFlyLine()
@@ -77,19 +113,19 @@ public class SlingShot : MonoBehaviour
         {
             Destroy(sphere);
         }
-        spheres.Clear();
 
+        spheres.Clear();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         switch (state)
         {
             case SlingShotState.Idle:
-                
+
                 break;
             case SlingShotState.Charge:
-                
+
                 mousePos = Input.mousePosition;
                 mouseDelta = mouseStartPos - mousePos;
                 mouseDelta.z = 0;
@@ -111,9 +147,12 @@ public class SlingShot : MonoBehaviour
                 animator.SetFloat("DragY", mouseDelta.y);
 
                 curBird.transform.position = slingShotSeat.transform.position;
+
+                DrawLaunchLine(curBird.transform.position, mouseDelta * 30f, -Physics.gravity.y);
+
                 break;
             case SlingShotState.Shoot:
-                
+
                 break;
         }
     }

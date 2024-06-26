@@ -21,6 +21,11 @@ public class StageManager : MonoBehaviour
     {
         GameManager.instance.curStage = this;
         cameraController = Camera.main.GetComponent<CameraController>();
+
+        for (int i = 0; i < Birds.Count; i++)
+        {
+            Birds[i] = Instantiate(Birds[i],birdSpawnPos + new Vector3(-i*1.3f,0,0) ,Quaternion.identity).GetComponent<Bird>();
+        }
     }
 
     private void Update()
@@ -36,7 +41,7 @@ public class StageManager : MonoBehaviour
         {
             if (curBirdIndex < Birds.Count)
             {
-                curBird = Instantiate(Birds[curBirdIndex],birdSpawnPos,Quaternion.identity);
+                curBird = Birds[curBirdIndex];
                 curBirdIndex++;
             }
             else
@@ -56,7 +61,6 @@ public class StageManager : MonoBehaviour
         {
             cameraController.StopFollowing();
         }
-
 
         if (Input.GetMouseButton(0))
         {

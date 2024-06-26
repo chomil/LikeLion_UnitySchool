@@ -298,5 +298,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6309ddd9f610f104aaaac886e7f07191, type: 3}
   - {fileID: 8300000, guid: c0e6b1217bccc2248bf798e3c903ba8e, type: 3}
   dieSound: {fileID: 8300000, guid: b6022384c41086c458391892b7fffd14, type: 3}
+  skillSound: {fileID: 0}
   dieEffect: {fileID: 1685874166552172, guid: 516354228a132e740b6ea1321498530f, type: 3}
   birdSkill: {fileID: 4003638360670869023, guid: 505d33ae8a2cfc34db894e29a58a858e, type: 3}

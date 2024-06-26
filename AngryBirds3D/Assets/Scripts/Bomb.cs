@@ -7,7 +7,7 @@ public class Bomb : MonoBehaviour
 {
     public GameObject owner;
     private float radius;
-    public float bombPower = 15f;
+    public float bombPower = 20f;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class Bomb : MonoBehaviour
 
         MapObject mapObject = other.GetComponent<MapObject>();
         Rigidbody otherRigid = other.GetComponent<Rigidbody>();
-        if (otherRigid)
+        if (otherRigid && mapObject)
         {
             Vector3 dir = other.transform.position - transform.position;
             float power =  Math.Max(1f - dir.magnitude / radius, 0f);

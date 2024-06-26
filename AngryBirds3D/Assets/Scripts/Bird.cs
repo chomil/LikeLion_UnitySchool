@@ -17,7 +17,7 @@ public enum BirdType
 public class Bird : MonoBehaviour
 {
     public BirdType type = BirdType.Red;
-    private float shootSpeed = 30f;
+    public float shootSpeed = 30f;
     public bool isDraging = false;
     public bool isMoving = false;
     public bool isFlying = false;
@@ -26,7 +26,7 @@ public class Bird : MonoBehaviour
     
     public int score = 0;
 
-    private Rigidbody birdRigid;
+    public Rigidbody birdRigid;
     public GameObject sphere;
 
 
@@ -52,8 +52,6 @@ public class Bird : MonoBehaviour
     private void Start()
     {
         shootSpeed = birdRigid.mass * 30f;
-
-        SoundManager.instance.PlaySound(chargeSound, 0.8f);
     }
 
     private void Update()
@@ -168,6 +166,10 @@ public class Bird : MonoBehaviour
             if (moveDir.y > 0)
             {
                 moveDir.y = 0;
+            }
+            if (moveDir.x == 0)
+            {
+                moveDir.x = 1;
             }
             moveDir.Normalize();
             birdRigid.velocity = moveDir * (shootSpeed * 0.5f);
