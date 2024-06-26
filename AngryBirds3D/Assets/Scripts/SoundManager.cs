@@ -17,11 +17,12 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject); 
         }
+        
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
     }
 
     public void PlaySound(AudioClip clip, float volume = 1f)

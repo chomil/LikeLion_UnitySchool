@@ -8,7 +8,10 @@ public enum BirdType
 {
     Red,
     BigRed,
-    Bomb
+    Bomb,
+    ThreeBlues,
+    OneBlue,
+    Chuck
 }
 
 public class Bird : MonoBehaviour
@@ -19,6 +22,7 @@ public class Bird : MonoBehaviour
     public bool isMoving = false;
     public bool isFlying = false;
     public bool isDying = false;
+    private bool isSkilled = false;
     
     public int score = 0;
 
@@ -28,13 +32,14 @@ public class Bird : MonoBehaviour
 
     public AudioClip chargeSound;
     public AudioClip flySound;
-    public AudioClip hitSound;
+    public List<AudioClip> hitSounds;
     public AudioClip dieSound;
+    public AudioClip skillSound;
     public GameObject dieEffect;
 
     public GameObject birdSkill;
 
-    private IEnumerator drawLineCoroutine;
+    public IEnumerator drawLineCoroutine;
     private IEnumerator dieCoroutine;
 
     private void Awake()
@@ -67,9 +72,23 @@ public class Bird : MonoBehaviour
                     case BirdType.Bomb:
                         StartCoroutine(dieCoroutine);
                         break;
+                    
+                    case BirdType.Chuck:
+                    case BirdType.ThreeBlues:
+                        if (isFlying)
+                        {
+                            Skill();
+                        }
+                        break;
                 }
             }
-            else if (isFlying == false)
+            else if (isFlying == true)
+            {
+                Vector3 moveVector = birdRigid.velocity;
+                moveVector.Normalize();
+                transform.right = moveVector;
+            }
+            else
             {
                 if (birdRigid.velocity.magnitude < 0.2f && birdRigid.angularVelocity.magnitude < 0.2f)
                 {
@@ -102,6 +121,14 @@ public class Bird : MonoBehaviour
 
     public void Skill()
     {
+        if (isSkilled)
+        {
+            return;
+        }
+        isSkilled = true;
+
+        SoundManager.instance.PlaySound(skillSound);
+        
         if (type == BirdType.Bomb)
         {
             if (birdSkill)
@@ -109,6 +136,41 @@ public class Bird : MonoBehaviour
                 GameObject skill =  Instantiate(birdSkill, transform.position, Quaternion.identity);
                 skill.GetComponent<Bomb>().owner = gameObject;
             }
+        }
+        else if (type == BirdType.ThreeBlues)
+        {
+            if (birdSkill)
+            {
+                Vector3 moveDir = birdRigid.velocity;
+                for (int i = -1; i <= 1; i++)
+                {
+                    GameObject newObject =  Instantiate(birdSkill, transform.position, Quaternion.identity);
+                    Bird newBird = newObject.GetComponent<Bird>();
+                    newBird.isMoving = true;
+                    newBird.isFlying = true;
+                    
+                    Quaternion rotation = Quaternion.Euler(0, 0, i*10f);
+                    Vector3 rotatedVelocity = rotation * moveDir;
+                    newBird.birdRigid.velocity = rotatedVelocity;
+                    newBird.birdRigid.angularVelocity = birdRigid.angularVelocity;
+
+                    newBird.StartCoroutine(newBird.drawLineCoroutine);
+                    
+                    GameManager.instance.curStage.curBird = newBird;
+                }
+                
+                StartCoroutine(dieCoroutine);
+            }
+        }
+        else if (type == BirdType.Chuck)
+        {
+            Vector3 moveDir = birdRigid.velocity;
+            if (moveDir.y > 0)
+            {
+                moveDir.y = 0;
+            }
+            moveDir.Normalize();
+            birdRigid.velocity = moveDir * (shootSpeed * 0.5f);
         }
     }
 
@@ -118,7 +180,7 @@ public class Bird : MonoBehaviour
         {
             GameManager.instance.curStage.slingShot.spheres.Add(Instantiate(sphere, transform.position,
                 Quaternion.identity));
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.08f);
         }
     }
     
@@ -138,7 +200,7 @@ public class Bird : MonoBehaviour
             Instantiate(dieEffect, transform.position, Quaternion.identity);
         }
 
-        SphereCollider collider = GetComponent<SphereCollider>();
+        Collider collider = GetComponent<Collider>();
         if (collider)
         {
             collider.enabled = false;
@@ -167,6 +229,10 @@ public class Bird : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         StopCoroutine(drawLineCoroutine);
-        isFlying = false;
+        if (isFlying)
+        {
+            isFlying = false;
+            SoundManager.instance.PlaySound(hitSounds);
+        }
     }
 }
