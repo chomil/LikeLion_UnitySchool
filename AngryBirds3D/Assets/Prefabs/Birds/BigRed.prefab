@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2198888584636164399, guid: 933d891618846e24b811e5bd74790d3d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.06
       objectReference: {fileID: 0}
     - target: {fileID: -2198888584636164399, guid: 933d891618846e24b811e5bd74790d3d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigRed
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 933d891618846e24b811e5bd74790d3d, type: 3}
+      propertyPath: m_TagString
+      value: Bird
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2381166120748107616, guid: 933d891618846e24b811e5bd74790d3d, type: 3}
@@ -136,7 +140,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186798324722970564}
   serializedVersion: 4
-  m_Mass: 3
+  m_Mass: 4.5
   m_Drag: 0
   m_AngularDrag: 8
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -175,7 +179,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.65
-  m_Center: {x: 0, y: 0.37, z: 0}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!114 &504316805517431838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,9 +196,12 @@ MonoBehaviour:
   isDraging: 0
   isMoving: 0
   isFlying: 0
+  isDying: 0
+  score: 0
   sphere: {fileID: 7445327080009667400, guid: 7e210262eb6fd174d85243af37391eb0, type: 3}
   chargeSound: {fileID: 8300000, guid: a0f4069ee3680464fbf46678548a85c3, type: 3}
   flySound: {fileID: 8300000, guid: 89048154335d2f64193e19648cd2ef1f, type: 3}
   hitSound: {fileID: 8300000, guid: 9440a555a61ad2b4db81a04e2c4da79f, type: 3}
   dieSound: {fileID: 8300000, guid: 2ae4603039354cc4db9d3e4edfeb1139, type: 3}
   dieEffect: {fileID: 1037864198121816, guid: c797b5d7dd54ccc45b891d7503717419, type: 3}
+  birdSkill: {fileID: 0}

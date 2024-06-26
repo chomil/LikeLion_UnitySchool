@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.4856596
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.58965015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -91,6 +91,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_Name
       value: PigMinion
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
+      propertyPath: m_TagString
+      value: Pig
       objectReference: {fileID: 0}
     - target: {fileID: 5306359843912408810, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.x

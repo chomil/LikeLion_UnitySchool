@@ -1136,22 +1136,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8132832296694105799, guid: 71a783f6f393ee84ba77074a72448a82, type: 3}
-      propertyPath: shootClips.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8132832296694105799, guid: 71a783f6f393ee84ba77074a72448a82, type: 3}
-      propertyPath: shootClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: fe054227f34c8a14d9ddd622cad2c44e, type: 3}
-    - target: {fileID: 8132832296694105799, guid: 71a783f6f393ee84ba77074a72448a82, type: 3}
-      propertyPath: shootClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 8c0897b3b79c8eb44af0f443f7ec9efa, type: 3}
-    - target: {fileID: 8132832296694105799, guid: 71a783f6f393ee84ba77074a72448a82, type: 3}
-      propertyPath: shootClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: c250f6c39e3c5d2458507a76cba36d3a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1838,12 +1822,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bfdd8ff26c96a4682a3a45ea5c3fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageScore: 0
   Birds:
   - {fileID: 6595761546388629442, guid: def46303afa61fb40bd03d016ac0d6b0, type: 3}
   - {fileID: 504316805517431838, guid: 330dd1d03d2d46346b232323d28106cd, type: 3}
-  - {fileID: 6595761546388629442, guid: def46303afa61fb40bd03d016ac0d6b0, type: 3}
-  - {fileID: 504316805517431838, guid: 330dd1d03d2d46346b232323d28106cd, type: 3}
-  - {fileID: 6595761546388629442, guid: def46303afa61fb40bd03d016ac0d6b0, type: 3}
+  - {fileID: 5467204200032264367, guid: 10b4aa0c92d3b52468eaf06817d209f6, type: 3}
+  - {fileID: 5467204200032264367, guid: 10b4aa0c92d3b52468eaf06817d209f6, type: 3}
+  - {fileID: 5467204200032264367, guid: 10b4aa0c92d3b52468eaf06817d209f6, type: 3}
   curBird: {fileID: 0}
   birdSpawnPos: {x: -17, y: -1, z: 0}
   slingShot: {fileID: 841166780}

@@ -18,6 +18,7 @@ public class MapObject : MonoBehaviour
     private bool isNoHit = true;
     private float hp = 1f;
     public GameObject dieEffect;
+    public int score = 0;
     
     public List<AudioClip> hitSounds;
 
@@ -27,7 +28,7 @@ public class MapObject : MonoBehaviour
         StartCoroutine(NoHitTime(1f));
     }
 
-    private void OnDamage(float damage = 1f)
+    public void OnDamage(float damage = 1f)
     {
         hp -= damage;
         if (hp <= 0 || damage >= 1f)
@@ -64,4 +65,5 @@ public class MapObject : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         isNoHit = false;
     }
+    
 }

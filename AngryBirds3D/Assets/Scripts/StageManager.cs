@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
+    public int stageScore = 0;
+    
     public List<Bird> Birds;
     private int curBirdIndex = 0;
     public Bird curBird = null;
@@ -29,6 +31,7 @@ public class StageManager : MonoBehaviour
             SceneManager.LoadScene(currentScene.name);
         }
 
+        
         if (!curBird)
         {
             if (curBirdIndex < Birds.Count)
@@ -44,7 +47,7 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        if (curBird.isMoving)
+        if (curBird.isMoving || curBird.isDying)
         {
             cameraController.StartFollowing(curBird);
             return;

@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - FxTemporaire
   - Bird
+  - Pig
   layers:
   - Default
   - TransparentFX

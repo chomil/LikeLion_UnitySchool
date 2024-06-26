@@ -206,3 +206,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slingShotSeat: {fileID: 2068824120548075957}
   animator: {fileID: 0}
+  stretchClip: {fileID: 8300000, guid: f856d382e814e8b42ba7617b5d66633e, type: 3}
+  shootClips:
+  - {fileID: 8300000, guid: fe054227f34c8a14d9ddd622cad2c44e, type: 3}
+  - {fileID: 8300000, guid: 8c0897b3b79c8eb44af0f443f7ec9efa, type: 3}
+  - {fileID: 8300000, guid: c250f6c39e3c5d2458507a76cba36d3a, type: 3}
+  spheres: []

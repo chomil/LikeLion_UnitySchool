@@ -18,6 +18,9 @@ public class Bird : MonoBehaviour
     public bool isDraging = false;
     public bool isMoving = false;
     public bool isFlying = false;
+    public bool isDying = false;
+    
+    public int score = 0;
 
     private Rigidbody birdRigid;
     public GameObject sphere;
@@ -29,34 +32,49 @@ public class Bird : MonoBehaviour
     public AudioClip dieSound;
     public GameObject dieEffect;
 
+    public GameObject birdSkill;
+
     private IEnumerator drawLineCoroutine;
+    private IEnumerator dieCoroutine;
 
     private void Awake()
     {
         birdRigid = gameObject.GetComponent<Rigidbody>();
         drawLineCoroutine = DrawLine();
+        dieCoroutine = DieCoroutine();
     }
 
     private void Start()
     {
         shootSpeed = birdRigid.mass * 30f;
+
+        SoundManager.instance.PlaySound(chargeSound, 0.8f);
     }
 
     private void Update()
     {
-        if (isMoving == true && isFlying == false)
+        if (isDying == true)
         {
-            if (birdRigid.velocity.magnitude < 0.2f && birdRigid.angularVelocity.magnitude < 0.2f)
+            return;
+        }
+
+        if (isMoving)
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                isMoving = false;
-                if (dieEffect != null)
+                switch (type)
                 {
-                    Instantiate(dieEffect, transform.position, Quaternion.identity);
+                    case BirdType.Bomb:
+                        StartCoroutine(dieCoroutine);
+                        break;
                 }
-
-                SoundManager.instance.PlaySound(dieSound, 0.8f);
-
-                Destroy(gameObject);
+            }
+            else if (isFlying == false)
+            {
+                if (birdRigid.velocity.magnitude < 0.2f && birdRigid.angularVelocity.magnitude < 0.2f)
+                {
+                    StartCoroutine(dieCoroutine);
+                }
             }
         }
     }
@@ -68,8 +86,6 @@ public class Bird : MonoBehaviour
         birdRigid.angularVelocity = Vector3.zero;
 
         StopCoroutine(drawLineCoroutine);
-
-        SoundManager.instance.PlaySound(chargeSound, 0.8f);
     }
 
     public void Shooting(Vector3 shootDir)
@@ -86,6 +102,14 @@ public class Bird : MonoBehaviour
 
     public void Skill()
     {
+        if (type == BirdType.Bomb)
+        {
+            if (birdSkill)
+            {
+                GameObject skill =  Instantiate(birdSkill, transform.position, Quaternion.identity);
+                skill.GetComponent<Bomb>().owner = gameObject;
+            }
+        }
     }
 
     IEnumerator DrawLine()
@@ -96,6 +120,38 @@ public class Bird : MonoBehaviour
                 Quaternion.identity));
             yield return new WaitForSeconds(0.1f);
         }
+    }
+    
+    
+    IEnumerator DieCoroutine()
+    {
+        isDraging = false;
+        isFlying = false;
+        isMoving = false;
+        isDying = true;
+        
+        StopCoroutine(drawLineCoroutine);
+        
+        if (dieEffect != null)
+        {
+            Instantiate(dieEffect, transform.position, Quaternion.identity);
+        }
+        SoundManager.instance.PlaySound(dieSound, 0.8f);
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        if (type == BirdType.Bomb)
+        {
+            Skill();
+            yield return new WaitForSeconds(2f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        Destroy(gameObject);
     }
 
 

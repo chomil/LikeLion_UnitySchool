@@ -15,6 +15,7 @@ public class SlingShot : MonoBehaviour
     public Animator animator = null;
     
     
+    public AudioClip stretchClip;
     public List<AudioClip> shootClips;
     
     
@@ -51,6 +52,7 @@ public class SlingShot : MonoBehaviour
                 animator.SetTrigger("Charged");
                 curBird.isDraging = true;
                 curBird.ResetPosition();
+                SoundManager.instance.PlaySound(stretchClip, 0.3f);
                 break;
             case SlingShotState.Shoot:
                 if (mouseDelta.y <= 0 && mouseDelta.x <= 0)
