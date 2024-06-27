@@ -52,23 +52,24 @@ public class StageManager : MonoBehaviour
             }
         }
 
+        cameraController.followingBird = curBird;
         if (curBird.isMoving || curBird.isDying)
         {
             cameraController.StartFollowing(curBird);
             return;
         }
-        else if (curBird.isDraging)
-        {
-            cameraController.StopFollowing();
-        }
+        cameraController.StopFollowing();
 
-        if (Input.GetMouseButton(0))
+        if (cameraController.isDraging == false)
         {
-            slingShot.SetState(SlingShotState.Charge);
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            slingShot.SetState(SlingShotState.Shoot);
+            if (Input.GetMouseButton(0))
+            {
+                slingShot.SetState(SlingShotState.Charge);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                slingShot.SetState(SlingShotState.Shoot);
+            }
         }
     }
 }

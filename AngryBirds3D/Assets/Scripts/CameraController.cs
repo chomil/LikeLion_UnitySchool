@@ -10,9 +10,34 @@ public class CameraController : MonoBehaviour
     private Vector3 originPos;
     private bool isFollowing = false; 
     public Bird followingBird; 
+    public bool isDraging = false; 
+    
+    private Vector3 mouseStartPos;
+    private Vector3 mousePos;
+    private Vector3 mouseDelta;
+    
+    
     void Start()
     {
         originPos = transform.position;
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            mouseStartPos = Input.mousePosition;
+            isDraging = true;
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            isDraging = false;
+        }
+
+        if (followingBird.isDraging)
+        {
+            isDraging = false;
+        }
     }
 
     
@@ -22,23 +47,39 @@ public class CameraController : MonoBehaviour
         {
             Vector3 targetPosition = new Vector3(followingBird.transform.position.x, transform.position.y, transform.position.z);
             targetPosition.x -= 20f;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.fixedDeltaTime);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, originPos, returnSpeed * Time.deltaTime);
+            if(isDraging)
+            {
+                if (mouseStartPos == Vector3.zero)
+                {
+                    mouseStartPos = Input.mousePosition;
+                }
+                mousePos = Input.mousePosition;
+                mouseDelta = mouseStartPos - mousePos;
+                mouseDelta.y = 0;
+                mouseDelta.z = 0;
+                mouseDelta /= 10f;
+                
+                mouseDelta.x = Mathf.Clamp(mouseDelta.x,-10f, 40f);
+                transform.position = Vector3.Lerp(transform.position, originPos+mouseDelta, Time.fixedDeltaTime);
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, originPos, returnSpeed * Time.fixedDeltaTime);
+            }
         }
     }
     
     
-    // 발사체를 따라가기 시작하는 메서드
     public void StartFollowing(Bird _followingBird)
     {
         followingBird = _followingBird;
         isFollowing = true;
     }
 
-    // 발사체를 따라가기를 멈추는 메서드
     public void StopFollowing()
     {
         isFollowing = false;

@@ -2478,6 +2478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followingBird: {fileID: 0}
+  isDraging: 0
 --- !u!1001 &979001194
 PrefabInstance:
   m_ObjectHideFlags: 0
