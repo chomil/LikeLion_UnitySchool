@@ -291,7 +291,7 @@ MonoBehaviour:
   isDying: 0
   score: 0
   birdRigid: {fileID: 0}
-  sphere: {fileID: 7445327080009667400, guid: 7e210262eb6fd174d85243af37391eb0, type: 3}
+  pathSprite: {fileID: 872383672564866546, guid: 67824f2130712f94aa811070810c4426, type: 3}
   chargeSound: {fileID: 8300000, guid: 7231ab0067896e94aa33f3aaea5ba1ec, type: 3}
   flySound: {fileID: 8300000, guid: 6e059b1aac943ab40ab259d7d68db574, type: 3}
   hitSounds:

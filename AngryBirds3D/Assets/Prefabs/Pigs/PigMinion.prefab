@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.4856596
+      value: -6.347823
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.58965015
+      value: -5.827591
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.051776886
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43359e033f79b374888691f2ea058ca7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -197,5 +197,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 2
   dieEffect: {fileID: 1037864198121816, guid: c797b5d7dd54ccc45b891d7503717419, type: 3}
+  score: 0
   hitSounds:
+  - {fileID: 8300000, guid: 301bdc15b0c90474e9abebbbd709d1ff, type: 3}
+  - {fileID: 8300000, guid: c07fb4273fd128e4891d546fc430c7ef, type: 3}
+  - {fileID: 8300000, guid: ed25ca4f771260346a151b6313228abe, type: 3}
+  - {fileID: 8300000, guid: 043b0ecf19e735446accb27a83c93441, type: 3}
+  - {fileID: 8300000, guid: 25aa2779f342a3a4aac1de4f05f4aa0b, type: 3}
+  - {fileID: 8300000, guid: e2d3443769fa1e547948ae8cb608fc67, type: 3}
+  - {fileID: 8300000, guid: ec50c389941ca1e41a9f569c4a67cb71, type: 3}
+  - {fileID: 8300000, guid: 00677bd8aa79afa499465b7547194b4e, type: 3}
+  dieSounds:
   - {fileID: 8300000, guid: 608fb90c8b150564d9a7c0bd0710b496, type: 3}

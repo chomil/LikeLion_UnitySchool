@@ -328,12 +328,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  shootSpeed: 30
   isDraging: 0
   isMoving: 0
   isFlying: 0
   isDying: 0
   score: 0
-  sphere: {fileID: 7445327080009667400, guid: 7e210262eb6fd174d85243af37391eb0, type: 3}
+  birdRigid: {fileID: 0}
+  pathSprite: {fileID: 872383672564866546, guid: 67824f2130712f94aa811070810c4426, type: 3}
   chargeSound: {fileID: 8300000, guid: 833a195ed2e56de449eaf28c6ba3aa6d, type: 3}
   flySound: {fileID: 8300000, guid: 5575add162b3f604e96a31ca942ab8c0, type: 3}
   hitSounds:

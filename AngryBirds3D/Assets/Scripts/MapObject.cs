@@ -21,6 +21,7 @@ public class MapObject : MonoBehaviour
     public int score = 0;
     
     public List<AudioClip> hitSounds;
+    public List<AudioClip> dieSounds;
 
     public void Awake()
     {
@@ -33,12 +34,13 @@ public class MapObject : MonoBehaviour
     public void OnDamage(float damage = 1f)
     {
         hp -= damage;
-        if (hp <= 0 || damage >= 1f)
+        if (damage >= 0.5f)
         {
             SoundManager.instance.PlaySound(hitSounds);
         }
         if (hp <= 0)
         {
+            SoundManager.instance.PlaySound(dieSounds,0.5f);
             if (dieEffect != null)
             {
                 Instantiate(dieEffect, transform.position, Quaternion.identity);

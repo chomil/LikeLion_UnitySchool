@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public enum BirdType
@@ -27,7 +28,7 @@ public class Bird : MonoBehaviour
     public int score = 0;
 
     public Rigidbody birdRigid;
-    public GameObject sphere;
+    public GameObject pathSprite;
 
 
     public AudioClip chargeSound;
@@ -184,7 +185,7 @@ public class Bird : MonoBehaviour
     {
         while (true)
         {
-            GameManager.instance.curStage.slingShot.spheres.Add(Instantiate(sphere, transform.position,
+            GameManager.instance.curStage.slingShot.spheres.Add(Instantiate(pathSprite, transform.position,
                 Quaternion.identity));
             yield return new WaitForSeconds(0.08f);
         }
