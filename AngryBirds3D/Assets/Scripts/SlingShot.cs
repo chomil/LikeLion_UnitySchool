@@ -77,33 +77,33 @@ public class SlingShot : MonoBehaviour
                 curBird.isDraging = false;
                 lineRenderer.positionCount = 0;
                 break;
-            case SlingShotState.Charge:
+            case SlingShotState.Charge:  //마우스 눌렀을때
                 curBird = GameManager.instance.curStage.curBird;
                 mouseStartPos = Input.mousePosition;
                 animator.SetTrigger("Charged");
                 curBird.isDraging = true;
-                curBird.ResetPosition();
+                curBird.ResetVelocity();
                 SoundManager.instance.PlaySound(stretchClip, 0.3f);
                 SoundManager.instance.PlaySound(curBird.chargeSound, 0.8f);
                 break;
-            case SlingShotState.Shoot:
-                if (mouseDelta.y <= 0 && mouseDelta.x <= 0)
+            case SlingShotState.Shoot: //마우스 뗐을 때
+                if (mouseDelta.y <= 0 && mouseDelta.x <= 0) //마우스 안당겼다 뗐을때 캔슬
                 {
                     animator.SetTrigger("Cancled");
                 }
-                else
+                else //마우스 당겼다 뗐을때 발사
                 {
                     animator.SetTrigger("Shooted");
                     EraseFlyLine();
                     curBird.Shooting(mouseDelta);
                     SoundManager.instance.PlaySound(shootClips, 0.3f);
                 }
-
                 curBird.isDraging = false;
                 lineRenderer.positionCount = 0;
                 break;
         }
 
+        //버드 드래깅 중일때 중력 끄기
         curBird.birdRigid.useGravity = !curBird.isDraging;
     }
 
@@ -125,29 +125,34 @@ public class SlingShot : MonoBehaviour
 
                 break;
             case SlingShotState.Charge:
-
+                //당긴 픽셀 계산
                 mousePos = Input.mousePosition;
                 mouseDelta = mouseStartPos - mousePos;
                 mouseDelta.z = 0;
 
+                //최대 거리보다 더 당기면 1로 노말라이즈
                 if (mouseDelta.magnitude > dragMaxRange)
                 {
                     mouseDelta.Normalize();
                 }
-                else
+                else //(당긴 거리/최대 거리)비율에 따라 0~1
                 {
                     mouseDelta.x = Math.Clamp(mouseDelta.x, 0, dragMaxRange) / dragMaxRange;
                     mouseDelta.y = Math.Clamp(mouseDelta.y, 0, dragMaxRange) / dragMaxRange;
                 }
 
+                //음수 제거(반대 방향 드래그 무시)
                 mouseDelta.x = Math.Clamp(mouseDelta.x, 0f, 1f);
                 mouseDelta.y = Math.Clamp(mouseDelta.y, 0f, 1f);
 
+                //새총 애니메이션 업데이트
                 animator.SetFloat("DragX", mouseDelta.x);
                 animator.SetFloat("DragY", mouseDelta.y);
 
+                //버드 위치 업데이트
                 curBird.transform.position = slingShotSeat.transform.position;
 
+                //발사 궤적 미리 그리기
                 DrawLaunchLine(curBird.transform.position, mouseDelta * 30f, -Physics.gravity.y);
 
                 break;

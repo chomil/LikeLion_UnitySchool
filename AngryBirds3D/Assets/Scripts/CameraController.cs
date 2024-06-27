@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     private float returnSpeed = 5.0f;
 
     private Vector3 originPos;
-    private bool isFollowing = false; 
+    public bool isFollowing = false; 
     public Bird followingBird; 
     public bool isDraging = false; 
     
@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     private Vector3 mouseDelta;
     
     
-    void Start()
+    void Awake()
     {
         originPos = transform.position;
     }

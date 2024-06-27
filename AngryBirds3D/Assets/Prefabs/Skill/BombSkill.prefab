@@ -67,4 +67,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  bombPower: 20
+  effect: {fileID: 1685874166552172, guid: 516354228a132e740b6ea1321498530f, type: 3}
+  bombSound: {fileID: 8300000, guid: b6022384c41086c458391892b7fffd14, type: 3}

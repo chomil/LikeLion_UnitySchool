@@ -22,9 +22,11 @@ public class MapObject : MonoBehaviour
     
     public List<AudioClip> hitSounds;
 
-    public void Start()
+    public void Awake()
     {
         hp = GetComponent<Rigidbody>().mass;
+        
+        //생성 후 n초간 무적시간
         StartCoroutine(NoHitTime(1f));
     }
 
@@ -54,7 +56,6 @@ public class MapObject : MonoBehaviour
 
         Vector3 impulse = other.impulse;
         float impulseMagnitude = impulse.magnitude;
-
         OnDamage(impulseMagnitude / 10f);
         
     }

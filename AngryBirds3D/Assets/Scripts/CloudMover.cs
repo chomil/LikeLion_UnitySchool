@@ -5,10 +5,6 @@ using UnityEngine;
 public class CloudMover : MonoBehaviour
 {
     public float moveSpeed = 1f;
-    void Start()
-    {
-        
-    }
     void Update()
     {
         transform.position += Vector3.left * (Time.deltaTime * moveSpeed);

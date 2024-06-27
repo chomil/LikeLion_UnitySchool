@@ -47,10 +47,6 @@ public class Bird : MonoBehaviour
         birdRigid = gameObject.GetComponent<Rigidbody>();
         drawLineCoroutine = DrawLine();
         dieCoroutine = DieCoroutine();
-    }
-
-    private void Start()
-    {
         shootSpeed = birdRigid.mass * 30f;
     }
 
@@ -96,7 +92,7 @@ public class Bird : MonoBehaviour
         }
     }
 
-    public void ResetPosition()
+    public void ResetVelocity()
     {
         transform.forward = Vector3.forward;
         birdRigid.velocity = Vector3.zero;
@@ -107,7 +103,7 @@ public class Bird : MonoBehaviour
 
     public void Shooting(Vector3 shootDir)
     {
-        ResetPosition();
+        ResetVelocity();
         birdRigid.AddForce(shootDir * shootSpeed, ForceMode.Impulse);
         isMoving = true;
         isFlying = true;
@@ -115,6 +111,14 @@ public class Bird : MonoBehaviour
         StartCoroutine(drawLineCoroutine);
 
         SoundManager.instance.PlaySound(flySound, 0.8f);
+    }
+
+    public void OnDamage(float damage = 1f)
+    {
+        if (type == BirdType.Bomb)
+        {
+            StartCoroutine(dieCoroutine);
+        }
     }
 
     public void Skill()
@@ -194,27 +198,32 @@ public class Bird : MonoBehaviour
         isMoving = false;
         isDying = true;
         
-        ResetPosition();
+        ResetVelocity();
         
-        
-        if (dieEffect != null)
-        {
-            Instantiate(dieEffect, transform.position, Quaternion.identity);
-        }
-
+        //콜라이더와 리지드바디 해제
         Collider collider = GetComponent<Collider>();
         if (collider)
         {
             collider.enabled = false;
         }
-        
+        if (birdRigid)
+        {
+            birdRigid.isKinematic = true;
+        }
+        //자식 오브젝트 전부 비활성화
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
         }
         
+        //효과 및 효과음
+        if (dieEffect != null)
+        {
+            Instantiate(dieEffect, transform.position, Quaternion.identity);
+        }
         SoundManager.instance.PlaySound(dieSound, 0.8f);
-
+        
+        //N초 후 삭제
         if (type == BirdType.Bomb)
         {
             Skill();

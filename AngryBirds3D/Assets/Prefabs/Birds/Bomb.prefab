@@ -284,11 +284,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  shootSpeed: 30
   isDraging: 0
   isMoving: 0
   isFlying: 0
   isDying: 0
   score: 0
+  birdRigid: {fileID: 0}
   sphere: {fileID: 7445327080009667400, guid: 7e210262eb6fd174d85243af37391eb0, type: 3}
   chargeSound: {fileID: 8300000, guid: 7231ab0067896e94aa33f3aaea5ba1ec, type: 3}
   flySound: {fileID: 8300000, guid: 6e059b1aac943ab40ab259d7d68db574, type: 3}
@@ -297,7 +299,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3be90bb0322ab324ba5ba14a518f3a78, type: 3}
   - {fileID: 8300000, guid: 6309ddd9f610f104aaaac886e7f07191, type: 3}
   - {fileID: 8300000, guid: c0e6b1217bccc2248bf798e3c903ba8e, type: 3}
-  dieSound: {fileID: 8300000, guid: b6022384c41086c458391892b7fffd14, type: 3}
+  dieSound: {fileID: 8300000, guid: 2ae4603039354cc4db9d3e4edfeb1139, type: 3}
   skillSound: {fileID: 0}
-  dieEffect: {fileID: 1685874166552172, guid: 516354228a132e740b6ea1321498530f, type: 3}
+  dieEffect: {fileID: 0}
   birdSkill: {fileID: 4003638360670869023, guid: 505d33ae8a2cfc34db894e29a58a858e, type: 3}

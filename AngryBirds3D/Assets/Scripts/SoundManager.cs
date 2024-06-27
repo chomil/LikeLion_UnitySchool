@@ -21,9 +21,6 @@ public class SoundManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
-    {
-    }
 
     public void PlaySound(AudioClip clip, float volume = 1f)
     {
