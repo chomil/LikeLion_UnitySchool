@@ -121,12 +121,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 1
   dieEffect: {fileID: 1037864198121816, guid: 361d73f3dd60dfe4fb2a71dbed3eb75b, type: 3}
+  score: 500
   hitSounds:
   - {fileID: 8300000, guid: 091e5e8077bd2e2458e33c8f0bbcecf1, type: 3}
   - {fileID: 8300000, guid: ea0b07b85e9857e458aac5678d4a66a3, type: 3}
   - {fileID: 8300000, guid: ba96d8236b6533e44a4d68c6ffc4b56d, type: 3}
   - {fileID: 8300000, guid: fa7132e5dc0b6494e9f7250a8347f74a, type: 3}
   - {fileID: 8300000, guid: ba5a5855c698190459ae6f98c6cf6f49, type: 3}
+  dieSounds: []
 --- !u!54 &4913327614921476821
 Rigidbody:
   m_ObjectHideFlags: 0

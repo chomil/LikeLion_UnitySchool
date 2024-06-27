@@ -45,8 +45,18 @@ public class MapObject : MonoBehaviour
             {
                 Instantiate(dieEffect, transform.position, Quaternion.identity);
             }
+
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (gameObject.CompareTag("Pig"))
+        {
+            GameManager.instance.curStage.pigCount--;
+        }
+        GameManager.instance.curStage.AddScore(score);
     }
 
     private void OnCollisionEnter(Collision other)

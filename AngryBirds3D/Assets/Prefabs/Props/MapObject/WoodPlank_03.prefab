@@ -148,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 0
   dieEffect: {fileID: 1037864198121816, guid: 4a8a7bf6e2af3b34b8a4e038e1656b58, type: 3}
+  score: 200
   hitSounds:
   - {fileID: 8300000, guid: 12485f49f7376c144820e47cbcd1d9fc, type: 3}
   - {fileID: 8300000, guid: 9725b73755a43d44d8cacc9250969cfd, type: 3}
@@ -155,3 +156,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 46593ca0e5289bd4895640f5c436d754, type: 3}
   - {fileID: 8300000, guid: f78066893de43234e923dffc62a8ffa1, type: 3}
   - {fileID: 8300000, guid: ba5c6fcf2a948694baaf137d2d37f115, type: 3}
+  dieSounds: []

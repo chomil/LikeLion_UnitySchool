@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private float followSpeed = 2.0f; 
-    private float returnSpeed = 5.0f;
+    private float returnSpeed = 10.0f;
 
     private Vector3 originPos;
     public bool isFollowing = false; 
@@ -43,7 +43,11 @@ public class CameraController : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (isFollowing && followingBird)
+        if (!followingBird)
+        {
+            return;
+        }
+        if (isFollowing)
         {
             Vector3 targetPosition = new Vector3(followingBird.transform.position.x, transform.position.y, transform.position.z);
             targetPosition.x -= 20f;

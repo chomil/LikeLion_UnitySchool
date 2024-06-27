@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    public int stageScore = 0;
+    private int stageScore = 0;
+    private int stageMaxScore = 0;
+    public TextMeshProUGUI scoreText;
     
     public List<Bird> Birds;
     private int curBirdIndex = 0;
@@ -15,6 +18,9 @@ public class StageManager : MonoBehaviour
 
     public SlingShot slingShot;
     private CameraController cameraController;
+
+    public int pigCount = 0;
+    public bool isClear = false;
 
 
     private void Awake()
@@ -27,6 +33,20 @@ public class StageManager : MonoBehaviour
         {
             Birds[i] = Instantiate(Birds[i],birdSpawnPos + new Vector3(-i*1.3f,0,0) ,Quaternion.identity).GetComponent<Bird>();
         }
+
+        AddScore(0);
+    }
+
+    public void AddScore(int score)
+    {
+        stageScore += score;
+        scoreText.text = $"Score : {stageScore:N0}";
+    }
+
+    private void Start()
+    {
+        GameObject[] pigObjects = GameObject.FindGameObjectsWithTag("Pig");
+        pigCount = pigObjects.Length;
     }
 
     private void Update()
@@ -54,6 +74,22 @@ public class StageManager : MonoBehaviour
             }
         }
 
+        //모든 돼지 처치했다면 클리어 & 남은 버드 추가점수
+        if (pigCount <= 0 && curBird.isDying==false && curBird.isMoving == false)
+        {
+            if (isClear == false)
+            {
+                StartCoroutine(ClearStageCoroutine());
+                slingShot.SetState(SlingShotState.Idle);
+            }
+            else
+            {
+                curBird.ClearStart();
+            }
+            return;
+        }
+        
+
         //현재 버드를 카메라가 딸아갈 버드로 설정
         cameraController.followingBird = curBird;
         
@@ -79,5 +115,14 @@ public class StageManager : MonoBehaviour
                 slingShot.SetState(SlingShotState.Shoot);
             }
         }
+    }
+
+    IEnumerator ClearStageCoroutine()
+    {
+        cameraController.followingBird = curBird;
+        cameraController.StartFollowing(curBird);
+        slingShot.EraseFlyLine();
+        yield return new WaitForSeconds(2f);
+        isClear = true;
     }
 }

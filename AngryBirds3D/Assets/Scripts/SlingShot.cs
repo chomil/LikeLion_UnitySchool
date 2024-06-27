@@ -74,7 +74,6 @@ public class SlingShot : MonoBehaviour
         {
             case SlingShotState.Idle:
                 animator.SetTrigger("Cancled");
-                curBird.isDraging = false;
                 lineRenderer.positionCount = 0;
                 break;
             case SlingShotState.Charge:  //마우스 눌렀을때
@@ -104,7 +103,10 @@ public class SlingShot : MonoBehaviour
         }
 
         //버드 드래깅 중일때 중력 끄기
-        curBird.birdRigid.useGravity = !curBird.isDraging;
+        if (curBird.birdRigid)
+        {
+            curBird.birdRigid.useGravity = !curBird.isDraging;
+        }
     }
 
     public void EraseFlyLine()
@@ -151,6 +153,7 @@ public class SlingShot : MonoBehaviour
 
                 //버드 위치 업데이트
                 curBird.transform.position = slingShotSeat.transform.position;
+                curBird.transform.right = mouseDelta.normalized;
 
                 //발사 궤적 미리 그리기
                 DrawLaunchLine(curBird.transform.position, mouseDelta * 30f, -Physics.gravity.y);

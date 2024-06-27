@@ -42,12 +42,14 @@ public class Bird : MonoBehaviour
 
     public IEnumerator drawLineCoroutine;
     private IEnumerator dieCoroutine;
+    private IEnumerator clearCoroutine;
 
     private void Awake()
     {
         birdRigid = gameObject.GetComponent<Rigidbody>();
         drawLineCoroutine = DrawLine();
         dieCoroutine = DieCoroutine();
+        clearCoroutine = ClearCoroutine();
         shootSpeed = birdRigid.mass * 30f;
     }
 
@@ -190,9 +192,8 @@ public class Bird : MonoBehaviour
             yield return new WaitForSeconds(0.08f);
         }
     }
-    
-    
-    IEnumerator DieCoroutine()
+
+    private void KillBird()
     {
         isDraging = false;
         isFlying = false;
@@ -223,6 +224,12 @@ public class Bird : MonoBehaviour
             Instantiate(dieEffect, transform.position, Quaternion.identity);
         }
         SoundManager.instance.PlaySound(dieSound, 0.8f);
+    }
+    
+    
+    IEnumerator DieCoroutine()
+    {
+        KillBird();
         
         //N초 후 삭제
         if (type == BirdType.Bomb)
@@ -234,6 +241,19 @@ public class Bird : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
         }
+        Destroy(gameObject);
+    }
+
+    public void ClearStart()
+    {
+        StartCoroutine(clearCoroutine);
+    }
+
+    IEnumerator ClearCoroutine()
+    {
+        KillBird();
+        GameManager.instance.curStage.AddScore(10000);
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
 

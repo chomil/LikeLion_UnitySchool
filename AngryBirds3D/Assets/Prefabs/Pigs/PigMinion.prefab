@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 2
   dieEffect: {fileID: 1037864198121816, guid: c797b5d7dd54ccc45b891d7503717419, type: 3}
-  score: 0
+  score: 5000
   hitSounds:
   - {fileID: 8300000, guid: 301bdc15b0c90474e9abebbbd709d1ff, type: 3}
   - {fileID: 8300000, guid: c07fb4273fd128e4891d546fc430c7ef, type: 3}
