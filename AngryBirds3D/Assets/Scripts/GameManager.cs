@@ -20,4 +20,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void OpenScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 }

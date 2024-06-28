@@ -24,7 +24,8 @@ public class StageManager : MonoBehaviour
     private bool isClear = false;
     private bool isEnd = false;
 
-    public FloatingText floatingTextPrefab; 
+    public FloatingText floatingTextPrefab;
+    public GameObject ResultWindow;
 
 
     private void Awake()
@@ -54,18 +55,24 @@ public class StageManager : MonoBehaviour
         pigCount = pigObjects.Length;
     }
 
+    public void ReloadStage()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
     private void Update()
     {
         if (isEnd)
         {
+            ResultWindow.SetActive(true);
             return;
         }
         
         //스테이지 다시시작 R
         if (Input.GetKey(KeyCode.R))
         {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
+            ReloadStage();
         }
 
         
@@ -141,8 +148,8 @@ public class StageManager : MonoBehaviour
     
     IEnumerator ResultCoroutine()
     {
-        isEnd = true;
         yield return new WaitForSeconds(2f);
+        isEnd = true;
         Debug.Log("End");
     }
 
