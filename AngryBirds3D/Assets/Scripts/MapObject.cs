@@ -40,23 +40,44 @@ public class MapObject : MonoBehaviour
         }
         if (hp <= 0)
         {
+            if (damage <= 0.5f && objectType == ObjectType.Enemy)
+            {
+                SoundManager.instance.PlaySound(hitSounds);
+            }
             SoundManager.instance.PlaySound(dieSounds,0.5f);
             if (dieEffect != null)
             {
                 Instantiate(dieEffect, transform.position, Quaternion.identity);
             }
 
-            Destroy(gameObject);
+            KillObject();
         }
     }
 
-    private void OnDestroy()
+    public void KillObject()
     {
         if (gameObject.CompareTag("Pig"))
         {
             GameManager.instance.curStage.pigCount--;
         }
         GameManager.instance.curStage.AddScore(score);
+
+        ScoreType scoreType = ScoreType.None;
+        switch (objectType)
+        {
+            case ObjectType.Enemy:
+                scoreType = ScoreType.PigScore;
+                break;
+            case ObjectType.StoneWall:
+                scoreType = ScoreType.StoneScore;
+                break;
+            case ObjectType.WoodWall:
+                scoreType = ScoreType.WoodScore;
+                break;
+        }
+        GameManager.instance.curStage.DrawScore(transform.position, score, scoreType);
+        
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision other)

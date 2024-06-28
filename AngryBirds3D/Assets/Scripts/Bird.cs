@@ -25,7 +25,7 @@ public class Bird : MonoBehaviour
     public bool isDying = false;
     private bool isSkilled = false;
     
-    public int score = 0;
+    private int score = 10000;
 
     public Rigidbody birdRigid;
     public GameObject pathSprite;
@@ -252,7 +252,8 @@ public class Bird : MonoBehaviour
     IEnumerator ClearCoroutine()
     {
         KillBird();
-        GameManager.instance.curStage.AddScore(10000);
+        GameManager.instance.curStage.AddScore(score);
+        GameManager.instance.curStage.DrawScore(transform.position, score, ScoreType.BirdScore);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

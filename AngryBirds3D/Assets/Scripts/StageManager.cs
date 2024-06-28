@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class StageManager : MonoBehaviour
 {
@@ -20,7 +21,10 @@ public class StageManager : MonoBehaviour
     private CameraController cameraController;
 
     public int pigCount = 0;
-    public bool isClear = false;
+    private bool isClear = false;
+    private bool isEnd = false;
+
+    public FloatingText floatingTextPrefab; 
 
 
     private void Awake()
@@ -40,6 +44,7 @@ public class StageManager : MonoBehaviour
     public void AddScore(int score)
     {
         stageScore += score;
+        stageMaxScore = Math.Max(stageScore, stageMaxScore);
         scoreText.text = $"Score : {stageScore:N0}";
     }
 
@@ -51,6 +56,11 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
+        if (isEnd)
+        {
+            return;
+        }
+        
         //스테이지 다시시작 R
         if (Input.GetKey(KeyCode.R))
         {
@@ -70,6 +80,7 @@ public class StageManager : MonoBehaviour
             {
                 cameraController.StopFollowing();
                 slingShot.EraseFlyLine();
+                StartCoroutine(ResultCoroutine());
                 return;
             }
         }
@@ -77,10 +88,11 @@ public class StageManager : MonoBehaviour
         //모든 돼지 처치했다면 클리어 & 남은 버드 추가점수
         if (pigCount <= 0 && curBird.isDying==false && curBird.isMoving == false)
         {
+            slingShot.SetState(SlingShotState.Idle);
+            
             if (isClear == false)
             {
                 StartCoroutine(ClearStageCoroutine());
-                slingShot.SetState(SlingShotState.Idle);
             }
             else
             {
@@ -90,7 +102,7 @@ public class StageManager : MonoBehaviour
         }
         
 
-        //현재 버드를 카메라가 딸아갈 버드로 설정
+        //현재 버드를 카메라가 따라갈 버드로 설정
         cameraController.followingBird = curBird;
         
         //현재 버드가 움직이는 중이면 카메라가 따라가기
@@ -124,5 +136,19 @@ public class StageManager : MonoBehaviour
         slingShot.EraseFlyLine();
         yield return new WaitForSeconds(2f);
         isClear = true;
+    }
+    
+    
+    IEnumerator ResultCoroutine()
+    {
+        isEnd = true;
+        yield return new WaitForSeconds(2f);
+        Debug.Log("End");
+    }
+
+    public void DrawScore(Vector3 worldPos, int score, ScoreType type)
+    {
+        FloatingText newText = Instantiate(floatingTextPrefab,worldPos,Quaternion.identity);
+        newText.SetText(score.ToString(),type);
     }
 }
