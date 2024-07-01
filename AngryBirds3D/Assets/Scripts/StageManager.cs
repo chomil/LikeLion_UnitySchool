@@ -8,8 +8,8 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class StageManager : MonoBehaviour
 {
-    private int stageScore = 0;
-    private int stageMaxScore = 0;
+    public int stageScore = 0;
+    public int stageMaxScore = 0;
     public TextMeshProUGUI scoreText;
     
     public List<Bird> Birds;
@@ -20,12 +20,16 @@ public class StageManager : MonoBehaviour
     public SlingShot slingShot;
     private CameraController cameraController;
 
+    public int pigMaxCount = 0;
     public int pigCount = 0;
     private bool isClear = false;
     private bool isEnd = false;
 
     public FloatingText floatingTextPrefab;
-    public GameObject ResultWindow;
+    public ResultWindow resultWindow;
+
+    public AudioClip startSfx;
+    public AudioClip stageBgm;
 
 
     private void Awake()
@@ -53,19 +57,22 @@ public class StageManager : MonoBehaviour
     {
         GameObject[] pigObjects = GameObject.FindGameObjectsWithTag("Pig");
         pigCount = pigObjects.Length;
+        pigMaxCount = pigCount;
+        
+        SoundManager.instance.PlaySound(startSfx);
+        SoundManager.instance.PlayBGM(stageBgm, 0.1f);
     }
 
     public void ReloadStage()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        GameManager.instance.OpenScene(currentScene.name);
     }
 
     private void Update()
     {
         if (isEnd)
         {
-            ResultWindow.SetActive(true);
             return;
         }
         
@@ -148,9 +155,9 @@ public class StageManager : MonoBehaviour
     
     IEnumerator ResultCoroutine()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        resultWindow.gameObject.SetActive(true);
         isEnd = true;
-        Debug.Log("End");
     }
 
     public void DrawScore(Vector3 worldPos, int score, ScoreType type)
