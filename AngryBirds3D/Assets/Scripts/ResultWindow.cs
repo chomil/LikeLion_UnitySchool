@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ResultWindow : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class ResultWindow : MonoBehaviour
     private void OnEnable()
     {
         StageManager curStage = GameManager.instance.curStage;
+        string sceneName = SceneManager.GetActiveScene().name;
         int pigCount = curStage.pigCount;
         int pigMaxCount = curStage.pigMaxCount;
         int stageScore = curStage.stageScore;
@@ -33,7 +35,24 @@ public class ResultWindow : MonoBehaviour
                 starNum = 3;
             }
         }
-        
+
+        StageData data = GameManager.instance.gameData.GetStageData(sceneName);
+        data.stageName = sceneName;
+        if (pigCount <= 0)
+        {
+            data.isCleared = true;
+        }
+        if (data.star < starNum)
+        {
+            data.star = starNum;
+        }
+        if (data.highScore < stageScore)
+        {
+            data.highScore = stageScore;
+        }
+        GameManager.instance.gameData.SetStageData(data);
+        GameManager.instance.SaveGameData();
+
         if (starNum == 0)
         {
             SoundManager.instance.PlaySound(failedSfx);
@@ -41,7 +60,7 @@ public class ResultWindow : MonoBehaviour
         }
         else
         {
-            SoundManager.instance.PlaySound(clearSfx);
+            SoundManager.instance.PlaySound(clearSfx,0.5f);
             messageText.text = "Clear!";
         }
         StartCoroutine(StarActiveDelay());
@@ -59,7 +78,7 @@ public class ResultWindow : MonoBehaviour
     {
         for (int i = 0; i <= starNum - 1; i++)
         {
-            SoundManager.instance.PlaySound(starSfx);
+            SoundManager.instance.PlaySound(starSfx,0.5f);
             yield return new WaitForSeconds(0.5f);
             stars[i].SetActive(true);
         }

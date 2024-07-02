@@ -14,6 +14,7 @@ public enum ObjectType
 
 public class MapObject : MonoBehaviour
 {
+    private bool isDying = false;
     public ObjectType objectType;
     private bool isNoHit = true;
     private float hp = 1f;
@@ -56,26 +57,35 @@ public class MapObject : MonoBehaviour
 
     public void KillObject()
     {
+        if (isDying)
+        {
+            return;
+        }
+        isDying = true;
+        
         if (gameObject.CompareTag("Pig"))
         {
             GameManager.instance.curStage.pigCount--;
         }
-        GameManager.instance.curStage.AddScore(score);
 
-        ScoreType scoreType = ScoreType.None;
-        switch (objectType)
+        if (score > 0)
         {
-            case ObjectType.Enemy:
-                scoreType = ScoreType.PigScore;
-                break;
-            case ObjectType.StoneWall:
-                scoreType = ScoreType.StoneScore;
-                break;
-            case ObjectType.WoodWall:
-                scoreType = ScoreType.WoodScore;
-                break;
+            GameManager.instance.curStage.AddScore(score);
+            ScoreType scoreType = ScoreType.None;
+            switch (objectType)
+            {
+                case ObjectType.Enemy:
+                    scoreType = ScoreType.PigScore;
+                    break;
+                case ObjectType.StoneWall:
+                    scoreType = ScoreType.StoneScore;
+                    break;
+                case ObjectType.WoodWall:
+                    scoreType = ScoreType.WoodScore;
+                    break;
+            }
+            GameManager.instance.curStage.DrawScore(transform.position, score, scoreType);
         }
-        GameManager.instance.curStage.DrawScore(transform.position, score, scoreType);
         
         Destroy(gameObject);
     }

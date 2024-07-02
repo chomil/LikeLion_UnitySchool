@@ -9,7 +9,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class StageManager : MonoBehaviour
 {
     public int stageScore = 0;
-    public int stageMaxScore = 0;
+    public int stageHighScore = 0;
     public TextMeshProUGUI scoreText;
     
     public List<Bird> Birds;
@@ -43,14 +43,16 @@ public class StageManager : MonoBehaviour
             Birds[i] = Instantiate(Birds[i],birdSpawnPos + new Vector3(-i*1.3f,0,0) ,Quaternion.identity).GetComponent<Bird>();
         }
 
-        AddScore(0);
     }
 
     public void AddScore(int score)
     {
         stageScore += score;
-        stageMaxScore = Math.Max(stageScore, stageMaxScore);
-        scoreText.text = $"Score : {stageScore:N0}";
+        if (stageScore > stageHighScore)
+        {
+            stageHighScore = stageScore;
+        }
+        scoreText.text = $"HighScore : {stageHighScore:N0}\nScore : {stageScore:N0}";
     }
 
     private void Start()
@@ -60,13 +62,13 @@ public class StageManager : MonoBehaviour
         pigMaxCount = pigCount;
         
         SoundManager.instance.PlaySound(startSfx);
-        SoundManager.instance.PlayBGM(stageBgm, 0.1f);
-    }
+        SoundManager.instance.PlayBGM(stageBgm, 0.3f);
 
-    public void ReloadStage()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        GameManager.instance.OpenScene(currentScene.name);
+        
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        StageData data = GameManager.instance.gameData.GetStageData(currentSceneName);
+        stageHighScore = data.highScore;
+        AddScore(0);
     }
 
     private void Update()
@@ -79,7 +81,7 @@ public class StageManager : MonoBehaviour
         //스테이지 다시시작 R
         if (Input.GetKey(KeyCode.R))
         {
-            ReloadStage();
+            GameManager.instance.ReloadScene();
         }
 
         

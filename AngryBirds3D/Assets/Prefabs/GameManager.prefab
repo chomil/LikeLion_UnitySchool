@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curStage: {fileID: 0}
-  mainBgm: {fileID: 8300000, guid: 1f5445ade52e511489dcc801e9685ed2, type: 3}
+  mainBgm: {fileID: 8300000, guid: 70d26d3a269feac45b2406b1627a8d02, type: 3}
