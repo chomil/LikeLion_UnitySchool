@@ -209,6 +209,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69384bce55692a34da2297434c586650, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2089615004543954632}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69384bce55692a34da2297434c586650, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2274717691060329757}
   m_SourcePrefab: {fileID: 100100000, guid: 69384bce55692a34da2297434c586650, type: 3}
 --- !u!1 &2285285397690443126 stripped
 GameObject:
@@ -283,7 +286,6 @@ MonoBehaviour:
   isMoving: 0
   isFlying: 0
   isDying: 0
-  score: 0
   birdRigid: {fileID: 0}
   pathSprite: {fileID: 872383672564866546, guid: 67824f2130712f94aa811070810c4426, type: 3}
   chargeSound: {fileID: 8300000, guid: a5a084f6adc02bd488264415388b3d19, type: 3}
@@ -298,3 +300,24 @@ MonoBehaviour:
   skillSound: {fileID: 8300000, guid: baf6ca1000266e04c93f383488d0efc0, type: 3}
   dieEffect: {fileID: 1037864198121816, guid: c797b5d7dd54ccc45b891d7503717419, type: 3}
   birdSkill: {fileID: 0}
+--- !u!95 &2274717691060329757
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2285285397690443126}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: feb77bdef79933d4aac8ed6823c814b2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
