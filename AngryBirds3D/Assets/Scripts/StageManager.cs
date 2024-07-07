@@ -69,6 +69,13 @@ public class StageManager : MonoBehaviour
         StageData data = GameManager.instance.gameData.GetStageData(currentSceneName);
         stageHighScore = data.highScore;
         AddScore(0);
+        
+        CursorManager.instance.CursorToHand();
+    }
+
+    private void OnDestroy()
+    {
+        CursorManager.instance.CursorToDefault();
     }
 
     private void Update()
@@ -91,6 +98,8 @@ public class StageManager : MonoBehaviour
             {
                 curBird = Birds[curBirdIndex];
                 curBirdIndex++;
+                
+                CursorManager.instance.CursorToHand();
             }
             else //모든 버드 다 사용함
             {
@@ -141,6 +150,8 @@ public class StageManager : MonoBehaviour
             else if (Input.GetMouseButtonUp(0))
             {
                 slingShot.SetState(SlingShotState.Shoot);
+                
+                CursorManager.instance.CursorToDefault();
             }
         }
     }
