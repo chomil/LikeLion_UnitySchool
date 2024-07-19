@@ -1,4 +1,3 @@
-
 Shader "SpritesDiffuse2Sided"
 {
     Properties
@@ -10,7 +9,6 @@ Shader "SpritesDiffuse2Sided"
         [HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
         [PerRendererData] _AlphaTex("External Alpha", 2D) = "white" {}
         [PerRendererData] _EnableExternalAlpha("Enable External Alpha", Float) = 0
-
         _Lighting("Lighting", Range(0, 1)) = 1
     }
 
@@ -30,8 +28,43 @@ Shader "SpritesDiffuse2Sided"
         ZWrite Off
         Blend One OneMinusSrcAlpha
 
+        // Shadow Caster Pass
+        Pass
+        {
+            Tags
+            {
+                "LightMode"="ShadowCaster"
+            }
+
+            ZWrite On
+            Blend One OneMinusSrcAlpha
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #include "UnityCG.cginc"
+
+            struct v2f
+            {
+                V2F_SHADOW_CASTER;
+            };
+
+            v2f vert(appdata_base v)
+            {
+                v2f o;
+                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+                return o;
+            }
+
+            float4 frag(v2f i) : SV_Target
+            {
+                SHADOW_CASTER_FRAGMENT(i)
+            }
+            ENDCG
+        }
+
+        // Main rendering Pass
         CGPROGRAM
-        //#pragma surface surf Lambert vertex:vert nofog nolightmap nodynlightmap keepalpha noinstancing
         #pragma surface surf TwoSidedLambert vertex:vert nofog nolightmap nodynlightmap keepalpha noinstancing
         #pragma multi_compile_local _ PIXELSNAP_ON
         #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
@@ -45,7 +78,7 @@ Shader "SpritesDiffuse2Sided"
 
         uniform float _Lighting;
         uniform float _Tint;
-        // added "abs" 2 sided lighting
+
         float4 LightingTwoSidedLambert(SurfaceOutput s, float3 lightDir, float atten)
         {
             float NdotL = abs(dot(s.Normal, lightDir));
@@ -60,10 +93,12 @@ Shader "SpritesDiffuse2Sided"
 
         void vert(inout appdata_full v, out Input o)
         {
-            v.vertex = UnityFlipSprite(v.vertex, _Flip);
+            // Handle flipping
+            if (_Flip.x < 0) v.vertex.x = -v.vertex.x;
+            if (_Flip.y < 0) v.vertex.y = -v.vertex.y;
 
             #if defined(PIXELSNAP_ON)
-				v.vertex = UnityPixelSnap(v.vertex);
+                v.vertex = UnityPixelSnap(v.vertex);
             #endif
 
             v.normal.z *= -1;
