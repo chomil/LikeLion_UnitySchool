@@ -34,7 +34,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
     void Update()
     {
-        
+        if (isMatched == true)
+        {
+            gameObject.SetActive(false);
+        }
     }
     private void Falling()
     {
@@ -73,15 +76,18 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
         if (isClicked == true)
         {
             Vector2 dir = eventData.position - new Vector2(transform.position.x,transform.position.y);
+            Tile targetTile = null;
             if (Mathf.Abs(dir.y) > Mathf.Abs(dir.x))
             {
-                Debug.Log(dir.y > 0 ? $"Button Exit U" : $"Button Exit D");
+                targetTile = dir.y > 0 ? nearTiles[0] : nearTiles[1];
             }
             else
             {
-                Debug.Log(dir.x > 0 ? $"Button Exit R" : $"Button Exit L");
+                targetTile = dir.x > 0 ? nearTiles[3] : nearTiles[2];
             }
             isClicked = false;
+
+            GameManager.inst.curBoard.SwapTile(this, targetTile);
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 public class GameBoard : MonoBehaviour
 {
@@ -44,8 +45,50 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    public void CheckMatch()
+    public bool CheckMatch()
     {
+        bool isMatch = false;
+
+
+        for (int y = 0; y < TileCntY; y++)
+        {
+            for (int x = 0; x < TileCntX; x++)
+            {
+                Vector2Int tileIndex = new Vector2Int(x, y);
+                if (tiles.TryGetValue(tileIndex, out var curTile) == false)
+                {
+                    continue;
+                }
+
+                if (curTile&& curTile.nearTiles[1]&& curTile.nearTiles[1].nearTiles[1]) //vertical match search
+                {
+                    if (curTile.elemental == curTile.nearTiles[1].elemental &&
+                        curTile.elemental == curTile.nearTiles[1].nearTiles[1].elemental)
+                    {
+                        curTile.isMatched = true;
+                        curTile.nearTiles[1].isMatched = true;
+                        curTile.nearTiles[1].nearTiles[1].isMatched = true;
+
+                        isMatch = true;
+                    }
+                }
+                if (curTile&& curTile.nearTiles[3]&& curTile.nearTiles[3].nearTiles[3]) //horizontal match search
+                {
+                    if (curTile.elemental == curTile.nearTiles[3].elemental &&
+                        curTile.elemental == curTile.nearTiles[3].nearTiles[3].elemental)
+                    {
+                        curTile.isMatched = true;
+                        curTile.nearTiles[3].isMatched = true;
+                        curTile.nearTiles[3].nearTiles[3].isMatched = true;
+                        
+                        isMatch = true;
+                    }
+                }
+            }
+        }
+
+
+        return isMatch;
     }
 
 
@@ -56,10 +99,19 @@ public class GameBoard : MonoBehaviour
             return;
         }
 
-        (tile1.tileIndex, tile2.tileIndex) = (tile2.tileIndex, tile1.tileIndex);
-        (tiles[tile1.tileIndex], tiles[tile2.tileIndex]) = (tiles[tile2.tileIndex], tiles[tile1.tileIndex]);
-        LinkingTile(tile1);
-        LinkingTile(tile2);
+        tile1.transform.DOLocalMove(TileIndexToLocalPos(tile2.tileIndex), 0.3f);
+        tile2.transform.DOLocalMove(TileIndexToLocalPos(tile1.tileIndex), 0.3f).OnComplete(
+            () =>
+            {
+                (tile1.tileIndex, tile2.tileIndex) = (tile2.tileIndex, tile1.tileIndex);
+                (tiles[tile1.tileIndex], tiles[tile2.tileIndex]) = (tiles[tile2.tileIndex], tiles[tile1.tileIndex]);
+        
+                LinkingTile(tile1);
+                LinkingTile(tile2);
+                
+                
+                CheckMatch();
+            });
     }
 
     public void LinkingTile(Tile tile)
@@ -105,5 +157,10 @@ public class GameBoard : MonoBehaviour
         {
             tile.nearTiles[3] = null;
         }
+    }
+
+    public Vector3 TileIndexToLocalPos(Vector2Int tileIndex)
+    {
+        return new Vector3(60 + 120 * tileIndex.x, -60 - 120 * tileIndex.y);
     }
 }
