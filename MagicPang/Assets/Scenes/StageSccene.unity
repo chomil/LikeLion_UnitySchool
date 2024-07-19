@@ -901,6 +901,7 @@ GameObject:
   - component: {fileID: 503587905}
   - component: {fileID: 503587909}
   - component: {fileID: 503587908}
+  - component: {fileID: 503587910}
   m_Layer: 5
   m_Name: GameBoardBack
   m_TagString: Untagged
@@ -966,6 +967,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 503587904}
   m_CullTransparentMesh: 1
+--- !u!114 &503587910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503587904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1001 &509996862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2410,6 +2425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb12ce71c909da44b061d1a904299cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingTile: 0
 --- !u!1001 &1273848734
 PrefabInstance:
   m_ObjectHideFlags: 0

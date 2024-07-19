@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 5936952566497797262}
   - component: {fileID: -8537378939998094694}
   m_Layer: 5
-  m_Name: TilePlant
+  m_Name: TileGrass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,4 +254,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2c819201b5484cbf3b92f0daeef64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 1
+  isClicked: 0
+  isMoving: 0
+  isMatched: 0
+  elemental: 1
+  tileIndex: {x: 0, y: 0}
+  nearTiles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

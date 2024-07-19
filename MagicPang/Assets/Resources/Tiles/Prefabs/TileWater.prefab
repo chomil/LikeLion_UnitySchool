@@ -254,4 +254,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2c819201b5484cbf3b92f0daeef64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 2
+  isClicked: 0
+  isMoving: 0
+  isMatched: 0
+  elemental: 4
+  tileIndex: {x: 0, y: 0}
+  nearTiles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
