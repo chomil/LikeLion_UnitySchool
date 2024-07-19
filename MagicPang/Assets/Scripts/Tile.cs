@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Tile_Color
+{
+    Red, Green, Blue, Yellow, Purple, None
+}
+
+
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Tile_Color color;
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

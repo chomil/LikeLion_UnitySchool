@@ -901,7 +901,6 @@ GameObject:
   - component: {fileID: 503587905}
   - component: {fileID: 503587909}
   - component: {fileID: 503587908}
-  - component: {fileID: 503587907}
   m_Layer: 5
   m_Name: GameBoardBack
   m_TagString: Untagged
@@ -929,18 +928,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &503587907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503587904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eb12ce71c909da44b061d1a904299cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &503587908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,6 +974,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 557929188731501706, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 557929188731501706, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1084,9 +1075,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 9747c6f5617705a4abbc3b6af53d4987, type: 2}
     - target: {fileID: 6822696651234982872, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822696651234982872, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9747c6f5617705a4abbc3b6af53d4987, type: 2}
+    - target: {fileID: 6995169294913682513, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6995169294913682513, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1916,6 +1915,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c325f109e0b13404f8c5402f6d034b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilePrefabs:
+  - {fileID: -551800110225309946, guid: c3fd6f055e3cb6340b490db3c74cd7dc, type: 3}
+  - {fileID: -8537378939998094694, guid: 0fa22c860d652954a887fc59a0d9b267, type: 3}
+  - {fileID: 4098070172939465649, guid: a7b81b157e031e442bd58fca5d8e0e78, type: 3}
+  - {fileID: 5181871519120607896, guid: 485dcf7f7da0e8143a0556a9c30eeee7, type: 3}
+  - {fileID: 4098070172939465649, guid: eb12175db6fb2534089b75db0bef8f00, type: 3}
+  curBoard: {fileID: 0}
 --- !u!1 &981908764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2357,9 +2363,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1273366396}
   - component: {fileID: 1273366398}
-  - component: {fileID: 1273366400}
+  - component: {fileID: 1273366399}
   m_Layer: 5
-  m_Name: GameBoardGrid
+  m_Name: GameBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2379,11 +2385,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 503587905}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -40, y: -40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 20, y: -20}
+  m_SizeDelta: {x: 960, y: 960}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &1273366398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2392,7 +2398,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1273366395}
   m_CullTransparentMesh: 1
---- !u!114 &1273366400
+--- !u!114 &1273366399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2401,21 +2407,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1273366395}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5eb12ce71c909da44b061d1a904299cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 120, y: 120}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1001 &1273848734
 PrefabInstance:
   m_ObjectHideFlags: 0
