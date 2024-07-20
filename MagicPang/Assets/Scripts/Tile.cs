@@ -34,43 +34,35 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
     void Update()
     {
-        if (isMatched == true)
-        {
-            gameObject.SetActive(false);
-        }
     }
-    private void Falling()
+    public void Falling()
     {
     }
     
     
-    private void Poping()
+    public void Poping()
     {
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (GameManager.inst.curBoard.movingTile > 0)
+        if (GameManager.inst.curBoard.isMoving)
         {
             return;
         }
         
         isClicked = true;
-        Debug.Log("Button Pressed");
+        Debug.Log("Pressed");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (GameManager.inst.curBoard.movingTile > 0)
-        {
-            return;
-        }
-        
         isClicked = false;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (GameManager.inst.curBoard.movingTile > 0)
+        if (GameManager.inst.curBoard.isMoving)
         {
+            isClicked = false;
             return;
         }
         if (isClicked == true)
@@ -87,6 +79,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
             }
             isClicked = false;
 
+            Debug.Log("Swap");
             GameManager.inst.curBoard.SwapTile(this, targetTile);
         }
     }

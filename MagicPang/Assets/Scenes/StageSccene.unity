@@ -1933,9 +1933,9 @@ MonoBehaviour:
   tilePrefabs:
   - {fileID: -551800110225309946, guid: c3fd6f055e3cb6340b490db3c74cd7dc, type: 3}
   - {fileID: -8537378939998094694, guid: 0fa22c860d652954a887fc59a0d9b267, type: 3}
-  - {fileID: 4098070172939465649, guid: a7b81b157e031e442bd58fca5d8e0e78, type: 3}
   - {fileID: 5181871519120607896, guid: 485dcf7f7da0e8143a0556a9c30eeee7, type: 3}
   - {fileID: 4098070172939465649, guid: eb12175db6fb2534089b75db0bef8f00, type: 3}
+  - {fileID: 4098070172939465649, guid: a7b81b157e031e442bd58fca5d8e0e78, type: 3}
   curBoard: {fileID: 0}
 --- !u!1 &981908764
 GameObject:
@@ -2425,7 +2425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb12ce71c909da44b061d1a904299cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingTile: 0
+  isMoving: 0
 --- !u!1001 &1273848734
 PrefabInstance:
   m_ObjectHideFlags: 0
