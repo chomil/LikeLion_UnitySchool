@@ -13,6 +13,9 @@ public class GameBoard : MonoBehaviour
 
     public bool isMoving = false;
 
+    public Player curPlayer = null;
+    public Monster curMonster = null;
+
 
     void Start()
     {
@@ -26,27 +29,28 @@ public class GameBoard : MonoBehaviour
             {
                 Vector2Int spawnIndex = new Vector2Int(x, y);
                 Elemental randomTileElemental;
-                if (x >= 2 && y >= 2)
-                {
-                    bool horizontalMatch;
-                    bool verticalMatch;
-                    do
-                    {  
-                        randomTileElemental = (Elemental)Random.Range(0, (int)Elemental.None);
-                        horizontalMatch = tiles[new Vector2Int(x - 1, y)].elemental ==
-                                                                tiles[new Vector2Int(x - 2, y)].elemental &&
-                                                                tiles[new Vector2Int(x - 1, y)].elemental == randomTileElemental;
-                        verticalMatch = tiles[new Vector2Int(x, y - 1)].elemental ==
-                                             tiles[new Vector2Int(x, y - 2)].elemental &&
-                                             tiles[new Vector2Int(x, y - 1)].elemental == randomTileElemental;
-
-                    } while (horizontalMatch||verticalMatch);
-                }
-                else
-                {
+                bool horizontalMatch;
+                bool verticalMatch;
+                do
+                {  
                     randomTileElemental = (Elemental)Random.Range(0, (int)Elemental.None);
-                }
-
+                    horizontalMatch = false;
+                    verticalMatch = false;
+                    if (x >= 2)
+                    {
+                        horizontalMatch = tiles[new Vector2Int(x - 1, y)].elemental ==
+                                          tiles[new Vector2Int(x - 2, y)].elemental &&
+                                          tiles[new Vector2Int(x - 1, y)].elemental == randomTileElemental;
+                    }
+                    if (y >= 2)
+                    {
+                        verticalMatch = tiles[new Vector2Int(x, y - 1)].elemental ==
+                                        tiles[new Vector2Int(x, y - 2)].elemental &&
+                                        tiles[new Vector2Int(x, y - 1)].elemental == randomTileElemental;
+                    }
+                } while (horizontalMatch||verticalMatch);
+                
+                
                 Tile newTile = Instantiate(GameManager.inst.tilePrefabs[(int)randomTileElemental], transform);
                 newTile.transform.localPosition = TileIndexToLocalPos(spawnIndex);
                 newTile.tileIndex = spawnIndex;
@@ -151,7 +155,7 @@ public class GameBoard : MonoBehaviour
     {
         Debug.Log("PoppingTiles");
 
-        List<Tile> deleteTiles = new List<Tile>();
+        List<Tile> poppingTiles = new List<Tile>();
 
         for (int y = 0; y < TileCntY; y++)
         {
@@ -160,23 +164,24 @@ public class GameBoard : MonoBehaviour
                 Vector2Int tileIndex = new Vector2Int(x, y);
                 if (tiles[tileIndex].isMatched == true)
                 {
-                    deleteTiles.Add(tiles[tileIndex]);
+                    poppingTiles.Add(tiles[tileIndex]);
                 }
             }
         }
 
         Vector3 newScale = new Vector3(1.25f, 1.25f, 1);
-        for (int i = 0; i < deleteTiles.Count; i++)
+        for (int i = 0; i < poppingTiles.Count; i++)
         {
-            deleteTiles[i].transform.DOScale(newScale, 0.1f).SetLoops(2, LoopType.Yoyo);
+            curMonster.GetDamage(2,poppingTiles[i].elemental);
+            poppingTiles[i].transform.DOScale(newScale, 0.15f).SetLoops(2, LoopType.Yoyo);
         }
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
 
-        for (int i = 0; i < deleteTiles.Count; i++)
+        for (int i = 0; i < poppingTiles.Count; i++)
         {
-            DeleteTile(deleteTiles[i]);
+            DeleteTile(poppingTiles[i]);
         }
     }
 

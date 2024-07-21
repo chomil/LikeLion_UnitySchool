@@ -21,7 +21,6 @@ public enum Direction
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
     public bool isClicked = false;
-    public bool isMoving = false;
     public bool isMatched = false;
     public Elemental elemental;
     public Vector2Int tileIndex;
@@ -35,11 +34,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     void Update()
     {
     }
-    public void Falling()
-    {
-    }
-    
-    
     public void Poping()
     {
     }
