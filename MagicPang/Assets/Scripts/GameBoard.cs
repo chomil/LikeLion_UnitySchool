@@ -131,6 +131,7 @@ public class GameBoard : MonoBehaviour
         else
         {
             isMoving = false;
+            curPlayer.AttackEnd();
         }
     }
 
@@ -172,7 +173,8 @@ public class GameBoard : MonoBehaviour
         Vector3 newScale = new Vector3(1.25f, 1.25f, 1);
         for (int i = 0; i < poppingTiles.Count; i++)
         {
-            curMonster.GetDamage(2,poppingTiles[i].elemental);
+            curPlayer.AddAttack(poppingTiles[i].elemental);
+            //curMonster.GetDamage(poppingTiles[i].elemental);
             poppingTiles[i].transform.DOScale(newScale, 0.15f).SetLoops(2, LoopType.Yoyo);
         }
 

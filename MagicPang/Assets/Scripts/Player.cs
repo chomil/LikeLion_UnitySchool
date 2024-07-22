@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
 
     public GameObject hpBar;
     public GameObject hpBarDelay;
+
+    public GameObject magicPos;
+    public GameObject magicPrefab;
+    private List<Elemental> magicList = new List<Elemental>();
     
     void Awake()
     {
@@ -51,5 +55,33 @@ public class Player : MonoBehaviour
     public void Run(bool isRun)
     {
         animator.SetBool("isRun", isRun);
+    }
+
+    public void AddAttack(Elemental elemental)
+    {
+        magicList.Add(elemental);
+        if (magicList.Count == 1)
+        {
+            StartCoroutine(AttackCoroutine());
+        }
+    }
+
+    public IEnumerator AttackCoroutine()
+    {
+        animator.SetTrigger("TriggerAttack");
+        yield return new WaitForSeconds(0.5f);
+        while (magicList.Count > 0)
+        {
+            Elemental elemental = magicList[0];
+            magicList.RemoveAt(0);
+            MagicEffect magic = Instantiate(magicPrefab, magicPos.transform.position, quaternion.identity).GetComponent<MagicEffect>();
+            magic.Initialize(elemental);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+    
+    public void AttackEnd()
+    {
+        animator.SetTrigger("TriggerIdle");
     }
 }
