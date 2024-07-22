@@ -15,6 +15,7 @@ public class GameBoard : MonoBehaviour
 
     public Player curPlayer = null;
     public Monster curMonster = null;
+    public BackgroundMover curBackGround = null;
 
 
     void Start()
@@ -138,16 +139,20 @@ public class GameBoard : MonoBehaviour
 
     public IEnumerator MonsterTurn()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         Debug.Log("monster Turn");
         if (curMonster.hp == 0)
         {
+            Destroy(curMonster.gameObject);
+            Monster spawnMon = GameManager.inst.monsterPrefabs[0];
+            Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
+            curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
+            yield return curMonster.StartCoroutine(curMonster.MoveCoroutine());
         }
         else
         {
             yield return curMonster.StartCoroutine(curMonster.AttackCoroutine());
         }
-        
         yield return null;
     }
 

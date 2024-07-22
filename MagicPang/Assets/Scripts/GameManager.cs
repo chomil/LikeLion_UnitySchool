@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager inst;
 
+    public List<Monster> monsterPrefabs;
     public List<Tile> tilePrefabs;
     public List<Sprite> elementalSprites;
     public GameBoard curBoard;

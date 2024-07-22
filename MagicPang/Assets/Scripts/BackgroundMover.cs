@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BackgroundMover : MonoBehaviour
 {
+    public bool isMove = false;
     void Start()
     {
-        
+        GameManager.inst.curBoard.curBackGround = this;
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space)) //Test moving
+        if (isMove)
         {
             transform.position += Vector3.left * Time.deltaTime;
             if (transform.position.x < -4)

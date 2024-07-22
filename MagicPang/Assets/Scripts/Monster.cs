@@ -26,6 +26,8 @@ public class Monster : MonoBehaviour
 
     public GameObject hitPos;
 
+    public bool isMove = false;
+
 
     void Awake()
     {
@@ -49,9 +51,14 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isMove)
         {
-            GetDamage();
+            transform.position += Vector3.left * Time.deltaTime;
+            if (transform.position.x <= 1.2f)
+            {
+                transform.position = new Vector3(1.2f, transform.position.y, transform.position.z);
+                isMove = false;
+            }
         }
     }
 
@@ -104,10 +111,20 @@ public class Monster : MonoBehaviour
 
     public IEnumerator AttackCoroutine()
     {
-        yield return new WaitForSeconds(0.5f);
         animator.SetTrigger("TriggerAttack");
         yield return new WaitForSeconds(0.5f);
         GameManager.inst.curBoard.curPlayer.GetDamage(10);
         yield return new WaitForSeconds(0.2f);
+    }
+    
+    public IEnumerator MoveCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isMove = true;
+        GameManager.inst.curBoard.curPlayer.Run(true);
+        GameManager.inst.curBoard.curBackGround.isMove = true;
+        yield return new WaitWhile(()=>isMove);
+        GameManager.inst.curBoard.curPlayer.Run(false);
+        GameManager.inst.curBoard.curBackGround.isMove = false;
     }
 }
