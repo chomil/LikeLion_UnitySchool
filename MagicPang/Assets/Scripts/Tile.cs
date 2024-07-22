@@ -26,14 +26,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     public Vector2Int tileIndex;
     public Tile[] nearTiles = new Tile[4]; //U,D,L,R;
     
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-    }
     public void Poping()
     {
     }

@@ -50,7 +50,7 @@ public class MagicEffect : MonoBehaviour
                 startColor.a = 0.05f;
                 trail.startColor = startColor;
             }
-            else if (multiple == 5f)
+            else if (multiple == 3f)
             {
                 trail.startWidth = 0.3f;
             }

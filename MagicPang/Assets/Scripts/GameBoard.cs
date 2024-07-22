@@ -67,6 +67,8 @@ public class GameBoard : MonoBehaviour
         {
             return;
         }
+        
+        
     }
 
     public bool CheckMatchAll()
@@ -116,8 +118,6 @@ public class GameBoard : MonoBehaviour
 
     public IEnumerator Match()
     {
-        yield return new WaitWhile(() => isMoving);
-
         bool isMatch = CheckMatchAll();
 
         if (isMatch)
@@ -125,14 +125,30 @@ public class GameBoard : MonoBehaviour
             isMoving = true;
             yield return StartCoroutine(PoppingTiles());
             yield return StartCoroutine(FallingTiles());
-            isMoving = false;
             StartCoroutine(Match());
         }
         else
         {
-            isMoving = false;
             curPlayer.AttackEnd();
+            yield return StartCoroutine(MonsterTurn());
+            isMoving = false;
+            Debug.Log("My Turn");
         }
+    }
+
+    public IEnumerator MonsterTurn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("monster Turn");
+        if (curMonster.hp == 0)
+        {
+        }
+        else
+        {
+            yield return curMonster.StartCoroutine(curMonster.AttackCoroutine());
+        }
+        
+        yield return null;
     }
 
     public void DeleteTile(Vector2Int tileIndex)
@@ -185,6 +201,9 @@ public class GameBoard : MonoBehaviour
         {
             DeleteTile(poppingTiles[i]);
         }
+        
+        
+        yield return null;
     }
 
     public IEnumerator FallingTiles()
@@ -253,6 +272,8 @@ public class GameBoard : MonoBehaviour
         {
             LinkingTile(fallingTiles[i]);
         }
+        
+        yield return null;
     }
 
 
@@ -277,7 +298,6 @@ public class GameBoard : MonoBehaviour
                 LinkingTile(tile2);
                 if (CheckMatchAll())
                 {
-                    isMoving = false;
                     StartCoroutine(Match());
                 }
                 else

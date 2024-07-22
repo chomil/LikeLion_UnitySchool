@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
 
     public GameObject hpBar;
     public GameObject hpBarDelay;
+
+    public TextMeshProUGUI hpText;
 
     public GameObject magicPos;
     public GameObject magicPrefab;
@@ -31,6 +34,8 @@ public class Player : MonoBehaviour
         hpBarDelay.transform.localScale = Vector3.one;
 
         GameManager.inst.curBoard.curPlayer = this;
+        
+        UpdateHpText();
     }
 
     void Update()
@@ -44,12 +49,13 @@ public class Player : MonoBehaviour
 
     public void GetDamage(int damage)
     {
+        animator.SetTrigger("TriggerHit");
+        
         hp = Math.Clamp(hp - damage, 0, maxHp);
         hpBar.transform.localScale = new Vector3((float)hp / (float)maxHp, 1, 1);
         hpBarDelay.transform.DOScale(hpBar.transform.localScale,1f);
         
-        
-        animator.SetTrigger("TriggerHit");
+        UpdateHpText();
     }
 
     public void Run(bool isRun)
@@ -83,5 +89,10 @@ public class Player : MonoBehaviour
     public void AttackEnd()
     {
         animator.SetTrigger("TriggerIdle");
+    }
+
+    public void UpdateHpText()
+    {
+        hpText.text = $"HP  {hp}/{maxHp}";
     }
 }
