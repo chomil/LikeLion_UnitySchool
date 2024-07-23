@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class GameBoard : MonoBehaviour
 {
+    public int level = 1;
+    
     private const int TileCntX = 8;
     private const int TileCntY = 8;
     private Dictionary<Vector2Int, Tile> tiles = new Dictionary<Vector2Int, Tile>();
@@ -143,10 +145,13 @@ public class GameBoard : MonoBehaviour
         Debug.Log("monster Turn");
         if (curMonster.hp == 0)
         {
+            yield return new WaitForSeconds(0.5f);
+            Instantiate(curMonster.dieEffect, curMonster.hitPos.transform.position, curMonster.transform.rotation);
             Destroy(curMonster.gameObject);
-            Monster spawnMon = GameManager.inst.monsterPrefabs[0];
+            Monster spawnMon = GameManager.inst.monsterPrefabs[Random.Range(0, 10)];
             Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
             curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
+            curMonster.level = ++level;
             yield return curMonster.StartCoroutine(curMonster.MoveCoroutine());
         }
         else
@@ -195,7 +200,6 @@ public class GameBoard : MonoBehaviour
         for (int i = 0; i < poppingTiles.Count; i++)
         {
             curPlayer.AddAttack(poppingTiles[i].elemental);
-            //curMonster.GetDamage(poppingTiles[i].elemental);
             poppingTiles[i].transform.DOScale(newScale, 0.15f).SetLoops(2, LoopType.Yoyo);
         }
 

@@ -5,10 +5,14 @@ using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
+public enum MonsterType
+{
+    Rabbit, Slime
+}
 public class Monster : MonoBehaviour
 {
+    public MonsterType monsterType;
     public Elemental elemental;
 
     public int level = 1;
@@ -16,15 +20,10 @@ public class Monster : MonoBehaviour
     public int hp;
     private Animator animator;
 
-    public GameObject hpBar;
-    public GameObject hpBarDelay;
-    
-    public TextMeshProUGUI hpText;
-    public Image elementalImage;
-    
-    public TextMeshProUGUI lvText;
+    public MonsterStatus statusWindow;
 
     public GameObject hitPos;
+    public GameObject dieEffect;
 
     public bool isMove = false;
 
@@ -36,24 +35,21 @@ public class Monster : MonoBehaviour
 
     void Start()
     {
-        hp = maxHp;
-        hpBar.transform.localScale = Vector3.one;
-        hpBarDelay.transform.localScale = Vector3.one;
-
-
         GameManager.inst.curBoard.curMonster = this;
         
-        UpdateHpText();
-        elementalImage.sprite = GameManager.inst.elementalSprites[(int)elemental];
+        statusWindow.elementalImage.sprite = GameManager.inst.elementalSprites[(int)elemental];
+        statusWindow.lvText.text = $"Lv{level}";
 
-        lvText.text = $"Lv{level}";
+        maxHp = level * 20;
+        hp = maxHp;
+        statusWindow.UpdateHp(hp,maxHp);
     }
 
     void Update()
     {
         if (isMove)
         {
-            transform.position += Vector3.left * Time.deltaTime;
+            transform.position += Vector3.left * (1.5f * Time.deltaTime);
             if (transform.position.x <= 1.2f)
             {
                 transform.position = new Vector3(1.2f, transform.position.y, transform.position.z);
@@ -72,9 +68,9 @@ public class Monster : MonoBehaviour
         }
 
         hp = Math.Clamp(hp - damage, 0, maxHp);
-        hpBar.transform.localScale = new Vector3((float)hp / (float)maxHp, 1, 1);
-        hpBarDelay.transform.DOScale(hpBar.transform.localScale, 1f);
-
+        
+        statusWindow.UpdateHp(hp,maxHp);
+        
         if (hp <= 0)
         {
             animator.SetTrigger("TriggerDie");
@@ -83,8 +79,6 @@ public class Monster : MonoBehaviour
         {
             animator.SetTrigger("TriggerHit");
         }
-        
-        UpdateHpText();
     }
 
     public float MultipleDamage(Elemental hitElemental)
@@ -103,17 +97,12 @@ public class Monster : MonoBehaviour
         }
     }
     
-    public void UpdateHpText()
-    {
-        hpText.text = $"HP  {hp}/{maxHp}";
-    }
-
 
     public IEnumerator AttackCoroutine()
     {
         animator.SetTrigger("TriggerAttack");
         yield return new WaitForSeconds(0.5f);
-        GameManager.inst.curBoard.curPlayer.GetDamage(10);
+        GameManager.inst.curBoard.curPlayer.GetDamage(level);
         yield return new WaitForSeconds(0.2f);
     }
     

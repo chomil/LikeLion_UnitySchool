@@ -55,7 +55,7 @@ public class MagicEffect : MonoBehaviour
                 trail.startWidth = 0.3f;
             }
             
-            transform.DOMove(targetMon.hitPos.transform.position, 0.3f).OnComplete(()=>
+            transform.DOMove(targetMon.hitPos.transform.position, 0.2f).OnComplete(()=>
             {
                 targetMon.GetDamage(elemental);
                 Destroy(gameObject);

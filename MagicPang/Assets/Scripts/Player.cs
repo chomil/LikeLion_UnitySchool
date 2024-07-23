@@ -49,11 +49,23 @@ public class Player : MonoBehaviour
 
     public void GetDamage(int damage)
     {
-        animator.SetTrigger("TriggerHit");
+        if (damage == 0 || hp == 0)
+        {
+            return;
+        }
         
         hp = Math.Clamp(hp - damage, 0, maxHp);
         hpBar.transform.localScale = new Vector3((float)hp / (float)maxHp, 1, 1);
         hpBarDelay.transform.DOScale(hpBar.transform.localScale,1f);
+
+        if (hp == 0)
+        {
+            animator.SetTrigger("TriggerDie");
+        }
+        else
+        {
+            animator.SetTrigger("TriggerHit");
+        }
         
         UpdateHpText();
     }
@@ -82,7 +94,7 @@ public class Player : MonoBehaviour
             magicList.RemoveAt(0);
             MagicEffect magic = Instantiate(magicPrefab, magicPos.transform.position, quaternion.identity).GetComponent<MagicEffect>();
             magic.Initialize(elemental);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
         }
     }
     

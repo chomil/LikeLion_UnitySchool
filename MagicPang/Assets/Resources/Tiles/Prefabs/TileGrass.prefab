@@ -255,7 +255,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isClicked: 0
-  isMoving: 0
   isMatched: 0
   elemental: 1
   tileIndex: {x: 0, y: 0}

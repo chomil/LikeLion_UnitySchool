@@ -14,7 +14,7 @@ public class BackgroundMover : MonoBehaviour
     {
         if (isMove)
         {
-            transform.position += Vector3.left * Time.deltaTime;
+            transform.position += Vector3.left * (1.5f * Time.deltaTime);
             if (transform.position.x < -4)
             {
                 transform.Translate(8, 0, 0);
