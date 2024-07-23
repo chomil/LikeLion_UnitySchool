@@ -4,10 +4,14 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using TMPro;
 
 public class GameBoard : MonoBehaviour
 {
     public int level = 1;
+    private int coin = 0;
+
+    public TextMeshProUGUI coinText;
     
     private const int TileCntX = 8;
     private const int TileCntY = 8;
@@ -147,7 +151,11 @@ public class GameBoard : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
             Instantiate(curMonster.dieEffect, curMonster.hitPos.transform.position, curMonster.transform.rotation);
+
+            AddCoin(curMonster.level*10);
             Destroy(curMonster.gameObject);
+            
+            
             Monster spawnMon = GameManager.inst.monsterPrefabs[Random.Range(0, 10)];
             Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
             curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
@@ -159,6 +167,28 @@ public class GameBoard : MonoBehaviour
             yield return curMonster.StartCoroutine(curMonster.AttackCoroutine());
         }
         yield return null;
+    }
+
+    public void AddCoin(int coinNum)
+    {
+        coin += coinNum;
+        StartCoroutine(AddCoinCoroutine());
+    }
+
+    public IEnumerator AddCoinCoroutine()
+    {
+        int startCoin = int.Parse(coinText.text);
+        int countUp = 1;
+        if (coin - startCoin > 10)
+        {
+            countUp = (coin - startCoin) / 10;
+        }
+        for (int i = startCoin; i <= coin; i+=countUp)
+        {
+            coinText.text = i.ToString();
+            yield return new WaitForSeconds(0.03f);
+        }
+        coinText.text = coin.ToString();
     }
 
     public void DeleteTile(Vector2Int tileIndex)

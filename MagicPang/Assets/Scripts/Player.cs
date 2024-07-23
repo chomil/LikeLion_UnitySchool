@@ -6,6 +6,12 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
+
+public enum Skill
+{
+    Punch,Heal,Meteor,Vertical,Horizontal
+}
+
 public class Player : MonoBehaviour
 {
     public int maxHp;
