@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public enum Elemental
 {
@@ -18,16 +19,62 @@ public enum Direction
 }
 
 
-public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IPointerEnterHandler
 {
-    public bool isClicked = false;
+    private bool isClicked = false;
     public bool isMatched = false;
+    public bool isSelected = false;
+    public int freezeCnt = 0;
+    public GameObject frozenCover;
+    public List<Sprite> frozenSprites;
+    public GameObject selectedCover;
     public Elemental elemental;
     public Vector2Int tileIndex;
     public Tile[] nearTiles = new Tile[4]; //U,D,L,R;
-    
-    public void Poping()
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
+        if (GameManager.inst.curBoard.skill != Skill.None)
+        {
+            GameManager.inst.curBoard.SelectTile(this);
+        }
+    }
+
+    public void Pop()
+    {
+        if (freezeCnt > 0)
+        {
+            SetFreeze(--freezeCnt);
+            isClicked = false;
+            isMatched = false;
+            isSelected = false;
+            selectedCover.SetActive(false);
+        }
+        else
+        {
+            GameManager.inst.curBoard.DeleteTile(this);
+        }
+    }
+    
+    public void SetFreeze(int num = 3)
+    {
+        freezeCnt = num;
+        if (num > 0)
+        {
+            if (frozenCover.activeSelf == false)
+            {
+                frozenCover.SetActive(true);
+                frozenCover.transform.localScale = Vector3.zero;
+                frozenCover.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
+            }
+            isMatched = false;
+            isClicked = false;
+            frozenCover.GetComponent<Image>().sprite = frozenSprites[3-num];
+        }
+        else
+        {
+            frozenCover.SetActive(false);
+        }
     }
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -38,8 +85,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
         if (GameManager.inst.curBoard.skill == Skill.None)
         {
-            isClicked = true;
-            Debug.Log("Pressed");
+            if (freezeCnt == 0)
+            {
+                isClicked = true;
+                Debug.Log("Pressed");
+            }
         }
         else
         {
@@ -54,7 +104,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (GameManager.inst.curBoard.isMoving)
+        if (GameManager.inst.curBoard.isMoving || freezeCnt>0)
         {
             isClicked = false;
             return;
@@ -73,9 +123,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
             }
             isClicked = false;
 
+            if (targetTile.freezeCnt > 0)
+            {
+                return;
+            }
             Debug.Log("Swap");
             GameManager.inst.curBoard.SwapTile(this, targetTile);
         }
     }
-
 }

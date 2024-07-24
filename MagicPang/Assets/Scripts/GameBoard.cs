@@ -258,8 +258,11 @@ public class GameBoard : MonoBehaviour
         Vector3 newScale = new Vector3(1.25f, 1.25f, 1);
         for (int i = 0; i < poppingTiles.Count; i++)
         {
-            curPlayer.AddAttack(poppingTiles[i].elemental);
             poppingTiles[i].transform.DOScale(newScale, 0.15f).SetLoops(2, LoopType.Yoyo);
+            if (poppingTiles[i].freezeCnt == 0)
+            {
+                curPlayer.AddAttack(poppingTiles[i].elemental);
+            }
         }
 
         yield return new WaitForSeconds(0.4f);
@@ -267,7 +270,7 @@ public class GameBoard : MonoBehaviour
 
         for (int i = 0; i < poppingTiles.Count; i++)
         {
-            DeleteTile(poppingTiles[i]);
+            poppingTiles[i].Pop();
         }
         
         
@@ -342,6 +345,24 @@ public class GameBoard : MonoBehaviour
         }
         
         yield return null;
+    }
+
+    public void FreezeTiles(int freezeTileNum = 1, int freezePower = 3)
+    {
+        while (freezeTileNum > 0)
+        {
+            Tile targetTile = null;
+            do
+            {
+                Vector2Int pos = new Vector2Int(Random.Range(0, TileCntX), Random.Range(0, TileCntY));
+                if (tiles.TryGetValue(pos, out Tile tile))
+                {
+                    targetTile = tile;
+                }
+            } while (targetTile== null || targetTile.freezeCnt>0);
+            targetTile.SetFreeze(freezePower);
+            freezeTileNum--;
+        }
     }
 
 
@@ -431,6 +452,67 @@ public class GameBoard : MonoBehaviour
         }
         StartCoroutine(Match());
         skill = Skill.None;
+    }
+
+    public void SelectTile(Tile selectTile)
+    {
+        foreach (var tilePair in tiles)
+        {
+            if (tilePair.Value)
+            {
+                tilePair.Value.isSelected = false;
+                tilePair.Value.selectedCover.SetActive(false);
+            }
+        }
+        switch (skill)
+        {
+            case Skill.Punch:
+                selectTile.isSelected = true;
+                selectTile.selectedCover.SetActive(true);
+                break;
+            case Skill.Meteor:
+                for (int x = selectTile.tileIndex.x - 1; x <= selectTile.tileIndex.x + 1; x++)
+                {
+                    for (int y = selectTile.tileIndex.y - 1; y <= selectTile.tileIndex.y + 1; y++)
+                    {
+                        if (tiles.TryGetValue(new Vector2Int(x, y), out var targetTile))
+                        {
+                            if (targetTile)
+                            {
+                                targetTile.isSelected = true;
+                                targetTile.selectedCover.SetActive(true);
+                            }
+                        }
+                    }
+                }
+                break;
+            case Skill.Vertical:
+                for (int y = 0; y < TileCntY; y++)
+                {
+                    if (tiles.TryGetValue(new Vector2Int(selectTile.tileIndex.x, y), out var targetTile))
+                    {
+                        if (targetTile)
+                        {
+                            targetTile.isSelected = true;
+                            targetTile.selectedCover.SetActive(true);
+                        }
+                    }
+                }
+                break;
+            case Skill.Horizontal:
+                for (int x = 0; x < TileCntX; x++)
+                {
+                    if (tiles.TryGetValue(new Vector2Int(x, selectTile.tileIndex.y), out var targetTile))
+                    {
+                        if (targetTile)
+                        {
+                            targetTile.isSelected = true;
+                            targetTile.selectedCover.SetActive(true);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     public void LinkingTile(Tile tile)

@@ -108,6 +108,10 @@ public class Monster : MonoBehaviour
         animator.SetTrigger("TriggerAttack");
         yield return new WaitForSeconds(0.5f);
         GameManager.inst.curBoard.curPlayer.GetDamage(level);
+        if (monsterType == MonsterType.Slime)
+        {
+            GameManager.inst.curBoard.FreezeTiles(1+(level/10),2);
+        }
         yield return new WaitForSeconds(0.2f);
     }
     
