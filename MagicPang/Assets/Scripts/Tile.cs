@@ -35,9 +35,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
         {
             return;
         }
-        
-        isClicked = true;
-        Debug.Log("Pressed");
+
+        if (GameManager.inst.curBoard.skill == Skill.None)
+        {
+            isClicked = true;
+            Debug.Log("Pressed");
+        }
+        else
+        {
+            GameManager.inst.curBoard.UseSkill(this);
+            Debug.Log("Skill");
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)

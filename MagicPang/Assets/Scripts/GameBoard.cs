@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -8,8 +9,7 @@ using TMPro;
 
 public class GameBoard : MonoBehaviour
 {
-    public int level = 1;
-    private int coin = 0;
+    private GameData gameData;
 
     public TextMeshProUGUI coinText;
     
@@ -23,13 +23,16 @@ public class GameBoard : MonoBehaviour
     public Monster curMonster = null;
     public BackgroundMover curBackGround = null;
 
+    public Skill skill = Skill.None;
+
 
     void Start()
     {
+        gameData = GameManager.inst.gameData;
+        
         GameManager.inst.curBoard = this;
 
-        //Random.InitState(0);
-
+        
         for (int y = 0; y < TileCntY; y++)
         {
             for (int x = 0; x < TileCntX; x++)
@@ -66,6 +69,12 @@ public class GameBoard : MonoBehaviour
                 LinkingTile(newTile);
             }
         }
+        
+        
+        AddCoin(0);
+        SpawnNewMonster(gameData.monsterIndex);
+        curMonster.transform.localPosition = new Vector3(1.2f, curMonster.transform.position.y, curMonster.transform.position.z);
+        GameManager.inst.SaveGameData();
     }
 
     void Update()
@@ -90,6 +99,11 @@ public class GameBoard : MonoBehaviour
                 if (tiles.TryGetValue(tileIndex, out var curTile) == false)
                 {
                     continue;
+                }
+
+                if (curTile.isMatched)
+                {
+                    isMatch = true;
                 }
 
                 if (curTile && curTile.nearTiles[1] && curTile.nearTiles[1].nearTiles[1]) //vertical match search
@@ -143,6 +157,22 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+
+    public void SpawnNewMonster(int monsterIndex = -1)
+    {
+        //Spawn new monster
+        if (monsterIndex == -1)
+        {
+            monsterIndex =  Random.Range(0, 10);
+        }
+        Monster spawnMon = GameManager.inst.monsterPrefabs[monsterIndex];
+        Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
+        curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
+        curMonster.level = gameData.stageLevel;
+            
+        gameData.monsterIndex = monsterIndex;
+    }
+    
     public IEnumerator MonsterTurn()
     {
         yield return new WaitForSeconds(1f);
@@ -151,15 +181,18 @@ public class GameBoard : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
             Instantiate(curMonster.dieEffect, curMonster.hitPos.transform.position, curMonster.transform.rotation);
-
             AddCoin(curMonster.level*10);
             Destroy(curMonster.gameObject);
             
+            //Next Monster
+            gameData.stageLevel++;
+            SpawnNewMonster();
             
-            Monster spawnMon = GameManager.inst.monsterPrefabs[Random.Range(0, 10)];
-            Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
-            curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
-            curMonster.level = ++level;
+            //Save Data
+            gameData.maxHp = curPlayer.maxHp;
+            gameData.hp = curPlayer.hp;
+            GameManager.inst.SaveGameData();
+            
             yield return curMonster.StartCoroutine(curMonster.MoveCoroutine());
         }
         else
@@ -171,24 +204,20 @@ public class GameBoard : MonoBehaviour
 
     public void AddCoin(int coinNum)
     {
-        coin += coinNum;
+        gameData.coin += coinNum;
         StartCoroutine(AddCoinCoroutine());
     }
 
-    public IEnumerator AddCoinCoroutine()
+    private IEnumerator AddCoinCoroutine()
     {
         int startCoin = int.Parse(coinText.text);
-        int countUp = 1;
-        if (coin - startCoin > 10)
+        for (int i = 0; i <= 10; i++)
         {
-            countUp = (coin - startCoin) / 10;
-        }
-        for (int i = startCoin; i <= coin; i+=countUp)
-        {
-            coinText.text = i.ToString();
+            int lerfCoin = (int)Mathf.Lerp(startCoin, gameData.coin, 0.1f * i);
+            coinText.text = lerfCoin.ToString();
             yield return new WaitForSeconds(0.03f);
         }
-        coinText.text = coin.ToString();
+        coinText.text = gameData.coin.ToString();
     }
 
     public void DeleteTile(Vector2Int tileIndex)
@@ -351,6 +380,57 @@ public class GameBoard : MonoBehaviour
                     }
                 }
             });
+    }
+
+    public void UseSkill(Tile clickTile)
+    {
+        switch (skill)
+        {
+            case Skill.Punch:
+                clickTile.isMatched = true;
+                break;
+            case Skill.Meteor:
+                for (int x = clickTile.tileIndex.x - 1; x <= clickTile.tileIndex.x + 1; x++)
+                {
+                    for (int y = clickTile.tileIndex.y - 1; y <= clickTile.tileIndex.y + 1; y++)
+                    {
+                        if (tiles.TryGetValue(new Vector2Int(x, y), out var targetTile))
+                        {
+                            if (targetTile)
+                            {
+                                targetTile.isMatched = true;
+                            }
+                        }
+                    }
+                }
+                break;
+            case Skill.Vertical:
+                for (int y = 0; y < TileCntY; y++)
+                {
+                    if (tiles.TryGetValue(new Vector2Int(clickTile.tileIndex.x, y), out var targetTile))
+                    {
+                        if (targetTile)
+                        {
+                            targetTile.isMatched = true;
+                        }
+                    }
+                }
+                break;
+            case Skill.Horizontal:
+                for (int x = 0; x < TileCntX; x++)
+                {
+                    if (tiles.TryGetValue(new Vector2Int(x, clickTile.tileIndex.y), out var targetTile))
+                    {
+                        if (targetTile)
+                        {
+                            targetTile.isMatched = true;
+                        }
+                    }
+                }
+                break;
+        }
+        StartCoroutine(Match());
+        skill = Skill.None;
     }
 
     public void LinkingTile(Tile tile)

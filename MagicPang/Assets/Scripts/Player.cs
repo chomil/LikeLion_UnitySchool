@@ -9,7 +9,7 @@ using UnityEngine;
 
 public enum Skill
 {
-    Punch,Heal,Meteor,Vertical,Horizontal
+    Punch,Heal,Meteor,Vertical,Horizontal,None
 }
 
 public class Player : MonoBehaviour
@@ -35,13 +35,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         maxHp = GameManager.inst.gameData.maxHp;
-        hp = maxHp;
+        hp = GameManager.inst.gameData.hp;
         hpBar.transform.localScale = Vector3.one;
         hpBarDelay.transform.localScale = Vector3.one;
 
         GameManager.inst.curBoard.curPlayer = this;
         
-        UpdateHpText();
+        UpdateHpUI();
     }
 
     void Update()
@@ -61,19 +61,20 @@ public class Player : MonoBehaviour
         }
         
         hp = Math.Clamp(hp - damage, 0, maxHp);
-        hpBar.transform.localScale = new Vector3((float)hp / (float)maxHp, 1, 1);
-        hpBarDelay.transform.DOScale(hpBar.transform.localScale,1f);
-
-        if (hp == 0)
-        {
-            animator.SetTrigger("TriggerDie");
-        }
-        else
-        {
-            animator.SetTrigger("TriggerHit");
-        }
         
-        UpdateHpText();
+        if (damage > 0)
+        {
+            if (hp == 0)
+            {
+                animator.SetTrigger("TriggerDie");
+            }
+            else
+            {
+                animator.SetTrigger("TriggerHit");
+            }
+        }
+
+        UpdateHpUI();
     }
 
     public void Run(bool isRun)
@@ -109,8 +110,11 @@ public class Player : MonoBehaviour
         animator.SetTrigger("TriggerIdle");
     }
 
-    public void UpdateHpText()
+    public void UpdateHpUI()
     {
+        hpBar.transform.localScale = new Vector3((float)hp / (float)maxHp, 1, 1);
+        hpBarDelay.transform.DOScale(hpBar.transform.localScale,0.5f);
+
         hpText.text = $"HP  {hp}/{maxHp}";
     }
 }
