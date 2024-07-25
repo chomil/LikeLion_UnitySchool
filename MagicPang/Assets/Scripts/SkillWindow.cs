@@ -7,6 +7,10 @@ using UnityEngine;
 public class SkillWindow : MonoBehaviour
 {
     public bool isOpen = false;
+    public AudioClip openSfx;
+    public AudioClip closeSfx;
+    public AudioClip skillUseSfx;
+    public AudioClip skillCancelSfx;
 
     void Start()
     {
@@ -31,16 +35,19 @@ public class SkillWindow : MonoBehaviour
 
         if (isOpen)
         {
+            SoundManager.inst.PlaySound(openSfx);
             transform.DOMoveY(-350f, 0.5f).SetEase(Ease.InOutBack, 1);
         }
         else
         {
+            SoundManager.inst.PlaySound(closeSfx);
             transform.DOMoveY(-1500f, 0.5f).SetEase(Ease.InOutBack, 1);
         }
     }
 
     public void Punch()
     {
+        SoundManager.inst.PlaySound(skillUseSfx);
         GameManager.inst.curBoard.skill = Skill.Punch;
         isOpen = true;
         ToggleWindow();
@@ -50,9 +57,11 @@ public class SkillWindow : MonoBehaviour
     {
         if (GameManager.inst.gameData.coin < 10)
         {
+            SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
         }
 
+        SoundManager.inst.PlaySound(skillUseSfx);
         GameManager.inst.curBoard.AddCoin(-10);
         GameManager.inst.curBoard.curPlayer.GetDamage(-10);
     }
@@ -61,9 +70,11 @@ public class SkillWindow : MonoBehaviour
     {
         if (GameManager.inst.gameData.coin < 5)
         {
+            SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
         }
 
+        SoundManager.inst.PlaySound(skillUseSfx);
         GameManager.inst.curBoard.AddCoin(-5);
         GameManager.inst.curBoard.skill = Skill.Meteor;
 
@@ -75,9 +86,11 @@ public class SkillWindow : MonoBehaviour
     {
         if (GameManager.inst.gameData.coin < 5)
         {
+            SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
         }
 
+        SoundManager.inst.PlaySound(skillUseSfx);
         GameManager.inst.curBoard.AddCoin(-5);
         GameManager.inst.curBoard.skill = Skill.Vertical;
 
@@ -90,9 +103,11 @@ public class SkillWindow : MonoBehaviour
     {
         if (GameManager.inst.gameData.coin < 5)
         {
+            SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
         }
 
+        SoundManager.inst.PlaySound(skillUseSfx);
         GameManager.inst.curBoard.AddCoin(-5);
         GameManager.inst.curBoard.skill = Skill.Horizontal;
 

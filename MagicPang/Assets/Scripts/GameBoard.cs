@@ -25,6 +25,11 @@ public class GameBoard : MonoBehaviour
 
     public Skill skill = Skill.None;
 
+    private int comboCnt = 0;
+    
+    public AudioClip boardBgm;
+    public List<AudioClip> matchSfxList;
+
 
     void Start()
     {
@@ -75,6 +80,8 @@ public class GameBoard : MonoBehaviour
         SpawnNewMonster(gameData.monsterIndex);
         curMonster.transform.localPosition = new Vector3(1.2f, curMonster.transform.position.y, curMonster.transform.position.z);
         GameManager.inst.SaveGameData();
+        
+        SoundManager.inst.PlayBGM(boardBgm,0.1f);
     }
 
     void Update()
@@ -143,6 +150,7 @@ public class GameBoard : MonoBehaviour
 
         if (isMatch)
         {
+            comboCnt++;
             isMoving = true;
             yield return StartCoroutine(PoppingTiles());
             yield return StartCoroutine(FallingTiles());
@@ -154,6 +162,7 @@ public class GameBoard : MonoBehaviour
             yield return StartCoroutine(MonsterTurn());
             isMoving = false;
             Debug.Log("My Turn");
+            comboCnt = 0;
         }
     }
 
@@ -182,7 +191,7 @@ public class GameBoard : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             Instantiate(curMonster.dieEffect, curMonster.hitPos.transform.position, curMonster.transform.rotation);
             AddCoin(curMonster.level*10);
-            Destroy(curMonster.gameObject);
+            curMonster.Die();
             
             //Next Monster
             gameData.stageLevel++;
@@ -240,6 +249,9 @@ public class GameBoard : MonoBehaviour
     public IEnumerator PoppingTiles()
     {
         Debug.Log("PoppingTiles");
+        
+        int matchSfxIndex = math.clamp(comboCnt - 1, 0, matchSfxList.Count-1);
+        SoundManager.inst.PlaySound(matchSfxList[matchSfxIndex],1.5f);
 
         List<Tile> poppingTiles = new List<Tile>();
 

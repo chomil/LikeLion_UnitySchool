@@ -42,12 +42,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
     public void Pop()
     {
+        isClicked = false;
+        isMatched = false;
+        isSelected = false;
         if (freezeCnt > 0)
         {
             SetFreeze(--freezeCnt);
-            isClicked = false;
-            isMatched = false;
-            isSelected = false;
             selectedCover.SetActive(false);
         }
         else

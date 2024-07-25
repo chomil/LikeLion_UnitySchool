@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     public GameObject magicPos;
     public GameObject magicPrefab;
     private List<Elemental> magicList = new List<Elemental>();
+
+    public List<AudioClip> attackSfxList;
+    public List<AudioClip> hitSfxList;
     
     void Awake()
     {
@@ -64,6 +67,7 @@ public class Player : MonoBehaviour
         
         if (damage > 0)
         {
+            SoundManager.inst.PlaySound(hitSfxList);
             if (hp == 0)
             {
                 animator.SetTrigger("TriggerDie");
@@ -93,6 +97,7 @@ public class Player : MonoBehaviour
 
     public IEnumerator AttackCoroutine()
     {
+        SoundManager.inst.PlaySound(attackSfxList);
         animator.SetTrigger("TriggerAttack");
         yield return new WaitForSeconds(0.5f);
         while (magicList.Count > 0)

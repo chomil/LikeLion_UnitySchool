@@ -688,6 +688,12 @@ MonoBehaviour:
   hitPos: {fileID: 689385819744481898}
   dieEffect: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
   isMove: 0
+  attackSfxList:
+  - {fileID: 8300000, guid: 3745aba034a7655468a75b383adcd054, type: 3}
+  hitSfxList:
+  - {fileID: 8300000, guid: 3112f127108902c469d45fa97fd969fc, type: 3}
+  dieSfxList:
+  - {fileID: 8300000, guid: fb9e0873e8bae4540ad34002f7349c46, type: 3}
 --- !u!1 &1000013915321720
 GameObject:
   m_ObjectHideFlags: 0

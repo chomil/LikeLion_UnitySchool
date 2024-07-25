@@ -11,6 +11,9 @@ public class GameData
     public List<int> elementalLevel = new List<int>();
     public int coin = 0;
 
+    public float sfxVol = 0.5f;
+    public float bgmVol = 0.5f;
+
     public GameData()
     {
         for (int i = 0; i < 5; i++)

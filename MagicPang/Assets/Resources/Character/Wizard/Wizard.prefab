@@ -306,8 +306,18 @@ MonoBehaviour:
   hp: 0
   hpBar: {fileID: 3407693466562562692}
   hpBarDelay: {fileID: 7069741593546623524}
+  hpText: {fileID: 113898247223394556}
   magicPos: {fileID: 4133792063944051573}
   magicPrefab: {fileID: 2725458542712530809, guid: a25f990091ecb55409dbbf6dae769838, type: 3}
+  attackSfxList:
+  - {fileID: 8300000, guid: 166beaba359d5bc469d02ab2c2c08391, type: 3}
+  - {fileID: 8300000, guid: 167d86e76026d114b8b736f4f26a32ba, type: 3}
+  - {fileID: 8300000, guid: 613804e18a7e61a4287ae2f71c4cea74, type: 3}
+  - {fileID: 8300000, guid: 9f87cef97a27942408a407e8578f74c2, type: 3}
+  hitSfxList:
+  - {fileID: 8300000, guid: 3cddd61bce8333145b5823b4bd029d52, type: 3}
+  - {fileID: 8300000, guid: 16cc2e85d751d0f40a87e3b2d5601cb1, type: 3}
+  - {fileID: 8300000, guid: fe8c2754efc618e45b2979a266613308, type: 3}
 --- !u!1 &4133792063944051573
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,8 +423,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278388864
-  m_fontColor: {r: 0.5, g: 0.03090798, b: 0.011792451, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -431,8 +441,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.08
-  m_fontSizeBase: 0.08
+  m_fontSize: 0.07
+  m_fontSizeBase: 0.07
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

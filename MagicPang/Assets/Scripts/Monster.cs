@@ -27,6 +27,9 @@ public class Monster : MonoBehaviour
 
     public bool isMove = false;
 
+    public List<AudioClip> attackSfxList;
+    public List<AudioClip> hitSfxList;
+    public List<AudioClip> dieSfxList;
 
     void Awake()
     {
@@ -63,6 +66,12 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        SoundManager.inst.PlaySound(dieSfxList, 0.3f);
+        Destroy(gameObject);
+    }
+
     public void GetDamage(Elemental hitElemental = Elemental.None)
     {
         int damage = 2;
@@ -71,11 +80,13 @@ public class Monster : MonoBehaviour
         {
             return;
         }
+        
 
         hp = Math.Clamp(hp - damage, 0, maxHp);
         
         statusWindow.UpdateHp(hp,maxHp);
         
+        SoundManager.inst.PlaySound(hitSfxList, 0.5f);
         if (hp <= 0)
         {
             animator.SetTrigger("TriggerDie");
@@ -105,6 +116,7 @@ public class Monster : MonoBehaviour
 
     public IEnumerator AttackCoroutine()
     {
+        SoundManager.inst.PlaySound(attackSfxList);
         animator.SetTrigger("TriggerAttack");
         yield return new WaitForSeconds(0.5f);
         GameManager.inst.curBoard.curPlayer.GetDamage(level);
