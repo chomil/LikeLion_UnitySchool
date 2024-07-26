@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager inst;
     public AudioSource sfxAudioSource; 
     public AudioSource bgmAudioSource;
+    public float bgmVol = 0.1f;
    
     private void Awake()
     {
@@ -22,7 +23,6 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
     
     public void PlaySound(AudioClip clip, float volume = 1f)
     {
@@ -43,9 +43,10 @@ public class SoundManager : MonoBehaviour
 
     public void PlayBGM(AudioClip clip, float volume = 1f)
     {
+        bgmVol = volume;
         if (bgmAudioSource.clip == clip)
         {
-            SetBgmVolume(volume * GameManager.inst.gameData.bgmVol);
+            bgmAudioSource.volume = volume * GameManager.inst.gameData.bgmVol;
         }
         else
         {
@@ -63,7 +64,7 @@ public class SoundManager : MonoBehaviour
         {
             time += Time.deltaTime;
             curVol = math.lerp(startVol, 0, time*2);
-            SetBgmVolume(curVol);
+            bgmAudioSource.volume = curVol;
             yield return null;
         }
         SetBgmVolume(0);
@@ -78,10 +79,10 @@ public class SoundManager : MonoBehaviour
         {
             time += Time.deltaTime;
             curVol = math.lerp(0, targetVol, time*2);
-            SetBgmVolume(curVol);
+            bgmAudioSource.volume = curVol;
             yield return null;
         }
-        SetBgmVolume(targetVol);
+        bgmAudioSource.volume = targetVol;
     }
     public void StopBGM()
     {
@@ -94,6 +95,6 @@ public class SoundManager : MonoBehaviour
     }
     public void SetBgmVolume(float volume)
     {
-        bgmAudioSource.volume = volume;
+        bgmAudioSource.volume = bgmVol*volume;
     }
 }

@@ -9,13 +9,30 @@ using UnityEngine.UI;
 
 public enum Elemental
 {
-    Fire, Grass, Ground, Electric, Water, None
+    Fire,
+    Grass,
+    Ground,
+    Electric,
+    Water,
+    None
 }
 
 
 public enum Direction
 {
-    U, D, L, R, None
+    U,
+    D,
+    L,
+    R,
+    None
+}
+
+public enum TileSkill
+{
+    Vertical,
+    Horizontal,
+    AllDir,
+    None
 }
 
 
@@ -24,9 +41,15 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     private bool isClicked = false;
     public bool isMatched = false;
     public bool isSelected = false;
+
     public int freezeCnt = 0;
     public GameObject frozenCover;
     public List<Sprite> frozenSprites;
+
+    public TileSkill tileSkill = TileSkill.None;
+    public GameObject skillCover;
+    public List<Sprite> skillSprites;
+
     public GameObject selectedCover;
     public Elemental elemental;
     public Vector2Int tileIndex;
@@ -40,11 +63,91 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
         }
     }
 
+    public void Matching()
+    {
+        if (isMatched)
+        {
+            return;
+        }
+
+        isMatched = true;
+
+        if (freezeCnt == 0)
+        {
+            if (tileSkill == TileSkill.Vertical)
+            {
+                Tile nextTile = nearTiles[(int)Direction.U];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.U];
+                }
+
+                nextTile = nearTiles[(int)Direction.D];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.D];
+                }
+            }
+            else if (tileSkill == TileSkill.Horizontal)
+            {
+                Tile nextTile = nearTiles[(int)Direction.L];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.L];
+                }
+
+                nextTile = nearTiles[(int)Direction.R];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.R];
+                }
+            }
+            else if (tileSkill == TileSkill.AllDir)
+            {
+                Tile nextTile = nearTiles[(int)Direction.U];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.U];
+                }
+
+                nextTile = nearTiles[(int)Direction.D];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.D];
+                }
+
+                nextTile = nearTiles[(int)Direction.L];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.L];
+                }
+
+                nextTile = nearTiles[(int)Direction.R];
+                while (nextTile != null)
+                {
+                    nextTile.Matching();
+                    nextTile = nextTile.nearTiles[(int)Direction.R];
+                }
+            }
+
+            tileSkill = TileSkill.None;
+        }
+    }
+
+
     public void Pop()
     {
         isClicked = false;
         isMatched = false;
         isSelected = false;
+
         if (freezeCnt > 0)
         {
             SetFreeze(--freezeCnt);
@@ -52,10 +155,51 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
         }
         else
         {
+            if (tileSkill == TileSkill.Vertical)
+            {
+            }
+            else if (tileSkill == TileSkill.Horizontal)
+            {
+            }
+            else if (tileSkill == TileSkill.AllDir)
+            {
+            }
+
             GameManager.inst.curBoard.DeleteTile(this);
         }
     }
-    
+
+    public void SetSkill(TileSkill skill)
+    {
+        if (isMatched)
+        {
+            return;
+        }
+
+        tileSkill = skill;
+        if (tileSkill == TileSkill.None)
+        {
+            skillCover.SetActive(false);
+        }
+        else
+        {
+            skillCover.SetActive(true);
+            Image skillImage = skillCover.GetComponent<Image>();
+            if (skill == TileSkill.Vertical)
+            {
+                skillImage.sprite = skillSprites[0];
+            }
+            else if (skill == TileSkill.Horizontal)
+            {
+                skillImage.sprite = skillSprites[1];
+            }
+            else if (skill == TileSkill.AllDir)
+            {
+                skillImage.sprite = skillSprites[2];
+            }
+        }
+    }
+
     public void SetFreeze(int num = 3)
     {
         freezeCnt = num;
@@ -67,15 +211,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
                 frozenCover.transform.localScale = Vector3.zero;
                 frozenCover.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
             }
+
             isMatched = false;
             isClicked = false;
-            frozenCover.GetComponent<Image>().sprite = frozenSprites[3-num];
+            frozenCover.GetComponent<Image>().sprite = frozenSprites[3 - num];
         }
         else
         {
             frozenCover.SetActive(false);
         }
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (GameManager.inst.curBoard.isMoving)
@@ -102,31 +248,35 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     {
         isClicked = false;
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (GameManager.inst.curBoard.isMoving || freezeCnt>0)
+        if (GameManager.inst.curBoard.isMoving || freezeCnt > 0)
         {
             isClicked = false;
             return;
         }
+
         if (isClicked == true)
         {
-            Vector2 dir = eventData.position - new Vector2(transform.position.x,transform.position.y);
+            Vector2 dir = eventData.position - new Vector2(transform.position.x, transform.position.y);
             Tile targetTile = null;
             if (Mathf.Abs(dir.y) > Mathf.Abs(dir.x))
             {
-                targetTile = dir.y > 0 ? nearTiles[0] : nearTiles[1];
+                targetTile = dir.y > 0 ? nearTiles[(int)Direction.U] : nearTiles[(int)Direction.D];
             }
             else
             {
-                targetTile = dir.x > 0 ? nearTiles[3] : nearTiles[2];
+                targetTile = dir.x > 0 ? nearTiles[(int)Direction.R] : nearTiles[(int)Direction.L];
             }
+
             isClicked = false;
 
             if (targetTile.freezeCnt > 0)
             {
                 return;
             }
+
             Debug.Log("Swap");
             GameManager.inst.curBoard.SwapTile(this, targetTile);
         }

@@ -12,10 +12,6 @@ public class SkillWindow : MonoBehaviour
     public AudioClip skillUseSfx;
     public AudioClip skillCancelSfx;
 
-    void Start()
-    {
-    }
-
 
     public void ToggleWindow()
     {

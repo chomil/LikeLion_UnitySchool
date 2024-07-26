@@ -94,7 +94,7 @@ public class GameBoard : MonoBehaviour
         
     }
 
-    public bool CheckMatchAll()
+    public bool CheckMatchAll(bool isCheckOnly = false)
     {
         bool isMatch = false;
 
@@ -113,35 +113,82 @@ public class GameBoard : MonoBehaviour
                     isMatch = true;
                 }
 
-                if (curTile && curTile.nearTiles[1] && curTile.nearTiles[1].nearTiles[1]) //vertical match search
-                {
-                    if (curTile.elemental == curTile.nearTiles[1].elemental &&
-                        curTile.elemental == curTile.nearTiles[1].nearTiles[1].elemental)
-                    {
-                        curTile.isMatched = true;
-                        curTile.nearTiles[1].isMatched = true;
-                        curTile.nearTiles[1].nearTiles[1].isMatched = true;
+                int upCnt = CountSameTilesToDir(curTile, Direction.U);
+                int downCnt = CountSameTilesToDir(curTile, Direction.D);
+                int leftCnt = CountSameTilesToDir(curTile, Direction.L);
+                int rightCnt = CountSameTilesToDir(curTile, Direction.R);
 
-                        isMatch = true;
+                if (downCnt >= 4)
+                {
+                    if (isCheckOnly == false)
+                    {
+                        curTile.SetSkill(TileSkill.Vertical);
+                        curTile.nearTiles[(int)Direction.D].Matching();
                     }
                 }
-
-                if (curTile && curTile.nearTiles[3] && curTile.nearTiles[3].nearTiles[3]) //horizontal match search
+                else if (downCnt >= 3) //vertical match search
                 {
-                    if (curTile.elemental == curTile.nearTiles[3].elemental &&
-                        curTile.elemental == curTile.nearTiles[3].nearTiles[3].elemental)
+                    if (isCheckOnly == false)
                     {
-                        curTile.isMatched = true;
-                        curTile.nearTiles[3].isMatched = true;
-                        curTile.nearTiles[3].nearTiles[3].isMatched = true;
+                        curTile.Matching();
+                        curTile.nearTiles[(int)Direction.D].Matching();
+                        curTile.nearTiles[(int)Direction.D].nearTiles[(int)Direction.D].Matching();
+                    }
+                    
+                    isMatch = true;
+                }
+                
+                if (rightCnt >= 4)
+                {
+                    if (isCheckOnly == false)
+                    {
+                        curTile.SetSkill(TileSkill.Horizontal);
+                        curTile.nearTiles[(int)Direction.R].Matching();
+                    }
+                }
+                else if (rightCnt >= 3) //horizontal match search
+                {
+                    if (isCheckOnly == false)
+                    {
+                        curTile.Matching();
+                        curTile.nearTiles[(int)Direction.R].Matching();
+                        curTile.nearTiles[(int)Direction.R].nearTiles[(int)Direction.R].Matching();
+                    }
 
-                        isMatch = true;
+                    isMatch = true;
+                }
+                
+                
+                if (upCnt + downCnt - 1 >= 3 && leftCnt + rightCnt - 1 >= 3)
+                {
+                    if (isCheckOnly == false)
+                    {
+                        curTile.isMatched = false;
+                        curTile.SetSkill(TileSkill.AllDir);
                     }
                 }
             }
         }
 
         return isMatch;
+    }
+
+    int CountSameTilesToDir(Tile startTile, Direction dir)
+    {
+        if (startTile == null)
+        {
+            return 0;
+        }
+        int cnt = 1;
+        Tile nextTile = startTile.nearTiles[(int)dir];
+
+        while (nextTile!= null && startTile.elemental == nextTile.elemental)
+        {
+            cnt++;
+            nextTile = nextTile.nearTiles[(int)dir];
+        }
+
+        return cnt;
     }
 
     public IEnumerator Match()
@@ -397,7 +444,14 @@ public class GameBoard : MonoBehaviour
 
                 LinkingTile(tile1);
                 LinkingTile(tile2);
-                if (CheckMatchAll())
+
+                if (tile1.tileSkill != TileSkill.None && tile2.tileSkill != TileSkill.None)
+                {
+                    tile1.Matching();
+                    tile2.Matching();
+                }
+                
+                if (CheckMatchAll(true))
                 {
                     StartCoroutine(Match());
                 }
@@ -420,7 +474,7 @@ public class GameBoard : MonoBehaviour
         switch (skill)
         {
             case Skill.Punch:
-                clickTile.isMatched = true;
+                clickTile.Matching();
                 break;
             case Skill.Meteor:
                 for (int x = clickTile.tileIndex.x - 1; x <= clickTile.tileIndex.x + 1; x++)
@@ -431,7 +485,7 @@ public class GameBoard : MonoBehaviour
                         {
                             if (targetTile)
                             {
-                                targetTile.isMatched = true;
+                                targetTile.Matching();
                             }
                         }
                     }
@@ -444,7 +498,7 @@ public class GameBoard : MonoBehaviour
                     {
                         if (targetTile)
                         {
-                            targetTile.isMatched = true;
+                            targetTile.Matching();
                         }
                     }
                 }
@@ -456,7 +510,7 @@ public class GameBoard : MonoBehaviour
                     {
                         if (targetTile)
                         {
-                            targetTile.isMatched = true;
+                            targetTile.Matching();
                         }
                     }
                 }

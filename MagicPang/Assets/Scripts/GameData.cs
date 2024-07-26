@@ -13,6 +13,7 @@ public class GameData
 
     public float sfxVol = 0.5f;
     public float bgmVol = 0.5f;
+    public float gameSpeed = 1f;
 
     public GameData()
     {
