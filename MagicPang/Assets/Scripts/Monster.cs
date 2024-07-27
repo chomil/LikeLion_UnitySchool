@@ -43,11 +43,11 @@ public class Monster : MonoBehaviour
         statusWindow.elementalImage.sprite = GameManager.inst.elementalSprites[(int)elemental];
         statusWindow.lvText.text = $"Lv{level}";
 
-        maxHp = level * 10;
+        maxHp = level * 5;
         
         if (monsterType == MonsterType.Rabbit)
         {
-            maxHp = level * 15;
+            maxHp = level * 10;
         }
         hp = maxHp;
         statusWindow.UpdateHp(hp,maxHp);
@@ -74,7 +74,7 @@ public class Monster : MonoBehaviour
 
     public void GetDamage(Elemental hitElemental = Elemental.None)
     {
-        int damage = 2;
+        int damage = 1;
         damage = (int)(MultipleDamage(hitElemental) * damage);
         if (damage == 0)
         {

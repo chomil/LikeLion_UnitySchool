@@ -37,8 +37,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        maxHp = GameManager.inst.gameData.maxHp;
-        hp = GameManager.inst.gameData.hp;
+        maxHp = 50;
+        hp = maxHp;
         hpBar.transform.localScale = Vector3.one;
         hpBarDelay.transform.localScale = Vector3.one;
 
@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
             if (hp == 0)
             {
                 animator.SetTrigger("TriggerDie");
+                GameManager.inst.curBoard.GameOver();
             }
             else
             {

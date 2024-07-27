@@ -51,7 +51,7 @@ public class SkillWindow : MonoBehaviour
 
     public void Heal()
     {
-        if (GameManager.inst.gameData.coin < 10)
+        if (GameManager.inst.curBoard.coin < 10)
         {
             SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
@@ -64,7 +64,7 @@ public class SkillWindow : MonoBehaviour
 
     public void Meteor()
     {
-        if (GameManager.inst.gameData.coin < 5)
+        if (GameManager.inst.curBoard.coin < 5)
         {
             SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
@@ -80,7 +80,7 @@ public class SkillWindow : MonoBehaviour
 
     public void VerticalBeam()
     {
-        if (GameManager.inst.gameData.coin < 5)
+        if (GameManager.inst.curBoard.coin < 5)
         {
             SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;
@@ -97,7 +97,7 @@ public class SkillWindow : MonoBehaviour
 
     public void HorizontalPunch()
     {
-        if (GameManager.inst.gameData.coin < 5)
+        if (GameManager.inst.curBoard.coin < 5)
         {
             SoundManager.inst.PlaySound(skillCancelSfx , 0.5f);
             return;

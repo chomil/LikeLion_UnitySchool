@@ -25,14 +25,25 @@ public class GameBoard : MonoBehaviour
 
     public Skill skill = Skill.None;
 
-    private int comboCnt = 0;
     
     public AudioClip boardBgm;
     public List<AudioClip> matchSfxList;
+    
+    public int stageLevel = 1;
+    public int coin = 0;
+
+    private int comboCnt = 0;
+    public int maxCombo = 0;
+    public ComboText comboTextPrefab;
+
+    public GameObject scoreWindow;
+    public SceneTransition transition;
 
 
     void Start()
     {
+        transition.gameObject.SetActive(true);
+        
         gameData = GameManager.inst.gameData;
         
         GameManager.inst.curBoard = this;
@@ -77,7 +88,7 @@ public class GameBoard : MonoBehaviour
         
         
         AddCoin(0);
-        SpawnNewMonster(gameData.monsterIndex);
+        SpawnNewMonster();
         curMonster.transform.localPosition = new Vector3(1.2f, curMonster.transform.position.y, curMonster.transform.position.z);
         GameManager.inst.SaveGameData();
         
@@ -118,6 +129,16 @@ public class GameBoard : MonoBehaviour
                 int leftCnt = CountSameTilesToDir(curTile, Direction.L);
                 int rightCnt = CountSameTilesToDir(curTile, Direction.R);
 
+                
+                if (upCnt + downCnt - 1 >= 3 && leftCnt + rightCnt - 1 >= 3)
+                {
+                    if (isCheckOnly == false)
+                    {
+                        curTile.isMatched = false;
+                        curTile.SetSkill(TileSkill.AllDir);
+                    }
+                }
+                
                 if (downCnt >= 4)
                 {
                     if (isCheckOnly == false)
@@ -159,14 +180,7 @@ public class GameBoard : MonoBehaviour
                 }
                 
                 
-                if (upCnt + downCnt - 1 >= 3 && leftCnt + rightCnt - 1 >= 3)
-                {
-                    if (isCheckOnly == false)
-                    {
-                        curTile.isMatched = false;
-                        curTile.SetSkill(TileSkill.AllDir);
-                    }
-                }
+
             }
         }
 
@@ -198,6 +212,13 @@ public class GameBoard : MonoBehaviour
         if (isMatch)
         {
             comboCnt++;
+            ComboText comboText = Instantiate(comboTextPrefab, transform.parent.parent);
+            comboText.SetComboText(comboCnt);
+            if (maxCombo < comboCnt)
+            {
+                maxCombo = comboCnt;
+            }
+            
             isMoving = true;
             yield return StartCoroutine(PoppingTiles());
             yield return StartCoroutine(FallingTiles());
@@ -224,9 +245,7 @@ public class GameBoard : MonoBehaviour
         Monster spawnMon = GameManager.inst.monsterPrefabs[monsterIndex];
         Vector3 spawnPos = new Vector3(5f, 2.35f, 1.8f);
         curMonster = Instantiate(spawnMon, spawnPos, quaternion.identity);
-        curMonster.level = gameData.stageLevel;
-            
-        gameData.monsterIndex = monsterIndex;
+        curMonster.level = stageLevel;
     }
     
     public IEnumerator MonsterTurn()
@@ -241,13 +260,9 @@ public class GameBoard : MonoBehaviour
             curMonster.Die();
             
             //Next Monster
-            gameData.stageLevel++;
+            stageLevel++;
             SpawnNewMonster();
             
-            //Save Data
-            gameData.maxHp = curPlayer.maxHp;
-            gameData.hp = curPlayer.hp;
-            GameManager.inst.SaveGameData();
             
             yield return curMonster.StartCoroutine(curMonster.MoveCoroutine());
         }
@@ -260,7 +275,7 @@ public class GameBoard : MonoBehaviour
 
     public void AddCoin(int coinNum)
     {
-        gameData.coin += coinNum;
+        coin += coinNum;
         StartCoroutine(AddCoinCoroutine());
     }
 
@@ -269,11 +284,11 @@ public class GameBoard : MonoBehaviour
         int startCoin = int.Parse(coinText.text);
         for (int i = 0; i <= 10; i++)
         {
-            int lerfCoin = (int)Mathf.Lerp(startCoin, gameData.coin, 0.1f * i);
+            int lerfCoin = (int)Mathf.Lerp(startCoin, coin, 0.1f * i);
             coinText.text = lerfCoin.ToString();
             yield return new WaitForSeconds(0.03f);
         }
-        coinText.text = gameData.coin.ToString();
+        coinText.text = coin.ToString();
     }
 
     public void DeleteTile(Vector2Int tileIndex)
@@ -641,6 +656,12 @@ public class GameBoard : MonoBehaviour
         {
             tile.nearTiles[3] = null;
         }
+    }
+
+    public void GameOver()
+    {
+        scoreWindow.GetComponent<PopupWindow>().ActiveWindow(true);
+        scoreWindow.GetComponent<ScoreWindow>().SetScore();
     }
 
     public Vector3 TileIndexToLocalPos(Vector2Int tileIndex)

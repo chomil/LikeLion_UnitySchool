@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 {
     private bool isClicked = false;
     public bool isMatched = false;
+    public bool isSkillMatched = false;
     public bool isSelected = false;
 
     public int freezeCnt = 0;
@@ -55,6 +56,14 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     public Vector2Int tileIndex;
     public Tile[] nearTiles = new Tile[4]; //U,D,L,R;
 
+    public void Update()
+    {
+        if (isSkillMatched)
+        {
+            isSkillMatched = false;
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (GameManager.inst.curBoard.skill != Skill.None)
@@ -65,7 +74,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
     public void Matching()
     {
-        if (isMatched)
+        if (isMatched || isSkillMatched)
         {
             return;
         }
@@ -171,18 +180,21 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
 
     public void SetSkill(TileSkill skill)
     {
-        if (isMatched)
+        if (isMatched || isSkillMatched)
         {
             return;
         }
-
-        tileSkill = skill;
-        if (tileSkill == TileSkill.None)
+        
+        if (skill == TileSkill.None)
         {
             skillCover.SetActive(false);
         }
         else
         {
+            if (tileSkill != TileSkill.None)
+            {
+                this.Matching();
+            }
             skillCover.SetActive(true);
             Image skillImage = skillCover.GetComponent<Image>();
             if (skill == TileSkill.Vertical)
@@ -197,7 +209,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
             {
                 skillImage.sprite = skillSprites[2];
             }
+            isSkillMatched = true;
         }
+        
+        tileSkill = skill;
     }
 
     public void SetFreeze(int num = 3)

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public List<Tile> tilePrefabs;
     public List<Sprite> elementalSprites;
     public GameBoard curBoard;
-
+    
     public GameData gameData;
 
     private void Awake()
@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
             string loadedJson = File.ReadAllText(filePath);
             gameData = JsonUtility.FromJson<GameData>(loadedJson);
             Debug.Log("게임 데이터를 불러왔습니다: " + Application.persistentDataPath);
+
+            Time.timeScale = gameData.gameSpeed;
         }
         else
         {
