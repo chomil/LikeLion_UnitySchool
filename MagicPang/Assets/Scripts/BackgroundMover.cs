@@ -7,7 +7,10 @@ public class BackgroundMover : MonoBehaviour
     public bool isMove = false;
     void Start()
     {
-        GameManager.inst.curBoard.curBackGround = this;
+        if (GameManager.inst.curBoard)
+        {
+            GameManager.inst.curBoard.curBackGround = this;
+        }
     }
 
     void Update()

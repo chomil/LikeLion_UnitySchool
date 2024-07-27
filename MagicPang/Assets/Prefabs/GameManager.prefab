@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7895128952503426173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2799068600062933142}
+  - component: {fileID: 3227188443058260634}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2799068600062933142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7895128952503426173}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3227188443058260634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7895128952503426173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c325f109e0b13404f8c5402f6d034b29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterPrefabs:
+  - {fileID: 5879860908657997641, guid: c334a7c41936e764391ae93ab0e1981d, type: 3}
+  - {fileID: 6979667011840339092, guid: 0f21afde7a41dfb4e930ca290ca46dee, type: 3}
+  - {fileID: 1774203543189132687, guid: 2a4adfdefdadd7048a18bb7e7cc5b23b, type: 3}
+  - {fileID: 5879860908657997641, guid: 32ba94a3a04d19b4f9f64d412310f7b2, type: 3}
+  - {fileID: 8920904350715190521, guid: f3e92f0e6c7c8724b98eded63b438981, type: 3}
+  - {fileID: 431842946953846840, guid: 63a315df0bfd0634aa4343656b3d8140, type: 3}
+  - {fileID: 431842946953846840, guid: 193ac987daedc9d47a8dd75198d0a875, type: 3}
+  - {fileID: 431842946953846840, guid: ae34ec76103322d43a19daff0268e43e, type: 3}
+  - {fileID: 431842946953846840, guid: 6f0f95a5eaf924947b42a0009774fddb, type: 3}
+  - {fileID: 431842946953846840, guid: 9aad9de7cbca6d84b82891c3a1e63e34, type: 3}
+  tilePrefabs:
+  - {fileID: -551800110225309946, guid: c3fd6f055e3cb6340b490db3c74cd7dc, type: 3}
+  - {fileID: -8537378939998094694, guid: 0fa22c860d652954a887fc59a0d9b267, type: 3}
+  - {fileID: 5181871519120607896, guid: 485dcf7f7da0e8143a0556a9c30eeee7, type: 3}
+  - {fileID: 4098070172939465649, guid: eb12175db6fb2534089b75db0bef8f00, type: 3}
+  - {fileID: 4098070172939465649, guid: a7b81b157e031e442bd58fca5d8e0e78, type: 3}
+  elementalSprites:
+  - {fileID: 21300000, guid: d89bf6c1c4dc8734787eb6f0cecda440, type: 3}
+  - {fileID: 21300000, guid: ae48391875b1b3448ad82aa6d3370ee6, type: 3}
+  - {fileID: 21300000, guid: 9739aeae8c758b143ade8b0f8acc6018, type: 3}
+  - {fileID: 21300000, guid: 87a7bb18d772e374bb8328fad593b3f1, type: 3}
+  - {fileID: 21300000, guid: 83a0e681a5022f54c915e7557f2c6878, type: 3}
+  - {fileID: 0}
+  curBoard: {fileID: 0}
+  titleBgm: {fileID: 8300000, guid: 475f4837af487ce4a9e68bb227455e4c, type: 3}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class GameManager : MonoBehaviour
     public List<Tile> tilePrefabs;
     public List<Sprite> elementalSprites;
     public GameBoard curBoard;
-    
+
     public GameData gameData;
+
+    public AudioClip titleBgm;
 
     private void Awake()
     {
@@ -27,6 +30,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        SoundManager.inst.PlayBGM(titleBgm,0.1f);
     }
 
     private void OnApplicationQuit()
@@ -58,5 +66,22 @@ public class GameManager : MonoBehaviour
             Debug.Log("게임 데이터가 없습니다: " + Application.persistentDataPath);
             gameData = new GameData();
         }
+    }
+
+    public void ChangeScene(string name)
+    {
+        if (name == "TitleScene")
+        {
+            SoundManager.inst.PlayBGM(titleBgm,0.1f);
+        }
+        SceneManager.LoadScene(name);
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
     }
 }
