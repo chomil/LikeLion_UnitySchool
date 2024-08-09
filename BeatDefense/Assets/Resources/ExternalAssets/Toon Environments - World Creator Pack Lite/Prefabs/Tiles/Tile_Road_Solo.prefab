@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8719739787567930251}
   - component: {fileID: 5669300439911011374}
   - component: {fileID: 7586755574231752932}
+  - component: {fileID: 8429195934945426509}
   m_Layer: 0
   m_Name: Tile_Road_Solo
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8235233857279082801}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -84,6 +85,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8429195934945426509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235233857279082801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ffc0a5e908446149b618da97be8558b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePos: {x: 0, y: 0}
+  isRoad: 1
+  isStart: 0
 --- !u!1001 &5906588522994304887
 PrefabInstance:
   m_ObjectHideFlags: 0

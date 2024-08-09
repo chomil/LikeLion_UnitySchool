@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public AudioClip titleBgm;
 
+    public StageManager curStage;
+
     private void Awake()
     {
         if (inst == null)

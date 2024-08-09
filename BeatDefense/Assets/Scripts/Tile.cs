@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feel;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private Vector2Int tilePos;
+    public Vector2Int tilePos;
+    public bool isRoad = false;
+    public bool isStart = false;
 
     void Start()
     {
-        
-    }
-
-    void Update()
-    {
-        
+        tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        GameManager.inst.curStage.tiles.Add(tilePos,this);
     }
 }
