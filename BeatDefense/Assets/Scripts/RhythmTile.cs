@@ -17,7 +17,7 @@ public class RhythmTile : MonoBehaviour
         int xIndex = ((int)transform.position.x+1) / 2;
         int zIndex = ((int)transform.position.z+1) / 2;
         bool even = math.abs(zIndex + xIndex) % 2 == 0;
-        int beat = SoundManager.inst.CountBeat(4);
+        int beat = SoundManager.inst.curBeat;
         
         cover.enabled = (beat % 2 == 0)^even;
         

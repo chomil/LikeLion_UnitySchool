@@ -8,7 +8,7 @@ public class RhythmCamera : MonoBehaviour
     private int prevBeat = 0;
     void Update()
     {
-        int curBeat = SoundManager.inst.CountBeat(4);
+        int curBeat = SoundManager.inst.curBeat;
         if (prevBeat != curBeat)
         {
             if (curBeat % 4 == 0)

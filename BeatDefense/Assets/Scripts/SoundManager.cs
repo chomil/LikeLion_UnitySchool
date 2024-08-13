@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -10,6 +11,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource sfxAudioSource; 
     public AudioSource bgmAudioSource;
     public float bgmVol = 0.1f;
+    public int prevBeat = 0;
+    public int curBeat = 0;
    
     private void Awake()
     {
@@ -98,13 +101,42 @@ public class SoundManager : MonoBehaviour
         bgmAudioSource.volume = bgmVol*volume;
     }
 
-    public int CountBeat(int fullBeat)
+    public void Update()
+    {
+        CountBeat();
+    }
+    public void LateUpdate()
+    {
+        prevBeat = curBeat;
+    }
+
+    private void CountBeat(int fullBeat=4)
     {
         float bpm = 105;
         float bps = bpm / 60f * ((float)fullBeat/4f);
         float beat = bgmAudioSource.time * bps;
 
         int cnt = (int)math.floor(beat) % fullBeat + 1;
-        return cnt;
+        curBeat = cnt;
     }
+
+    public bool CompareBeat(int fullBeat, int checkBeat, float tolerance=0.5f)
+    {
+        float bpm = 105;
+        float bps = bpm / 60f * ((float)fullBeat/4f);
+        float beat = bgmAudioSource.time * bps;
+
+        beat -= (int)math.floor(beat);
+        beat += curBeat;
+
+        float diff = (float)checkBeat - beat;
+        
+        Debug.Log(diff);
+        if(Math.Abs(diff)<=tolerance)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
