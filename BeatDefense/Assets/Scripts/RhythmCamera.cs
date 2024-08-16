@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class RhythmCamera : MonoBehaviour
 {
-    private int prevBeat = 0;
     void Update()
     {
         int curBeat = SoundManager.inst.curBeat;
+        int prevBeat = SoundManager.inst.prevBeat;
         if (prevBeat != curBeat)
         {
             if (curBeat % 4 == 0)
@@ -17,9 +17,8 @@ public class RhythmCamera : MonoBehaviour
             }
             else
             {
-                transform.DOMove(transform.position + transform.forward*0.25f, 0.05f).SetLoops(2, LoopType.Yoyo);
+                transform.DOMove(transform.position + transform.forward * 0.25f, 0.05f).SetLoops(2, LoopType.Yoyo);
             }
         }
-        prevBeat = curBeat;
     }
 }

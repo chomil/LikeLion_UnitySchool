@@ -110,13 +110,13 @@ public class SoundManager : MonoBehaviour
         prevBeat = curBeat;
     }
 
-    private void CountBeat(int fullBeat=4)
+    private void CountBeat()
     {
         float bpm = 105;
-        float bps = bpm / 60f * ((float)fullBeat/4f);
+        float bps = bpm / 60f;
         float beat = bgmAudioSource.time * bps;
 
-        int cnt = (int)math.floor(beat) % fullBeat + 1;
+        int cnt = (int)math.floor(beat) % 4; //4beat base
         curBeat = cnt;
     }
 
@@ -129,7 +129,7 @@ public class SoundManager : MonoBehaviour
         beat -= (int)math.floor(beat);
         beat += curBeat;
 
-        float diff = (float)checkBeat - beat;
+        float diff = beat-(float)checkBeat;
         
         Debug.Log(diff);
         if(Math.Abs(diff)<=tolerance)

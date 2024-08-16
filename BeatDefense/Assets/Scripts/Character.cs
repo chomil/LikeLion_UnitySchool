@@ -3,26 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 public enum CharacterType
 {
-    Sword,Bow,Magic
+    Sword,Bow,Magic, Monster
 }
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, IPointerClickHandler
 {
     public CharacterType characterType;
     public int level;
     private Animator anim;
     protected int fullBeat = 4;
-    void Awake()
+
+    public GameObject range;
+    private bool isSelected = false;
+    
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
 
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         switch (characterType)
         {
@@ -33,14 +38,13 @@ public class Character : MonoBehaviour
         }
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         int curBeat = SoundManager.inst.curBeat;
         int prevBeat = SoundManager.inst.prevBeat;
 
         if (prevBeat != curBeat)
         {
-            Debug.Log(curBeat);
             transform.DOScaleY(0.85f, 0.05f).SetLoops(2, LoopType.Yoyo);
         }
     }
@@ -49,5 +53,16 @@ public class Character : MonoBehaviour
     public void Attack()
     {
         anim.SetTrigger("AttackTrigger");
+    }
+
+    public void SetSelect(bool _isSelect)
+    {
+        isSelected = _isSelect;
+        range.SetActive(isSelected);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        SetSelect(!isSelected);
     }
 }

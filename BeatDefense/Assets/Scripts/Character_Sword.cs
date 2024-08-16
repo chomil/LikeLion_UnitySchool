@@ -11,7 +11,7 @@ public class Character_Sword : Character
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
-            if (SoundManager.inst.CompareBeat(fullBeat, 4))
+            if (SoundManager.inst.CompareBeat(fullBeat, 3))
             {
             }
         }
