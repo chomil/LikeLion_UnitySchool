@@ -8839,6 +8839,7 @@ GameObject:
   - component: {fileID: 438990}
   - component: {fileID: 9542722}
   - component: {fileID: 840515056246413834}
+  - component: {fileID: 6188332561771085209}
   m_Layer: 0
   m_Name: Swordman1
   m_TagString: Untagged
@@ -8898,6 +8899,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterType: 0
   level: 0
+  range: {fileID: 4814812489879311673}
+--- !u!65 &6188332561771085209
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155132}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &156456
 GameObject:
   m_ObjectHideFlags: 0
@@ -18634,7 +18657,7 @@ Transform:
   m_GameObject: {fileID: 4814812489879311673}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18672,15 +18695,15 @@ MonoBehaviour:
   type: 2
   cornerRadiusMode: 0
   cornerRadii: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
-  thickness: 0.1
+  thickness: 0.2
   thicknessSpace: 0
   matchDashSpacingToSize: 1
-  dashed: 0
+  dashed: 1
   dashStyle:
     type: 0
-    space: -2
-    snap: 1
-    size: 16
+    space: -1
+    snap: 0
+    size: 2
     spacing: 0.5
     offset: 0
     shapeModifier: 1

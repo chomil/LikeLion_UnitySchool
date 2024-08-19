@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Shapes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,12 +20,17 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
     protected int fullBeat = 4;
 
     public GameObject range;
+    private Rectangle rangeRectangle;
     private bool isSelected = false;
     
     protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
 
+        if (range)
+        {
+            rangeRectangle = range.GetComponent<Rectangle>();
+        }
     }
 
     protected virtual void Start()
@@ -47,6 +53,11 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
         {
             transform.DOScaleY(0.85f, 0.05f).SetLoops(2, LoopType.Yoyo);
         }
+
+        if (isSelected)
+        {
+            rangeRectangle.DashOffset += Time.deltaTime;
+        }
     }
 
 
@@ -63,6 +74,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log(name+" Click");
         SetSelect(!isSelected);
     }
 }

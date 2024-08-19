@@ -10,9 +10,11 @@ public class SoundManager : MonoBehaviour
     public static SoundManager inst;
     public AudioSource sfxAudioSource; 
     public AudioSource bgmAudioSource;
-    public float bgmVol = 0.1f;
+    public float bgmVol = 0.2f;
     public int prevBeat = 0;
     public int curBeat = 0;
+    private float eyeOffset = 0.2f;
+    private float beatOffset = -0.2f;
    
     private void Awake()
     {
@@ -124,10 +126,10 @@ public class SoundManager : MonoBehaviour
     {
         float bpm = 105;
         float bps = bpm / 60f * ((float)fullBeat/4f);
-        float beat = bgmAudioSource.time * bps;
+        float beat = bgmAudioSource.time * bps ;
 
         beat -= (int)math.floor(beat);
-        beat += curBeat;
+        beat += curBeat + beatOffset;
 
         float diff = beat-(float)checkBeat;
         

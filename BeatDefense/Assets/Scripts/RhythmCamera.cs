@@ -11,7 +11,7 @@ public class RhythmCamera : MonoBehaviour
         int prevBeat = SoundManager.inst.prevBeat;
         if (prevBeat != curBeat)
         {
-            if (curBeat % 4 == 0)
+            if (curBeat % 4 == 3)
             {
                 transform.DOMove(transform.position + transform.forward, 0.05f).SetLoops(2, LoopType.Yoyo);
             }

@@ -9,6 +9,8 @@ public class StageManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> tiles = new Dictionary<Vector2Int, Tile>();
     public List<Tile> roads = new List<Tile>();
 
+    public Character spawnCharacter = null;
+
     private void Start()
     {
         GameManager.inst.curStage = this;
