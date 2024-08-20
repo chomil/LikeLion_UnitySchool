@@ -12,7 +12,7 @@ public enum CharacterType
     Sword,Bow,Magic, Monster
 }
 
-public abstract class Character : MonoBehaviour, IPointerClickHandler
+public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler
 {
     public CharacterType characterType;
     public int level;
@@ -21,6 +21,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
 
     public GameObject range;
     private Rectangle rangeRectangle;
+    private Outline outline;
     private bool isSelected = false;
     
     protected virtual void Awake()
@@ -31,6 +32,8 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
         {
             rangeRectangle = range.GetComponent<Rectangle>();
         }
+
+        outline = GetComponent<Outline>();
     }
 
     protected virtual void Start()
@@ -70,11 +73,28 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler
     {
         isSelected = _isSelect;
         range.SetActive(isSelected);
+        outline.enabled = _isSelect;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name+" Click");
         SetSelect(!isSelected);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isSelected == false)
+        {
+            outline.enabled = true;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isSelected == false)
+        {
+            outline.enabled = false;
+        }
     }
 }

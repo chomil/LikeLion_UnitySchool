@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public StageManager curStage;
 
+    public List<Character> characterPrefabs;
+
     private void Awake()
     {
         if (inst == null)

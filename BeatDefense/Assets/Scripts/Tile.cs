@@ -43,6 +43,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerClick(PointerEventData eventData)
     {
         SetSelect(false);
-        
+        if (canSelect&& GameManager.inst.curStage.spawnCharacter)
+        {
+            Vector3 spawnPos = transform.position;
+            spawnPos.y = 1;
+            Instantiate(GameManager.inst.curStage.spawnCharacter,spawnPos,Quaternion.identity);
+        }
     }
 }
