@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -10,7 +11,34 @@ public class StageManager : MonoBehaviour
     public List<Tile> roads = new List<Tile>();
 
     public Character spawnCharacter = null;
+    public Character selectCharacter = null;
 
+
+    public void BuyCharacter(int chacterIndex)
+    {
+        spawnCharacter = Instantiate(GameManager.inst.characterPrefabs[chacterIndex]);
+        spawnCharacter.transform.forward = Vector3.back;
+        spawnCharacter.SetTemp(true);
+    }
+    
+    
+
+    public void SetSelectCharacter(Character character)
+    {
+        if (selectCharacter == character)
+        {
+            selectCharacter.SetSelect(false);
+            selectCharacter = null;
+            return;
+        }
+        if (selectCharacter)
+        {
+            selectCharacter.SetSelect(false);
+        }
+        selectCharacter = character;
+        selectCharacter.SetSelect(true);
+    }
+    
     private void Start()
     {
         GameManager.inst.curStage = this;

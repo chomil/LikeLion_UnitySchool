@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public bool isRoad = false;
     public bool isStart = false;
     public bool canSelect = false;
-    public bool isSelect = false;
+    private bool isSelect = false;
     public ShapeRenderer selectCover = null;
 
     void Start()
@@ -33,6 +33,15 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerEnter(PointerEventData eventData)
     {
         SetSelect(true);
+
+        Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
+        if (spawnCharacter)
+        {
+            Vector3 spawnPos = transform.position;
+            spawnPos.y = 1;
+            spawnCharacter.transform.position = spawnPos;
+            spawnCharacter.SetSelect(true);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -43,11 +52,15 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerClick(PointerEventData eventData)
     {
         SetSelect(false);
-        if (canSelect&& GameManager.inst.curStage.spawnCharacter)
+        
+        Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
+        if (canSelect&& spawnCharacter)
         {
             Vector3 spawnPos = transform.position;
             spawnPos.y = 1;
-            Instantiate(GameManager.inst.curStage.spawnCharacter,spawnPos,Quaternion.identity);
+            spawnCharacter.SetSelect(false);
+            spawnCharacter.SetTemp(false);
+            GameManager.inst.curStage.spawnCharacter = null;
         }
     }
 }

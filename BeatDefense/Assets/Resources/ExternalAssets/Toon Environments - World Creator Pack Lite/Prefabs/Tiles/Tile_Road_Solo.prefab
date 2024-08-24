@@ -241,7 +241,6 @@ MonoBehaviour:
   isRoad: 1
   isStart: 0
   canSelect: 0
-  isSelect: 0
   selectCover: {fileID: 6613103701931882162}
 --- !u!65 &6845102325269402961
 BoxCollider:

@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager inst;
     public AudioSource sfxAudioSource; 
     public AudioSource bgmAudioSource;
+    private float bgmBpm = 105f;
     public float bgmVol = 0.2f;
     public int prevBeat = 0;
     public int curBeat = 0;
@@ -114,8 +115,7 @@ public class SoundManager : MonoBehaviour
 
     private void CountBeat()
     {
-        float bpm = 105;
-        float bps = bpm / 60f;
+        float bps = bgmBpm / 60f;
         float beat = bgmAudioSource.time * bps;
 
         int cnt = (int)math.floor(beat) % 4; //4beat base
@@ -124,8 +124,7 @@ public class SoundManager : MonoBehaviour
 
     public bool CompareBeat(int fullBeat, int checkBeat, float tolerance=0.5f)
     {
-        float bpm = 105;
-        float bps = bpm / 60f * ((float)fullBeat/4f);
+        float bps = bgmBpm / 60f * ((float)fullBeat/4f);
         float beat = bgmAudioSource.time * bps ;
 
         beat -= (int)math.floor(beat);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,9 @@ public class GameManager : MonoBehaviour
     public StageManager curStage;
 
     public List<Character> characterPrefabs;
+
+    public TextMeshProUGUI coinText;
+    public int coin = 0;
 
     private void Awake()
     {
@@ -34,11 +38,18 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SoundManager.inst.PlayBGM(titleBgm,0.1f);
+        coinText.text = coin.ToString();
     }
 
     private void OnApplicationQuit()
     {
         SaveGameData();
+    }
+
+    public void AddCoin(int addCoin)
+    {
+        coin += addCoin;
+        coinText.text = coin.ToString();
     }
 
     public void SaveGameData()

@@ -8901,6 +8901,8 @@ MonoBehaviour:
   characterType: 0
   level: 0
   range: {fileID: 4814812489879311673}
+  isSelected: 0
+  isTemp: 0
 --- !u!65 &6188332561771085209
 BoxCollider:
   m_ObjectHideFlags: 0

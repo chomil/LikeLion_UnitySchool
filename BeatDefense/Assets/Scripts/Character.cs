@@ -22,7 +22,8 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
     public GameObject range;
     private Rectangle rangeRectangle;
     private Outline outline;
-    private bool isSelected = false;
+    public bool isSelected = false;
+    public bool isTemp = false;
     
     protected virtual void Awake()
     {
@@ -63,6 +64,19 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
         }
     }
 
+    public void SetTemp(bool _isTemp)
+    {
+        isTemp = _isTemp;
+        if (isTemp)
+        {
+            GetComponent<Collider>().enabled = false;
+        }
+        else
+        {
+            GetComponent<Collider>().enabled = true;
+        }
+    }
+
 
     public void Attack()
     {
@@ -79,7 +93,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name+" Click");
-        SetSelect(!isSelected);
+        GameManager.inst.curStage.SetSelectCharacter(this);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
