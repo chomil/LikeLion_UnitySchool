@@ -16,14 +16,15 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 {
     public CharacterType characterType;
     public int level;
-    private Animator anim;
+    protected Animator anim;
     protected int fullBeat = 4;
 
+    public GameObject characterMesh;
     public GameObject range;
-    private Rectangle rangeRectangle;
-    private Outline outline;
-    public bool isSelected = false;
-    public bool isTemp = false;
+    protected Rectangle rangeRectangle;
+    protected Outline outline;
+    protected bool isSelected = false;
+    protected bool canInteractive = true;
     
     protected virtual void Awake()
     {
@@ -39,12 +40,12 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
     protected virtual void Start()
     {
+        
         switch (characterType)
         {
             case CharacterType.Sword:
                 fullBeat = 4;
                 break;
-            
         }
     }
 
@@ -64,30 +65,33 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
         }
     }
 
-    public void SetTemp(bool _isTemp)
+    public void SetInteractive(bool _canInteractive)
     {
-        isTemp = _isTemp;
-        if (isTemp)
+        canInteractive = _canInteractive;
+        if (canInteractive)
         {
-            GetComponent<Collider>().enabled = false;
+            GetComponent<Collider>().enabled = true;
         }
         else
         {
-            GetComponent<Collider>().enabled = true;
+            GetComponent<Collider>().enabled = false;
         }
     }
 
 
-    public void Attack()
+    protected virtual void Attack()
     {
         anim.SetTrigger("AttackTrigger");
     }
 
     public void SetSelect(bool _isSelect)
     {
-        isSelected = _isSelect;
-        range.SetActive(isSelected);
-        outline.enabled = _isSelect;
+        if (canInteractive)
+        {
+            isSelected = _isSelect;
+            range.SetActive(isSelected);
+            outline.enabled = _isSelect;
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

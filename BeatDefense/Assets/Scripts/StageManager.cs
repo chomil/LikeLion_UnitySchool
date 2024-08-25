@@ -14,11 +14,30 @@ public class StageManager : MonoBehaviour
     public Character selectCharacter = null;
 
 
+    public void SpawnMonster(int monsterIndex)
+    {
+        Instantiate(GameManager.inst.monsterPrefabs[monsterIndex]);
+    }
+
     public void BuyCharacter(int chacterIndex)
     {
+        if (selectCharacter)
+        {
+            SetSelectCharacter(selectCharacter);
+        }
+
+        
+        GameObject[] allCharacter = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject character in allCharacter)
+        {
+            character.GetComponent<Character>().SetInteractive(false);
+        }
+        
         spawnCharacter = Instantiate(GameManager.inst.characterPrefabs[chacterIndex]);
         spawnCharacter.transform.forward = Vector3.back;
-        spawnCharacter.SetTemp(true);
+        SetSelectCharacter(spawnCharacter);
+        spawnCharacter.SetInteractive(false);
     }
     
     

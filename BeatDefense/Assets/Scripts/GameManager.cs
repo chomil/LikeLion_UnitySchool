@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public StageManager curStage;
 
     public List<Character> characterPrefabs;
+    public List<Monster> monsterPrefabs;
 
     public TextMeshProUGUI coinText;
     public int coin = 0;

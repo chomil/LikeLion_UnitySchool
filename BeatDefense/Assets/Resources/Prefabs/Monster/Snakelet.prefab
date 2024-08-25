@@ -990,7 +990,7 @@ GameObject:
   - component: {fileID: 8960566000452056546}
   m_Layer: 0
   m_Name: Snakelet
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1059,6 +1059,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be482fbf4a1556a42aca55838247ce9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 0
+  level: 0
+  characterMesh: {fileID: 0}
+  range: {fileID: 0}
 --- !u!1 &8019279003468182252
 GameObject:
   m_ObjectHideFlags: 0

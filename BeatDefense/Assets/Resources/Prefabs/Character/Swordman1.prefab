@@ -8843,7 +8843,7 @@ GameObject:
   - component: {fileID: 900550402690327456}
   m_Layer: 0
   m_Name: Swordman1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8900,9 +8900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterType: 0
   level: 0
+  characterMesh: {fileID: 8349602280372879085}
   range: {fileID: 4814812489879311673}
-  isSelected: 0
-  isTemp: 0
 --- !u!65 &6188332561771085209
 BoxCollider:
   m_ObjectHideFlags: 0

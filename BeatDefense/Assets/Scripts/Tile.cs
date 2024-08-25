@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using MoreMountains.Feel;
 using Shapes;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isSelect = false;
     public ShapeRenderer selectCover = null;
 
+    public Character characterOnTile = null;
+
     void Start()
     {
         tilePos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
@@ -24,6 +27,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         selectCover.Color = canSelect == false ? Color.red : Color.white;
     }
 
+    private void SetCanSelect(bool _canSelect)
+    {
+        canSelect = _canSelect;
+        selectCover.Color = canSelect == false ? Color.red : Color.white;
+    }
     private void SetSelect(bool _isSelect)
     {
         isSelect = _isSelect;
@@ -38,7 +46,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (spawnCharacter)
         {
             Vector3 spawnPos = transform.position;
-            spawnPos.y = 1;
+            spawnPos.y = 1.2f;
             spawnCharacter.transform.position = spawnPos;
             spawnCharacter.SetSelect(true);
         }
@@ -53,14 +61,27 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         SetSelect(false);
         
+        
         Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
+        SpawnOnTile(spawnCharacter);
+    }
+
+    public void SpawnOnTile(Character spawnCharacter)
+    {
         if (canSelect&& spawnCharacter)
         {
-            Vector3 spawnPos = transform.position;
-            spawnPos.y = 1;
-            spawnCharacter.SetSelect(false);
-            spawnCharacter.SetTemp(false);
+            spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack,10f);
+            characterOnTile = spawnCharacter;
             GameManager.inst.curStage.spawnCharacter = null;
+            
+            GameObject[] allCharacter = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject character in allCharacter)
+            {
+                character.GetComponent<Character>().SetInteractive(true);
+            }
+            
+            GameManager.inst.curStage.SetSelectCharacter(spawnCharacter);
+            SetCanSelect(false);
         }
     }
 }
