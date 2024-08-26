@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
     public float bgmVol = 0.2f;
     public int prevBeat = 0;
     public int curBeat = 0;
+    public float curBeatFloat = 0;
     private float eyeOffset = 0.2f;
     private float beatOffset = -0.2f;
    
@@ -118,18 +119,18 @@ public class SoundManager : MonoBehaviour
         float bps = bgmBpm / 60f;
         float beat = bgmAudioSource.time * bps;
 
-        int cnt = (int)math.floor(beat) % 4; //4beat base
+        int cnt = (int)beat % 4; //4beat base
         curBeat = cnt;
+        curBeatFloat = (beat - (int)beat) + cnt;
     }
 
     public bool CompareBeat(int fullBeat, int checkBeat, float tolerance=0.5f)
-    {
+    {        
         float bps = bgmBpm / 60f * ((float)fullBeat/4f);
         float beat = bgmAudioSource.time * bps ;
-
         beat -= (int)math.floor(beat);
         beat += curBeat + beatOffset;
-
+        
         float diff = beat-(float)checkBeat;
         
         Debug.Log(diff);

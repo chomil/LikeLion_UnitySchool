@@ -82,6 +82,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             
             GameManager.inst.curStage.SetSelectCharacter(spawnCharacter);
             SetCanSelect(false);
+            
+            GameManager.inst.curStage.shop.SetActive(true);
         }
     }
 }

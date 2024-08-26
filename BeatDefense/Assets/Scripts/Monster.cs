@@ -8,7 +8,12 @@ using Sequence = Unity.VisualScripting.Sequence;
 public class Monster : Character
 {
     private int roadIndex = 0;
-    private int Hp = 3;
+    private int MaxHp = 3;
+    public int Hp = 3;
+
+    private float speed = 1f;
+
+    public RectTransform HpRect; 
     
 
     protected override void Start()
@@ -17,29 +22,47 @@ public class Monster : Character
         pos.y = 1;
 
         transform.position = pos;
+        
+        Move();
     }
 
     public void Damaged(int damage)
     {
-        Hp -= damage;
-        Hp = Hp < 0 ? 0 : Hp;
-
         if (Hp == 0)
         {
-            //Die
+            return;
+        }
+        Hp -= damage;
+        Hp = Hp < 0 ? 0 : Hp;
+        HpRect.localScale = new Vector3((float)Hp / (float)MaxHp,1,1);
+        if (Hp == 0)
+        {
+            anim.SetTrigger("DieTrigger");
+            StartCoroutine(DieCoroutine());
+        }
+        else
+        {
+            anim.SetTrigger("HitTrigger");
         }
     }
 
-    protected override void Update()
+    public IEnumerator DieCoroutine()
     {        
+        Tile curTile = GameManager.inst.curStage.roads[roadIndex];
+        curTile.characterOnTile = null;
+        transform.DOKill(false);
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
+
+    protected override void Update()
+    {
+        if (Hp == 0)
+        {
+            return;
+        }
         base.Update();
         
-        int curBeat = SoundManager.inst.curBeat;
-        int prevBeat = SoundManager.inst.prevBeat;
-        if (prevBeat != curBeat)
-        {
-            Move();
-        }
     }
 
     void Move()
@@ -50,6 +73,7 @@ public class Monster : Character
         roadIndex++;
         if (GameManager.inst.curStage.roads.Count <= roadIndex)
         {
+            characterMesh.transform.DOKill(false);
             transform.DOKill(false);
             Destroy(gameObject);
             return;
@@ -63,9 +87,9 @@ public class Monster : Character
         Vector3 dir = pos - transform.position;
         dir.Normalize();
 
-        transform.forward = dir;
+        characterMesh.transform.forward = dir;
         
-        transform.DOMove(pos, 0.05f);
+        transform.DOMove(pos, speed).SetEase(Ease.Linear).OnComplete(Move);
     }
     
 }

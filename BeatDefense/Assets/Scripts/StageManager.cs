@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Shapes;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
@@ -13,6 +16,27 @@ public class StageManager : MonoBehaviour
     public Character spawnCharacter = null;
     public Character selectCharacter = null;
 
+    public GameObject shop;
+
+    public Rectangle beatSquare;
+    public GameObject startButton;
+
+
+    public void StartStage()
+    {
+        Debug.Log("Start");
+        StartCoroutine(StartStageCoroutine());
+    }
+
+    public IEnumerator StartStageCoroutine()
+    {
+        startButton.SetActive(false);
+        for (int i = 0; i <= 10; i++)
+        {
+            yield return null;
+            beatSquare.Width = Mathf.Lerp(beatSquare.Width, 100f, i / 10f);
+        }
+    }
 
     public void SpawnMonster(int monsterIndex)
     {
@@ -35,9 +59,11 @@ public class StageManager : MonoBehaviour
         }
         
         spawnCharacter = Instantiate(GameManager.inst.characterPrefabs[chacterIndex]);
-        spawnCharacter.transform.forward = Vector3.back;
+        spawnCharacter.characterMesh.transform.forward = Vector3.back;
         SetSelectCharacter(spawnCharacter);
         spawnCharacter.SetInteractive(false);
+        
+        shop.SetActive(false);
     }
     
     

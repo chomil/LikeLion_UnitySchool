@@ -35,7 +35,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
             rangeRectangle = range.GetComponent<Rectangle>();
         }
 
-        outline = GetComponent<Outline>();
+        outline = characterMesh.GetComponent<Outline>();
     }
 
     protected virtual void Start()
@@ -56,7 +56,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
         if (prevBeat != curBeat)
         {
-            transform.DOScaleY(0.85f, 0.05f).SetLoops(2, LoopType.Yoyo);
+            characterMesh.transform.DOScaleY(0.85f, 0.05f).SetLoops(2, LoopType.Yoyo);
         }
 
         if (isSelected)
