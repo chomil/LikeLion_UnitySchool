@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class GameManager : MonoBehaviour
 
     public GameData gameData;
 
-    public AudioClip titleBgm;
+    public AudioClip stageBgm;
+    public AudioClip defaultBgm;
 
     public StageManager curStage;
 
@@ -38,7 +40,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.inst.PlayBGM(titleBgm,0.1f);
+        SoundManager.inst.PlayBGM(defaultBgm,0.2f);
+        SoundManager.inst.bgmBpm = 84f;
         coinText.text = coin.ToString();
     }
 
@@ -83,7 +86,8 @@ public class GameManager : MonoBehaviour
     {
         if (name == "TitleScene")
         {
-            SoundManager.inst.PlayBGM(titleBgm,0.1f);
+            SoundManager.inst.PlayBGM(defaultBgm,0.2f);
+            SoundManager.inst.bgmBpm = 84f;
         }
         SceneManager.LoadScene(name);
     }

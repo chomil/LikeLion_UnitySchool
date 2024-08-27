@@ -25,6 +25,7 @@ public class StageManager : MonoBehaviour
     public void StartStage()
     {
         Debug.Log("Start");
+        shop.SetActive(false);
         StartCoroutine(StartStageCoroutine());
     }
 
@@ -36,6 +37,9 @@ public class StageManager : MonoBehaviour
             yield return null;
             beatSquare.Width = Mathf.Lerp(beatSquare.Width, 100f, i / 10f);
         }
+        
+        SoundManager.inst.PlayBGM(GameManager.inst.stageBgm,0.2f);
+        SoundManager.inst.bgmBpm = 105f;
     }
 
     public void SpawnMonster(int monsterIndex)

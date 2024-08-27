@@ -8,16 +8,16 @@ using Random = UnityEngine.Random;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager inst;
-    public AudioSource sfxAudioSource; 
+    public AudioSource sfxAudioSource;
     public AudioSource bgmAudioSource;
-    private float bgmBpm = 105f;
+    public float bgmBpm = 105f;
     public float bgmVol = 0.2f;
     public int prevBeat = 0;
     public int curBeat = 0;
     public float curBeatFloat = 0;
     private float eyeOffset = 0.2f;
     private float beatOffset = -0.2f;
-   
+
     private void Awake()
     {
         if (inst == null)
@@ -30,21 +30,21 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     public void PlaySound(AudioClip clip, float volume = 1f)
     {
         if (clip)
         {
-            sfxAudioSource.PlayOneShot(clip, volume* GameManager.inst.gameData.sfxVol);
+            sfxAudioSource.PlayOneShot(clip, volume * GameManager.inst.gameData.sfxVol);
         }
     }
-    
+
     public void PlaySound(List<AudioClip> clips, float volume = 1f)
     {
         if (clips.Count > 0)
         {
             int randomIndex = Random.Range(0, clips.Count);
-            sfxAudioSource.PlayOneShot(clips[randomIndex],volume * GameManager.inst.gameData.sfxVol);
+            sfxAudioSource.PlayOneShot(clips[randomIndex], volume * GameManager.inst.gameData.sfxVol);
         }
     }
 
@@ -66,14 +66,15 @@ public class SoundManager : MonoBehaviour
         float startVol = bgmAudioSource.volume;
         float curVol = bgmAudioSource.volume;
         float time = 0f;
-        
+
         while (curVol > 0)
         {
             time += Time.deltaTime;
-            curVol = math.lerp(startVol, 0, time*2);
+            curVol = math.lerp(startVol, 0, time * 2);
             bgmAudioSource.volume = curVol;
             yield return null;
         }
+
         SetBgmVolume(0);
 
         float targetVol = volume * GameManager.inst.gameData.bgmVol;
@@ -82,15 +83,21 @@ public class SoundManager : MonoBehaviour
         bgmAudioSource.clip = nextClip;
         bgmAudioSource.Play();
 
+        prevBeat = 0;
+        curBeat = 0;
+        curBeatFloat = 0f;
+
         while (curVol < targetVol)
         {
             time += Time.deltaTime;
-            curVol = math.lerp(0, targetVol, time*2);
+            curVol = math.lerp(0, targetVol, time * 2);
             bgmAudioSource.volume = curVol;
             yield return null;
         }
+
         bgmAudioSource.volume = targetVol;
     }
+
     public void StopBGM()
     {
         bgmAudioSource.Stop();
@@ -100,15 +107,17 @@ public class SoundManager : MonoBehaviour
     {
         sfxAudioSource.volume = volume;
     }
+
     public void SetBgmVolume(float volume)
     {
-        bgmAudioSource.volume = bgmVol*volume;
+        bgmAudioSource.volume = bgmVol * volume;
     }
 
     public void Update()
     {
         CountBeat();
     }
+
     public void LateUpdate()
     {
         prevBeat = curBeat;
@@ -124,21 +133,21 @@ public class SoundManager : MonoBehaviour
         curBeatFloat = (beat - (int)beat) + cnt;
     }
 
-    public bool CompareBeat(int fullBeat, int checkBeat, float tolerance=0.5f)
-    {        
-        float bps = bgmBpm / 60f * ((float)fullBeat/4f);
-        float beat = bgmAudioSource.time * bps ;
+    public bool CompareBeat(int fullBeat, int checkBeat, float tolerance = 0.5f)
+    {
+        float bps = bgmBpm / 60f * ((float)fullBeat / 4f);
+        float beat = bgmAudioSource.time * bps;
         beat -= (int)math.floor(beat);
         beat += curBeat + beatOffset;
-        
-        float diff = beat-(float)checkBeat;
-        
+
+        float diff = beat - (float)checkBeat;
+
         Debug.Log(diff);
-        if(Math.Abs(diff)<=tolerance)
+        if (Math.Abs(diff) <= tolerance)
         {
             return true;
         }
+
         return false;
     }
-
 }

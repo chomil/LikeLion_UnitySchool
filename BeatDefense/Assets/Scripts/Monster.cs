@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Shapes;
 using UnityEngine;
 using Sequence = Unity.VisualScripting.Sequence;
 
@@ -13,7 +14,7 @@ public class Monster : Character
 
     private float speed = 1f;
 
-    public RectTransform HpRect; 
+    public Line HpLine; 
     
 
     protected override void Start()
@@ -34,7 +35,7 @@ public class Monster : Character
         }
         Hp -= damage;
         Hp = Hp < 0 ? 0 : Hp;
-        HpRect.localScale = new Vector3((float)Hp / (float)MaxHp,1,1);
+        HpLine.End = new Vector3((float)Hp / (float)MaxHp,0,0);
         if (Hp == 0)
         {
             anim.SetTrigger("DieTrigger");

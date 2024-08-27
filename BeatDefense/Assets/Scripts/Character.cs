@@ -21,7 +21,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
     public GameObject characterMesh;
     public GameObject range;
-    protected Rectangle rangeRectangle;
+    protected Disc rangeDisc;
     protected Outline outline;
     protected bool isSelected = false;
     protected bool canInteractive = true;
@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
         if (range)
         {
-            rangeRectangle = range.GetComponent<Rectangle>();
+            rangeDisc = range.GetComponent<Disc>();
         }
 
         outline = characterMesh.GetComponent<Outline>();
@@ -61,7 +61,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
         if (isSelected)
         {
-            rangeRectangle.DashOffset += Time.deltaTime;
+            rangeDisc.DashOffset += Time.deltaTime;
         }
     }
 

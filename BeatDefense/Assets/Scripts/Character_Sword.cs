@@ -34,8 +34,7 @@ public class Character_Sword : Character
             {
                 continue;
             }
-            if (Math.Abs(curMon.transform.position.x - transform.position.x) <= 3 &&
-                Math.Abs(curMon.transform.position.z - transform.position.z) <= 3)
+            if (Vector3.Magnitude( curMon.transform.position - transform.position) <= rangeDisc.Radius)
             {
                 targetMonster = curMon;
                 Vector3 lookDir = targetMonster.transform.position - transform.position;
