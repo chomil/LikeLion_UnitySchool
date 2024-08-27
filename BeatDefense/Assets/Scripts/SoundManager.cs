@@ -83,7 +83,7 @@ public class SoundManager : MonoBehaviour
         bgmAudioSource.clip = nextClip;
         bgmAudioSource.Play();
 
-        prevBeat = 0;
+        prevBeat = -1;
         curBeat = 0;
         curBeatFloat = 0f;
 

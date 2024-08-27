@@ -242,7 +242,6 @@ MonoBehaviour:
   isStart: 0
   canSelect: 0
   selectCover: {fileID: 6613103701931882162}
-  characterOnTile: {fileID: 0}
 --- !u!65 &6845102325269402961
 BoxCollider:
   m_ObjectHideFlags: 0

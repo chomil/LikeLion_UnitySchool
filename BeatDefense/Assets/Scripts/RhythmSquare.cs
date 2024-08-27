@@ -13,7 +13,10 @@ public class RhythmSquare : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            popAnim.Play();
+            if (GameManager.inst.curStage.isPlaying)
+            {
+                popAnim.Play();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using MoreMountains.Tools;
 using Shapes;
 using UnityEngine;
 using Sequence = Unity.VisualScripting.Sequence;
@@ -14,7 +15,10 @@ public class Monster : Character
 
     private float speed = 1f;
 
-    public Line HpLine; 
+    public Line HpLine;
+
+    public bool canHit = false;
+    public int spawnIndex = 0;
     
 
     protected override void Start()
@@ -24,12 +28,12 @@ public class Monster : Character
 
         transform.position = pos;
         
-        Move();
+        Invoke(nameof(Move),spawnIndex);
     }
 
     public void Damaged(int damage)
     {
-        if (Hp == 0)
+        if (Hp == 0 || canHit==false)
         {
             return;
         }
@@ -50,7 +54,6 @@ public class Monster : Character
     public IEnumerator DieCoroutine()
     {        
         Tile curTile = GameManager.inst.curStage.roads[roadIndex];
-        curTile.characterOnTile = null;
         transform.DOKill(false);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
@@ -63,13 +66,13 @@ public class Monster : Character
             return;
         }
         base.Update();
-        
     }
 
     void Move()
     {
+        canHit = true;
+        
         Tile prevTile = GameManager.inst.curStage.roads[roadIndex];
-        prevTile.characterOnTile = null;
         
         roadIndex++;
         if (GameManager.inst.curStage.roads.Count <= roadIndex)
@@ -81,7 +84,6 @@ public class Monster : Character
         }
         
         Tile nextTile = GameManager.inst.curStage.roads[roadIndex];
-        nextTile.characterOnTile = this;
         Vector3 pos = nextTile.transform.position;
         pos.y = 1;
 
@@ -92,5 +94,9 @@ public class Monster : Character
         
         transform.DOMove(pos, speed).SetEase(Ease.Linear).OnComplete(Move);
     }
-    
+
+    private void OnDestroy()
+    {
+        GameManager.inst.curStage.diedMonsterNum++;
+    }
 }

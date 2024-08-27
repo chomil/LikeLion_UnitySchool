@@ -13,18 +13,6 @@ public class Character_Sword : Character
     {
         base.Update();
         
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (SoundManager.inst.CompareBeat(fullBeat, 3))
-            {
-                Attack();
-            }
-            else
-            {
-                
-            }
-        }
-        
         targetMonster = null;
         GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
         for (int i = 0; i < monsters.Length; i++)
@@ -42,6 +30,20 @@ public class Character_Sword : Character
                 break;
             }
         }
+        
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (SoundManager.inst.CompareBeat(fullBeat, 3))
+            {
+                Attack();
+            }
+            else
+            {
+                
+            }
+        }
+
     }
 
     protected override void Attack()

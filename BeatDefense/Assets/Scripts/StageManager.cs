@@ -13,6 +13,9 @@ public class StageManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> tiles = new Dictionary<Vector2Int, Tile>();
     public List<Tile> roads = new List<Tile>();
 
+    public List<Monster> monsters = new List<Monster>();
+    public List<Character> characters = new List<Character>();
+
     public Character spawnCharacter = null;
     public Character selectCharacter = null;
 
@@ -21,17 +24,24 @@ public class StageManager : MonoBehaviour
     public Rectangle beatSquare;
     public GameObject startButton;
 
+    public int stageLevel = 1;
+    public int diedMonsterNum = 0;
+    public bool isPlaying = false;
+
 
     public void StartStage()
     {
         Debug.Log("Start");
-        shop.SetActive(false);
-        StartCoroutine(StartStageCoroutine());
+        StartCoroutine(PlayStageCoroutine());
     }
 
-    public IEnumerator StartStageCoroutine()
+    public IEnumerator PlayStageCoroutine()
     {
+        shop.SetActive(false);
         startButton.SetActive(false);
+        isPlaying = true;
+        diedMonsterNum = 0;
+        
         for (int i = 0; i <= 10; i++)
         {
             yield return null;
@@ -40,11 +50,39 @@ public class StageManager : MonoBehaviour
         
         SoundManager.inst.PlayBGM(GameManager.inst.stageBgm,0.2f);
         SoundManager.inst.bgmBpm = 105f;
+
+        monsters.Clear();
+        for (int i = 0; i < GetMonNumInLevel(); i++)
+        {
+            Monster curMon = Instantiate(GameManager.inst.monsterPrefabs[0],roads[0].transform.position,quaternion.identity);
+            curMon.spawnIndex = i;
+            monsters.Add(curMon);
+        }
+    }
+
+    public int GetMonNumInLevel()
+    {
+        return 3 + 2 * stageLevel;
+    }
+    public IEnumerator EndStageCoroutine()
+    {
+        isPlaying = false;
+        shop.SetActive(true);
+        startButton.SetActive(true);
+        
+        for (int i = 0; i <= 10; i++)
+        {
+            yield return null;
+            beatSquare.Width = Mathf.Lerp(beatSquare.Width, 300f, i / 10f);
+        }
+        
+        SoundManager.inst.PlayBGM(GameManager.inst.defaultBgm,0.2f);
+        SoundManager.inst.bgmBpm = 84f;
     }
 
     public void SpawnMonster(int monsterIndex)
     {
-        Instantiate(GameManager.inst.monsterPrefabs[monsterIndex]);
+        Instantiate(GameManager.inst.monsterPrefabs[monsterIndex],roads[0].transform.position,quaternion.identity);
     }
 
     public void BuyCharacter(int chacterIndex)
@@ -54,12 +92,9 @@ public class StageManager : MonoBehaviour
             SetSelectCharacter(selectCharacter);
         }
 
-        
-        GameObject[] allCharacter = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject character in allCharacter)
+        foreach (Character character in characters)
         {
-            character.GetComponent<Character>().SetInteractive(false);
+            character.SetInteractive(false);
         }
         
         spawnCharacter = Instantiate(GameManager.inst.characterPrefabs[chacterIndex]);
@@ -92,6 +127,17 @@ public class StageManager : MonoBehaviour
     {
         GameManager.inst.curStage = this;
         StartCoroutine(InitializeRoads());
+    }
+
+    private void Update()
+    {
+        if (isPlaying)
+        {
+            if (diedMonsterNum == GetMonNumInLevel())
+            {
+                StartCoroutine(EndStageCoroutine());
+            }
+        }
     }
 
     IEnumerator InitializeRoads()

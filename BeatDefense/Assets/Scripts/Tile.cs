@@ -16,7 +16,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isSelect = false;
     public ShapeRenderer selectCover = null;
 
-    public Character characterOnTile = null;
 
     void Start()
     {
@@ -71,13 +70,12 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (canSelect&& spawnCharacter)
         {
             spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack,10f);
-            characterOnTile = spawnCharacter;
+            GameManager.inst.curStage.characters.Add(spawnCharacter);
             GameManager.inst.curStage.spawnCharacter = null;
             
-            GameObject[] allCharacter = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject character in allCharacter)
+            foreach (Character character in GameManager.inst.curStage.characters)
             {
-                character.GetComponent<Character>().SetInteractive(true);
+                character.SetInteractive(true);
             }
             
             GameManager.inst.curStage.SetSelectCharacter(spawnCharacter);
