@@ -20,11 +20,14 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
     protected int fullBeat = 4;
 
     public GameObject characterMesh;
+    [HideInInspector] public Outline outline;
     public GameObject range;
     protected Disc rangeDisc;
-    protected Outline outline;
     protected bool isSelected = false;
     protected bool canInteractive = true;
+
+    private Collider collider;
+    protected bool isAttack = false;
     
     protected virtual void Awake()
     {
@@ -36,6 +39,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
         }
 
         outline = characterMesh.GetComponent<Outline>();
+        collider = GetComponent<Collider>();
     }
 
     protected virtual void Start()
@@ -56,7 +60,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
         if (prevBeat != curBeat)
         {
-            characterMesh.transform.DOScaleY(0.85f, 0.05f).SetLoops(2, LoopType.Yoyo);
+            characterMesh.transform.DOScaleY(0.75f, 0.05f).SetLoops(2, LoopType.Yoyo);
         }
 
         if (isSelected)
@@ -70,16 +74,16 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
         canInteractive = _canInteractive;
         if (canInteractive)
         {
-            GetComponent<Collider>().enabled = true;
+            collider.enabled = true;
         }
         else
         {
-            GetComponent<Collider>().enabled = false;
+            collider.enabled = false;
         }
     }
 
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         anim.SetTrigger("AttackTrigger");
     }

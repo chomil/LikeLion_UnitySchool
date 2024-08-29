@@ -1349,9 +1349,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be482fbf4a1556a42aca55838247ce9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterType: 0
+  characterType: 3
   level: 0
   characterMesh: {fileID: 7705611564829764936}
+  outline: {fileID: 0}
   range: {fileID: 0}
   Hp: 3
   HpLine: {fileID: 1991747025268715681}

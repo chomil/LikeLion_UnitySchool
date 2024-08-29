@@ -28,7 +28,7 @@ public class Monster : Character
 
         transform.position = pos;
         
-        Invoke(nameof(Move),spawnIndex);
+        Invoke(nameof(Move),spawnIndex*2f);
     }
 
     public void Damaged(int damage)
@@ -55,7 +55,7 @@ public class Monster : Character
     {        
         Tile curTile = GameManager.inst.curStage.roads[roadIndex];
         transform.DOKill(false);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
 

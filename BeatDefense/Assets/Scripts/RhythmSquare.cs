@@ -11,7 +11,7 @@ public class RhythmSquare : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.anyKeyDown)
         {
             if (GameManager.inst.curStage.isPlaying)
             {

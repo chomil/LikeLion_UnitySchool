@@ -13,11 +13,19 @@ public class Character_Sword : Character
     {
         base.Update();
         
-        targetMonster = null;
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        for (int i = 0; i < monsters.Length; i++)
+        if (isAttack)
         {
-            Monster curMon = monsters[i].GetComponent<Monster>();
+            return;
+        }
+        
+        targetMonster = null;
+
+        foreach (Monster curMon in GameManager.inst.curStage.monsters)
+        {
+            if (!curMon)
+            {
+                continue;
+            }
             if (curMon.Hp == 0)
             {
                 continue;
@@ -30,29 +38,25 @@ public class Character_Sword : Character
                 break;
             }
         }
-        
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (SoundManager.inst.CompareBeat(fullBeat, 3))
-            {
-                Attack();
-            }
-            else
-            {
-                
-            }
-        }
-
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         base.Attack();
+        StartCoroutine(AttackCoroutine());
+    }
+
+    public IEnumerator AttackCoroutine()
+    {
+        isAttack = true;
+        yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {
             targetMonster.Damaged(1);
         }
+        yield return new WaitForSeconds(0.3f);
+        
+        isAttack = false;
     }
     
 }

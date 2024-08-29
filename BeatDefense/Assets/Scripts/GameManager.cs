@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public List<Character> characterPrefabs;
     public List<Monster> monsterPrefabs;
+    public RhythmNote notePrefab;
 
     public TextMeshProUGUI coinText;
     public int coin = 0;
