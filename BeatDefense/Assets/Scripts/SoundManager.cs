@@ -142,8 +142,8 @@ public class SoundManager : MonoBehaviour
 
         float diff = beat - (float)checkBeat;
 
-        Debug.Log(diff);
-        if (Math.Abs(diff) <= tolerance)
+        //Debug.Log(diff);
+        if (Math.Abs(diff) <= tolerance || (Math.Abs(diff) >= 4f-tolerance && Math.Abs(diff) <= 4f+tolerance))
         {
             return true;
         }

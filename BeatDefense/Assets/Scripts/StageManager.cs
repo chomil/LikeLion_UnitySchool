@@ -8,6 +8,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class StageManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class StageManager : MonoBehaviour
 
     public GameObject noteGround;
     public List<RhythmNote> notes = new List<RhythmNote>();
+    public RhythmSquare rhythmSquare;
 
 
     public void StartStage()
@@ -48,7 +50,6 @@ public class StageManager : MonoBehaviour
         isPlaying = true;
         diedMonsterNum = 0;
 
-        noteGround.GetComponent<RectTransform>().DOSizeDelta(new Vector2(1500f, 120f), 0.5f);
 
         for (int i = 0; i <= 10; i++)
         {
@@ -64,49 +65,75 @@ public class StageManager : MonoBehaviour
         {
             curNote.ResetNote();
         }
+
+        Dictionary<CharacterType, List<Character>> typeCount = new Dictionary<CharacterType, List<Character>>();
+        typeCount.Add(CharacterType.Sword, new List<Character>());
+        typeCount.Add(CharacterType.Bow, new List<Character>());
+        typeCount.Add(CharacterType.Magic, new List<Character>());
         foreach (Character curCharacter in characters)
         {
             curCharacter.SetInteractive(false);
+            typeCount[curCharacter.characterType].Add(curCharacter);
+        }
 
-            //0,1/2,3/4,5/6,7
-            if (curCharacter.characterType == CharacterType.Sword)
+        //0,1/2,3/4,5/6,7
+        if (typeCount[CharacterType.Sword].Count > 0)
+        {
+            int randomIndex = Random.Range(6, 8);
+            foreach (Character curCharacter in typeCount[CharacterType.Sword])
             {
-                notes[6].linkedCharacter.Add(curCharacter);
-                if (notes[6].type == KeyType.None)
-                {
-                    notes[6].SetNote(KeyType.Down);
-                }
+                notes[randomIndex].linkedCharacter.Add(curCharacter);
             }
-            else if (curCharacter.characterType == CharacterType.Bow)
-            {
-                notes[3].linkedCharacter.Add(curCharacter);
 
-                if (notes[3].type == KeyType.None)
-                {
-                    notes[3].SetNote(KeyType.Drag, KeyCode.None, 1);
-                    notes[5].SetLongNote(true,1);
-                }
+            if (notes[randomIndex].type == KeyType.None)
+            {
+                notes[randomIndex].SetNote(KeyType.Down);
             }
-            else if (curCharacter.characterType == CharacterType.Magic)
-            {
-                notes[0].linkedCharacter.Add(curCharacter);
+        }
 
-                if (notes[0].type == KeyType.None)
-                {
-                    notes[0].SetNote(KeyType.Drag, KeyCode.None, 2);
-                    notes[4].SetLongNote(true,2);
-                }
+        if (typeCount[CharacterType.Bow].Count > 0)
+        {
+            int randomIndex = Random.Range(2, 4);
+            foreach (Character curCharacter in typeCount[CharacterType.Bow])
+            {
+                notes[randomIndex].linkedCharacter.Add(curCharacter);
+            }
+
+            if (notes[randomIndex].type == KeyType.None)
+            {
+                notes[randomIndex].SetNote(KeyType.Drag, KeyCode.None, 1);
+                //notes[randomIndex + 2].SetLongNote(true, 1);
+            }
+        }
+
+        if (typeCount[CharacterType.Magic].Count > 0)
+        {
+            int randomIndex = Random.Range(0, 2);
+            foreach (Character curCharacter in typeCount[CharacterType.Magic])
+            {
+                notes[randomIndex].linkedCharacter.Add(curCharacter);
+            }
+
+            if (notes[randomIndex].type == KeyType.None)
+            {
+                notes[randomIndex].SetNote(KeyType.Drag, KeyCode.None, 2);
+                //notes[randomIndex + 4].SetLongNote(true, 2);
             }
         }
 
         monsters.Clear();
-        for (int i = 0; i < GetMonNumInLevel(); i++)
+        for (int i = 0;
+             i < GetMonNumInLevel();
+             i++)
         {
             Monster curMon = Instantiate(GameManager.inst.monsterPrefabs[0], roads[0].transform.position,
                 quaternion.identity);
             curMon.spawnIndex = i;
             monsters.Add(curMon);
         }
+
+        yield return new WaitForSeconds(1f);
+        noteGround.GetComponent<RectTransform>().DOSizeDelta(new Vector2(1500f, 120f), 1f);
     }
 
     public int GetMonNumInLevel()
@@ -209,7 +236,7 @@ public class StageManager : MonoBehaviour
             RhythmNote curNote = Instantiate(GameManager.inst.notePrefab, noteGround.transform);
             curNote.InitNote(i, Vector3.right);
             notes.Add(curNote);
-            
+
             curNote = Instantiate(GameManager.inst.notePrefab, noteGround.transform);
             curNote.InitNote(i, Vector3.left);
             notes.Add(curNote);

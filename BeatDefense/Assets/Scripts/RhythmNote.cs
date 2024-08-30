@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -19,7 +20,6 @@ public class RhythmNote : MonoBehaviour
 
     private Vector3 spawnPos;
     public Vector3 moveDir = Vector3.right;
-    public bool isLongNote = false;
     public float dragTime = 0f;
     public int dragTargetBeat = 0;
     public int keyBeat = 0;
@@ -30,17 +30,6 @@ public class RhythmNote : MonoBehaviour
 
     void Start()
     {
-    }
-
-    public void SetLongNote(bool _isLongNote, int _dragTargetBeat)
-    {
-        isLongNote = _isLongNote;
-        dragTargetBeat = _dragTargetBeat;
-        if (isLongNote)
-        {
-            longNote.SetActive(true);
-            longNote.transform.localScale = new Vector3(moveDir.x * _dragTargetBeat, 1, 1);
-        }
     }
 
     public void InitNote(int _keyBeat, Vector3 _moveDir)
@@ -78,6 +67,13 @@ public class RhythmNote : MonoBehaviour
             keyNote.SetActive(true);
             keyNoteText.text = key.ToString();
             GetComponent<RectTransform>().SetAsLastSibling();
+
+            if (type == KeyType.Drag)
+            {
+                longNote.SetActive(true);
+                longNote.transform.localScale = new Vector3(-moveDir.x , 1, 1);
+                longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(dragTargetBeat * 250f, 35f);
+            }
         }
     }
 
@@ -102,37 +98,16 @@ public class RhythmNote : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.inst.curStage.isPlaying == false)
+        {
+            return;
+        }
+        
         transform.localPosition = spawnPos + moveDir * (SoundManager.inst.curBeatFloat * 250f);
 
         if (transform.localPosition.x < 0 && moveDir.x < 0 || transform.localPosition.x > 0 && moveDir.x > 0)
         {
             transform.localPosition -= moveDir * 1000f;
-        }
-
-        if (isLongNote)
-        {
-            if (moveDir.x > 0)
-            {
-                if (transform.localPosition.x + moveDir.x * dragTargetBeat * 250f > 0)
-                {
-                    longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(-transform.localPosition.x, 35f);
-                }
-                else
-                {
-                    longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(dragTargetBeat * 250f, 35f);
-                }
-            }
-            else
-            {
-                if (transform.localPosition.x + moveDir.x * dragTargetBeat * 250f < 0)
-                {
-                    longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(transform.localPosition.x, 35f);
-                }
-                else
-                {
-                    longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(dragTargetBeat * 250f, 35f);
-                }
-            }
         }
 
 
@@ -141,6 +116,17 @@ public class RhythmNote : MonoBehaviour
             if (SoundManager.inst.curBeat == keyBeat)
             {
                 StartCoroutine(ChangeKey(GetRandomKeycode()));
+                if (type == KeyType.Drag)
+                {
+                    if (moveDir.x > 0)
+                    {
+                        GameManager.inst.curStage.rhythmSquare.longNoteL.sizeDelta = new Vector2(dragTargetBeat*250f,35f);
+                    }
+                    else
+                    {
+                        GameManager.inst.curStage.rhythmSquare.longNoteR.sizeDelta = new Vector2(dragTargetBeat*250f,35f);
+                    }
+                }
             }
         }
 
@@ -161,8 +147,7 @@ public class RhythmNote : MonoBehaviour
                     Debug.Log("GetKeyDown");
                 }
             }
-
-            if (type == KeyType.Drag)
+            else if (type == KeyType.Drag)
             {                
                 if (SoundManager.inst.CompareBeat(4, keyBeat))
                 {
@@ -179,6 +164,23 @@ public class RhythmNote : MonoBehaviour
             }
         }
 
+        
+        if (Input.GetKey(dragKey))
+        {
+            if (type == KeyType.Drag)
+            {
+                if (SoundManager.inst.CompareBeat(4, (keyBeat + dragTargetBeat + 1) % 4)) //드래그 중인 키가 1박자 이상 늦춰지면
+                {
+                    dragKey = KeyCode.None;
+                    foreach (Character curCharacter in linkedCharacter)
+                    {
+                        curCharacter.CancelAttack();
+                    }
+
+                    Debug.Log("CancelAttack");
+                }
+            }
+        }
         if (Input.GetKeyUp(dragKey))
         {
             dragKey = KeyCode.None;
@@ -198,23 +200,6 @@ public class RhythmNote : MonoBehaviour
                     {
                         curCharacter.CancelAttack();
                     }
-                    Debug.Log("CancelAttack");
-                }
-            }
-        }
-
-        if (Input.GetKey(dragKey))
-        {
-            if (type == KeyType.Drag)
-            {
-                if (SoundManager.inst.CompareBeat(4, (keyBeat + dragTargetBeat + 1) % 4)) //드래그 중인 키가 1박자 이상 늦춰지면
-                {
-                    dragKey = KeyCode.None;
-                    foreach (Character curCharacter in linkedCharacter)
-                    {
-                        curCharacter.CancelAttack();
-                    }
-
                     Debug.Log("CancelAttack");
                 }
             }
