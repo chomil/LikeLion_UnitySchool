@@ -14,10 +14,9 @@ public enum CharacterType
 
 public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler
 {
-    public CharacterType characterType;
+    [HideInInspector] public CharacterType characterType;
     public int level;
     protected Animator anim;
-    protected int fullBeat = 4;
 
     public GameObject characterMesh;
     [HideInInspector] public Outline outline;
@@ -44,13 +43,6 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
     protected virtual void Start()
     {
-        
-        switch (characterType)
-        {
-            case CharacterType.Sword:
-                fullBeat = 4;
-                break;
-        }
     }
 
     protected virtual void Update()
@@ -86,6 +78,15 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
     public virtual void Attack()
     {
         anim.SetTrigger("AttackTrigger");
+    }
+
+    public virtual void Shoot()
+    {
+        anim.SetTrigger("ShootTrigger");
+    }
+    public virtual void CancelAttack()
+    {
+        anim.SetTrigger("IdleTrigger");
     }
 
     public void SetSelect(bool _isSelect)

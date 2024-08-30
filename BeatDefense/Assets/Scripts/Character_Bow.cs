@@ -5,22 +5,26 @@ using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character_Sword : Character
+public class Character_Bow : Character
 {
     private Monster targetMonster = null;
-
+    
     protected override void Start()
     {
         base.Start();
-        characterType = CharacterType.Sword;
+        characterType = CharacterType.Bow;
     }
-
     protected override void Update()
     {
         base.Update();
         
         if (isAttack)
         {
+            if (targetMonster)
+            {
+                Vector3 lookDir = targetMonster.transform.position - transform.position;
+                characterMesh.transform.forward = lookDir;
+            }
             return;
         }
         
@@ -49,19 +53,30 @@ public class Character_Sword : Character
     public override void Attack()
     {
         base.Attack();
+        
+        isAttack = true;
+    }
+
+    public override void Shoot()
+    {
+        base.Shoot();
         StartCoroutine(AttackCoroutine());
+    }
+
+
+    public override void CancelAttack()
+    {
+        base.CancelAttack();
     }
 
     public IEnumerator AttackCoroutine()
     {
-        isAttack = true;
         yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {
             targetMonster.Damaged(1);
         }
         yield return new WaitForSeconds(0.3f);
-        
         isAttack = false;
     }
     

@@ -79,20 +79,22 @@ public class StageManager : MonoBehaviour
             }
             else if (curCharacter.characterType == CharacterType.Bow)
             {
-                notes[2].linkedCharacter.Add(curCharacter);
+                notes[3].linkedCharacter.Add(curCharacter);
 
-                if (notes[2].type == KeyType.None)
+                if (notes[3].type == KeyType.None)
                 {
-                    notes[2].SetNote(KeyType.Drag, KeyCode.None, 1f);
+                    notes[3].SetNote(KeyType.Drag, KeyCode.None, 1);
+                    notes[5].SetLongNote(true,1);
                 }
             }
             else if (curCharacter.characterType == CharacterType.Magic)
             {
-                notes[1].linkedCharacter.Add(curCharacter);
+                notes[0].linkedCharacter.Add(curCharacter);
 
-                if (notes[1].type == KeyType.None)
+                if (notes[0].type == KeyType.None)
                 {
-                    notes[1].SetNote(KeyType.Drag, KeyCode.None, 2f);
+                    notes[0].SetNote(KeyType.Drag, KeyCode.None, 2);
+                    notes[4].SetLongNote(true,2);
                 }
             }
         }
