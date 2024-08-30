@@ -25,7 +25,12 @@ public class Character_Magician : Character
     public override void Shoot()
     {
         base.Shoot();
-        
+        StartCoroutine(AttackCoroutine());
+    }
+    public IEnumerator AttackCoroutine()
+    {
+        outline.enabled = true;
+        yield return new WaitForSeconds(0.1f);
         foreach (Monster curMon in GameManager.inst.curStage.monsters)
         {
             if (!curMon)
@@ -39,11 +44,12 @@ public class Character_Magician : Character
             if (Vector3.Magnitude( curMon.transform.position - transform.position) <= rangeDisc.Radius)
             {
                 curMon.Damaged(1);
-                break;
             }
         }
+        yield return new WaitForSeconds(0.3f);
+        outline.enabled = false;
+        isAttack = false;
     }
-
 
     public override void CancelAttack()
     {

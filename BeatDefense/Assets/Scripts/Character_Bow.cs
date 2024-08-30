@@ -71,12 +71,14 @@ public class Character_Bow : Character
 
     public IEnumerator AttackCoroutine()
     {
+        outline.enabled = true;
         yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {
             targetMonster.Damaged(1);
         }
         yield return new WaitForSeconds(0.3f);
+        outline.enabled = false;
         isAttack = false;
     }
     

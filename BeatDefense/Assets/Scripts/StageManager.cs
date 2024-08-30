@@ -151,6 +151,7 @@ public class StageManager : MonoBehaviour
 
         foreach (Character curCharacter in characters)
         {
+            curCharacter.CancelAttack();
             curCharacter.SetInteractive(true);
         }
 
@@ -159,6 +160,7 @@ public class StageManager : MonoBehaviour
             yield return null;
             beatSquare.Width = Mathf.Lerp(beatSquare.Width, 300f, i / 10f);
         }
+        beatSquare.Width = 300f;
 
         SoundManager.inst.PlayBGM(GameManager.inst.defaultBgm, 0.2f);
         SoundManager.inst.bgmBpm = 84f;

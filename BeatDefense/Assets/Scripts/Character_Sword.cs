@@ -55,6 +55,7 @@ public class Character_Sword : Character
     public IEnumerator AttackCoroutine()
     {
         isAttack = true;
+        outline.enabled = true;
         yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {
@@ -62,6 +63,7 @@ public class Character_Sword : Character
         }
         yield return new WaitForSeconds(0.3f);
         
+        outline.enabled = false;
         isAttack = false;
     }
     

@@ -15,8 +15,6 @@ public class SoundManager : MonoBehaviour
     public int prevBeat = 0;
     public int curBeat = 0;
     public float curBeatFloat = 0;
-    private float eyeOffset = 0.2f;
-    private float beatOffset = -0.2f;
 
     private void Awake()
     {
@@ -133,12 +131,12 @@ public class SoundManager : MonoBehaviour
         curBeatFloat = (beat - (int)beat) + cnt;
     }
 
-    public bool CompareBeat(int fullBeat, int checkBeat, float tolerance = 0.5f)
+    public bool CompareBeat(int fullBeat, int checkBeat, float tolerance = 0.3f)
     {
         float bps = bgmBpm / 60f * ((float)fullBeat / 4f);
         float beat = bgmAudioSource.time * bps;
         beat -= (int)math.floor(beat);
-        beat += curBeat + beatOffset;
+        beat += curBeat;
 
         float diff = beat - (float)checkBeat;
 

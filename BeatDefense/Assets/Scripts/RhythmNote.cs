@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum KeyType
 {
@@ -35,7 +37,7 @@ public class RhythmNote : MonoBehaviour
     public void InitNote(int _keyBeat, Vector3 _moveDir)
     {
         linkedCharacter.Clear();
-        
+
         type = KeyType.None;
         key = KeyCode.None;
         keyBeat = _keyBeat;
@@ -57,7 +59,11 @@ public class RhythmNote : MonoBehaviour
     public void SetNote(KeyType _type, KeyCode _key = KeyCode.None, int _dragTargetBeat = 0)
     {
         type = _type;
-        key = _key == KeyCode.None ? GetRandomKeycode() : _key;
+        if (type != KeyType.None && _key == KeyCode.None)
+        {
+            _key = GetRandomKeycode();
+        }
+        key = _key;
         dragTargetBeat = _dragTargetBeat;
 
         spawnPos = new Vector3((-moveDir.x * keyBeat * 250f), 0f, 0f);
@@ -71,14 +77,25 @@ public class RhythmNote : MonoBehaviour
             if (type == KeyType.Drag)
             {
                 longNote.SetActive(true);
-                longNote.transform.localScale = new Vector3(-moveDir.x , 1, 1);
-                longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(dragTargetBeat * 250f, 35f);
+                longNote.transform.localScale = new Vector3(-moveDir.x, 1, 1);
+                longNote.GetComponent<RectTransform>().sizeDelta = new Vector2(dragTargetBeat * 250f, 25f);
             }
+        }
+        else
+        {
+            keyNote.SetActive(false);
+            keyNoteText.text = "";
         }
     }
 
-    public IEnumerator ChangeKey(KeyCode _key)
+    public IEnumerator ChangeKey(KeyCode _key = KeyCode.None)
     {
+        if (type != KeyType.None && _key == KeyCode.None)
+        {
+            _key = GetRandomKeycode();
+        }
+
+        GetComponent<RectTransform>().SetAsLastSibling();
         if (type != KeyType.None)
         {
             keyNote.SetActive(true);
@@ -91,8 +108,27 @@ public class RhythmNote : MonoBehaviour
 
     public KeyCode GetRandomKeycode()
     {
-        KeyCode[] keys = { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D };
-        return keys[Random.Range(0, keys.Length)];
+        List<KeyCode> keys = new List<KeyCode>();
+        keys.Add(KeyCode.W);
+        keys.Add(KeyCode.A);
+        keys.Add(KeyCode.S);
+        keys.Add(KeyCode.D);
+
+        foreach (RhythmNote curNote in GameManager.inst.curStage.notes)
+        {
+            if (curNote == this || curNote.keyNote.activeSelf==false)
+            {
+                continue;
+            }
+
+            KeyCode curKey = (KeyCode)Enum.Parse(typeof(KeyCode), curNote.keyNoteText.text);
+            if (keys.Contains(curKey))
+            {
+                keys.Remove(curKey);
+            }
+        }
+
+        return keys[Random.Range(0, keys.Count)];
     }
 
 
@@ -102,7 +138,7 @@ public class RhythmNote : MonoBehaviour
         {
             return;
         }
-        
+
         transform.localPosition = spawnPos + moveDir * (SoundManager.inst.curBeatFloat * 250f);
 
         if (transform.localPosition.x < 0 && moveDir.x < 0 || transform.localPosition.x > 0 && moveDir.x > 0)
@@ -115,16 +151,22 @@ public class RhythmNote : MonoBehaviour
         {
             if (SoundManager.inst.curBeat == keyBeat)
             {
-                StartCoroutine(ChangeKey(GetRandomKeycode()));
+                if (type != KeyType.None)
+                {
+                    StartCoroutine(ChangeKey());
+                }
+
                 if (type == KeyType.Drag)
                 {
                     if (moveDir.x > 0)
                     {
-                        GameManager.inst.curStage.rhythmSquare.longNoteL.sizeDelta = new Vector2(dragTargetBeat*250f,35f);
+                        GameManager.inst.curStage.rhythmSquare.longNoteL.sizeDelta =
+                            new Vector2(dragTargetBeat * 250f, 25f);
                     }
                     else
                     {
-                        GameManager.inst.curStage.rhythmSquare.longNoteR.sizeDelta = new Vector2(dragTargetBeat*250f,35f);
+                        GameManager.inst.curStage.rhythmSquare.longNoteR.sizeDelta =
+                            new Vector2(dragTargetBeat * 250f, 25f);
                     }
                 }
             }
@@ -148,7 +190,7 @@ public class RhythmNote : MonoBehaviour
                 }
             }
             else if (type == KeyType.Drag)
-            {                
+            {
                 if (SoundManager.inst.CompareBeat(4, keyBeat))
                 {
                     dragKey = key;
@@ -164,7 +206,7 @@ public class RhythmNote : MonoBehaviour
             }
         }
 
-        
+
         if (Input.GetKey(dragKey))
         {
             if (type == KeyType.Drag)
@@ -181,17 +223,19 @@ public class RhythmNote : MonoBehaviour
                 }
             }
         }
+
         if (Input.GetKeyUp(dragKey))
         {
             dragKey = KeyCode.None;
             if (type == KeyType.Drag)
             {
-                if (SoundManager.inst.CompareBeat(4, (keyBeat+dragTargetBeat)%4))
+                if (SoundManager.inst.CompareBeat(4, (keyBeat + dragTargetBeat) % 4))
                 {
                     foreach (Character curCharacter in linkedCharacter)
                     {
                         curCharacter.Shoot();
                     }
+
                     Debug.Log("Shoot");
                 }
                 else //cancel attack
@@ -200,6 +244,7 @@ public class RhythmNote : MonoBehaviour
                     {
                         curCharacter.CancelAttack();
                     }
+
                     Debug.Log("CancelAttack");
                 }
             }
