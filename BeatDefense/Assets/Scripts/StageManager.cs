@@ -23,7 +23,6 @@ public class StageManager : MonoBehaviour
 
     public GameObject shop;
 
-    public Rectangle beatSquare;
     public GameObject startButton;
 
     public int stageLevel = 1;
@@ -33,7 +32,6 @@ public class StageManager : MonoBehaviour
     public GameObject noteGround;
     public List<RhythmNote> notes = new List<RhythmNote>();
     public RhythmSquare rhythmSquare;
-
 
     public void StartStage()
     {
@@ -54,7 +52,7 @@ public class StageManager : MonoBehaviour
         for (int i = 0; i <= 10; i++)
         {
             yield return null;
-            beatSquare.Width = Mathf.Lerp(beatSquare.Width, 100f, i / 10f);
+            rhythmSquare.rect.Width = Mathf.Lerp(rhythmSquare.rect.Width, 100f, i / 10f);
         }
 
         SoundManager.inst.PlayBGM(GameManager.inst.stageBgm, 0.2f);
@@ -91,24 +89,23 @@ public class StageManager : MonoBehaviour
             }
         }
 
+        int randomIndexBow = Random.Range(2, 4);
         if (typeCount[CharacterType.Bow].Count > 0)
         {
-            int randomIndex = Random.Range(2, 4);
             foreach (Character curCharacter in typeCount[CharacterType.Bow])
             {
-                notes[randomIndex].linkedCharacter.Add(curCharacter);
+                notes[randomIndexBow].linkedCharacter.Add(curCharacter);
             }
 
-            if (notes[randomIndex].type == KeyType.None)
+            if (notes[randomIndexBow].type == KeyType.None)
             {
-                notes[randomIndex].SetNote(KeyType.Drag, KeyCode.None, 1);
-                //notes[randomIndex + 2].SetLongNote(true, 1);
+                notes[randomIndexBow].SetNote(KeyType.Drag, KeyCode.None, 1);
             }
         }
 
         if (typeCount[CharacterType.Magic].Count > 0)
         {
-            int randomIndex = Random.Range(0, 2);
+            int randomIndex = randomIndexBow == 2 ? 1 : 0;
             foreach (Character curCharacter in typeCount[CharacterType.Magic])
             {
                 notes[randomIndex].linkedCharacter.Add(curCharacter);
@@ -117,7 +114,6 @@ public class StageManager : MonoBehaviour
             if (notes[randomIndex].type == KeyType.None)
             {
                 notes[randomIndex].SetNote(KeyType.Drag, KeyCode.None, 2);
-                //notes[randomIndex + 4].SetLongNote(true, 2);
             }
         }
 
@@ -158,9 +154,9 @@ public class StageManager : MonoBehaviour
         for (int i = 0; i <= 10; i++)
         {
             yield return null;
-            beatSquare.Width = Mathf.Lerp(beatSquare.Width, 300f, i / 10f);
+            rhythmSquare.rect.Width = Mathf.Lerp(rhythmSquare.rect.Width, 300f, i / 10f);
         }
-        beatSquare.Width = 300f;
+        rhythmSquare.rect.Width = 300f;
 
         SoundManager.inst.PlayBGM(GameManager.inst.defaultBgm, 0.2f);
         SoundManager.inst.bgmBpm = 84f;

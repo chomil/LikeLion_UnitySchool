@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Shapes;
 using UnityEngine;
 
 public class RhythmSquare : MonoBehaviour
 {
+    public Rectangle rect;
     private Animation popAnim;
     public RectTransform longNoteR;
     public RectTransform longNoteL;
@@ -11,6 +13,7 @@ public class RhythmSquare : MonoBehaviour
     void Start()
     {
         popAnim = GetComponent<Animation>();
+        rect = GetComponent<Rectangle>();
         GameManager.inst.curStage.rhythmSquare = this;
     }
     void Update()
