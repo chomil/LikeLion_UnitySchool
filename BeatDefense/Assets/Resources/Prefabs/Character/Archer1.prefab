@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 1
-  level: 0
+  level: 1
   characterMesh: {fileID: 903894769423537952}
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}

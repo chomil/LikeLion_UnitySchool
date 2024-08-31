@@ -8898,7 +8898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 0
-  level: 0
+  level: 1
   characterMesh: {fileID: 8349602280372879085}
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}

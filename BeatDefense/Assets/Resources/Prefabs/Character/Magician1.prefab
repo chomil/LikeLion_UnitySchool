@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 0
-  level: 0
+  level: 1
   characterMesh: {fileID: 507464089502371400}
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}
@@ -465,7 +465,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1120235821323556563}
-  - component: {fileID: 255727229304431800}
   - component: {fileID: 5721781177310789801}
   m_Layer: 0
   m_Name: Magician1
@@ -551,27 +550,6 @@ Transform:
   - {fileID: 2156695654367138337}
   m_Father: {fileID: 438990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &255727229304431800
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507464089502371400}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 02ded044b8e0963439276550f50be6f9, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5721781177310789801
 MonoBehaviour:
   m_ObjectHideFlags: 0
