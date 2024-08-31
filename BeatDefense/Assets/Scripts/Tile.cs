@@ -26,12 +26,12 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         selectCover.Color = canSelect == false ? Color.red : Color.white;
     }
 
-    private void SetCanSelect(bool _canSelect)
+    public void SetCanSelect(bool _canSelect)
     {
         canSelect = _canSelect;
         selectCover.Color = canSelect == false ? Color.red : Color.white;
     }
-    private void SetSelect(bool _isSelect)
+    public void SetSelect(bool _isSelect)
     {
         isSelect = _isSelect;
         selectCover.gameObject.SetActive(isSelect);
@@ -39,8 +39,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SetSelect(true);
-
         Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
         if (spawnCharacter)
         {
@@ -48,40 +46,23 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             spawnPos.y = 1.2f;
             spawnCharacter.transform.position = spawnPos;
             spawnCharacter.SetSelect(true);
+            
+            SetSelect(true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SetSelect(false);
+        Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
+        if (spawnCharacter)
+        {
+            SetSelect(false);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        GameManager.inst.curStage.SpawnCharacterOnTile(this);
         SetSelect(false);
-        
-        
-        Character spawnCharacter = GameManager.inst.curStage.spawnCharacter;
-        SpawnOnTile(spawnCharacter);
-    }
-
-    public void SpawnOnTile(Character spawnCharacter)
-    {
-        if (canSelect&& spawnCharacter)
-        {
-            spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack,10f);
-            GameManager.inst.curStage.characters.Add(spawnCharacter);
-            GameManager.inst.curStage.spawnCharacter = null;
-            
-            foreach (Character character in GameManager.inst.curStage.characters)
-            {
-                character.SetInteractive(true);
-            }
-            
-            GameManager.inst.curStage.SetSelectCharacter(spawnCharacter);
-            SetCanSelect(false);
-            
-            GameManager.inst.curStage.shop.SetActive(true);
-        }
     }
 }

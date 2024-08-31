@@ -19,7 +19,7 @@ public class Monster : Character
 
     public bool canHit = false;
     public int spawnIndex = 0;
-    
+
 
     protected override void Start()
     {
@@ -27,19 +27,20 @@ public class Monster : Character
         pos.y = 1;
 
         transform.position = pos;
-        
-        Invoke(nameof(Move),spawnIndex*2f);
+
+        Invoke(nameof(Move), spawnIndex * 2f);
     }
 
     public void Damaged(int damage)
     {
-        if (Hp == 0 || canHit==false)
+        if (Hp == 0 || canHit == false)
         {
             return;
         }
+
         Hp -= damage;
         Hp = Hp < 0 ? 0 : Hp;
-        HpLine.End = new Vector3((float)Hp / (float)MaxHp,0,0);
+        HpLine.End = new Vector3((float)Hp / (float)MaxHp, 0, 0);
         if (Hp == 0)
         {
             anim.SetTrigger("DieTrigger");
@@ -52,10 +53,27 @@ public class Monster : Character
     }
 
     public IEnumerator DieCoroutine()
-    {        
+    {
         Tile curTile = GameManager.inst.curStage.roads[roadIndex];
         transform.DOKill(false);
         yield return new WaitForSeconds(1f);
+
+        Effect coinEffect =
+            Instantiate(GameManager.inst.effectPrefabs[0], GameManager.inst.mainCanvas.transform); //Spawn Coin
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        screenPos.z = 0;
+        screenPos.x -= Screen.width / 2f;
+        screenPos.y -= Screen.height / 2f;
+        coinEffect.transform.localPosition = screenPos;
+        coinEffect.transform.DOLocalMove(new Vector3(-900f, -480f, 0f), 1f).SetEase(Ease.InBack,1f)
+            .OnComplete(() =>
+                {
+                    GameManager.inst.AddCoin(10);
+                    coinEffect.DestroyEffect();
+                }
+            );
+
+
         Destroy(gameObject);
     }
 
@@ -65,15 +83,16 @@ public class Monster : Character
         {
             return;
         }
+
         base.Update();
     }
 
     void Move()
     {
         canHit = true;
-        
+
         Tile prevTile = GameManager.inst.curStage.roads[roadIndex];
-        
+
         roadIndex++;
         if (GameManager.inst.curStage.roads.Count <= roadIndex)
         {
@@ -82,7 +101,7 @@ public class Monster : Character
             Destroy(gameObject);
             return;
         }
-        
+
         Tile nextTile = GameManager.inst.curStage.roads[roadIndex];
         Vector3 pos = nextTile.transform.position;
         pos.y = 1;
@@ -91,7 +110,7 @@ public class Monster : Character
         dir.Normalize();
 
         characterMesh.transform.forward = dir;
-        
+
         transform.DOMove(pos, speed).SetEase(Ease.Linear).OnComplete(Move);
     }
 

@@ -20,8 +20,10 @@ public class GameManager : MonoBehaviour
 
     public List<Character> characterPrefabs;
     public List<Monster> monsterPrefabs;
+    public List<Effect> effectPrefabs;
     public RhythmNote notePrefab;
 
+    public Canvas mainCanvas;
     public TextMeshProUGUI coinText;
     public int coin = 0;
 
@@ -73,8 +75,6 @@ public class GameManager : MonoBehaviour
             string loadedJson = File.ReadAllText(filePath);
             gameData = JsonUtility.FromJson<GameData>(loadedJson);
             Debug.Log("게임 데이터를 불러왔습니다: " + Application.persistentDataPath);
-
-            Time.timeScale = gameData.gameSpeed;
         }
         else
         {

@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterType: 0
   level: 3
+  price: 30
   characterMesh: {fileID: 7321385621298119642}
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}

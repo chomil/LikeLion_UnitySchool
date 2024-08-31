@@ -16,6 +16,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 {
     [HideInInspector] public CharacterType characterType;
     public int level;
+    public int price;
     protected Animator anim;
 
     public GameObject characterMesh;

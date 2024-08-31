@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Shapes;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class StageManager : MonoBehaviour
     public GameObject noteGround;
     public List<RhythmNote> notes = new List<RhythmNote>();
     public RhythmSquare rhythmSquare;
+
+    public TextMeshProUGUI stageText;
 
     public void StartStage()
     {
@@ -118,9 +121,7 @@ public class StageManager : MonoBehaviour
         }
 
         monsters.Clear();
-        for (int i = 0;
-             i < GetMonNumInLevel();
-             i++)
+        for (int i = 0; i < GetMonNumInLevel(); i++)
         {
             Monster curMon = Instantiate(GameManager.inst.monsterPrefabs[0], roads[0].transform.position,
                 quaternion.identity);
@@ -143,6 +144,7 @@ public class StageManager : MonoBehaviour
         shop.SetActive(true);
         startButton.SetActive(true);
         stageLevel++;
+        stageText.text = $"Stage {stageLevel}";
         noteGround.GetComponent<RectTransform>().DOSizeDelta(new Vector2(0f, 120f), 0.5f);
 
         foreach (Character curCharacter in characters)
@@ -156,6 +158,7 @@ public class StageManager : MonoBehaviour
             yield return null;
             rhythmSquare.rect.Width = Mathf.Lerp(rhythmSquare.rect.Width, 300f, i / 10f);
         }
+
         rhythmSquare.rect.Width = 300f;
 
         SoundManager.inst.PlayBGM(GameManager.inst.defaultBgm, 0.2f);
@@ -169,6 +172,16 @@ public class StageManager : MonoBehaviour
 
     public void BuyCharacter(int chacterIndex)
     {
+        int price = GameManager.inst.characterPrefabs[chacterIndex].price;
+        if (price <= GameManager.inst.coin)
+        {
+            GameManager.inst.AddCoin(-price);
+        }
+        else
+        {
+            return;
+        }
+        
         if (selectCharacter)
         {
             SetSelectCharacter(selectCharacter);
@@ -185,6 +198,26 @@ public class StageManager : MonoBehaviour
         spawnCharacter.SetInteractive(false);
 
         shop.SetActive(false);
+    }
+    
+    public void SpawnCharacterOnTile(Tile spawnTile)
+    {
+        if (spawnTile.canSelect&& spawnCharacter)
+        {
+            spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack,10f);
+            characters.Add(spawnCharacter);
+            spawnCharacter = null;
+            
+            foreach (Character character in GameManager.inst.curStage.characters)
+            {
+                character.SetInteractive(true);
+            }
+            
+            SetSelectCharacter(spawnCharacter);
+            spawnTile.SetCanSelect(false);
+            
+            shop.SetActive(true);
+        }
     }
 
 
@@ -212,6 +245,9 @@ public class StageManager : MonoBehaviour
         GameManager.inst.curStage = this;
         StartCoroutine(InitializeRoads());
         InitializeNotes();
+        
+        GameManager.inst.AddCoin(50);
+        stageText.text = $"Stage {stageLevel}";
     }
 
     private void Update()
