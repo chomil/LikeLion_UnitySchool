@@ -8,6 +8,7 @@ using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -36,6 +37,8 @@ public class StageManager : MonoBehaviour
     public RhythmSquare rhythmSquare;
 
     public TextMeshProUGUI stageText;
+
+    public HomeHp homeHp;
 
     public void StartStage()
     {
@@ -279,7 +282,7 @@ public class StageManager : MonoBehaviour
         StartCoroutine(InitializeRoads());
         InitializeNotes();
 
-        GameManager.inst.AddCoin(5000);
+        GameManager.inst.AddCoin(50);
         stageText.text = $"Stage {stageLevel}";
     }
 

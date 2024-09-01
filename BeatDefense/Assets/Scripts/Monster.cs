@@ -121,6 +121,7 @@ public class Monster : Character
     {
         if (GameManager.inst.curStage.roads.Count <= targetRoadIndex)
         {
+            GameManager.inst.curStage.homeHp.Damaged(attDamage);
             characterMesh.transform.DOKill(false);
             transform.DOKill(false);
             Destroy(gameObject);

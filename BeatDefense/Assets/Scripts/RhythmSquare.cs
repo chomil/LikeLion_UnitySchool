@@ -18,6 +18,10 @@ public class RhythmSquare : MonoBehaviour
     }
     void Update()
     {
+        if (GameManager.inst.curStage.isPlaying == false)
+        {
+            rect.Width = 300f;
+        }
         if (Input.anyKeyDown)
         {
             if (GameManager.inst.curStage.isPlaying)
