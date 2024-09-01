@@ -9,31 +9,33 @@ using Sequence = Unity.VisualScripting.Sequence;
 
 public class Monster : Character
 {
-    private int roadIndex = 0;
+    private int targetRoadIndex = 0;
     private int MaxHp = 3;
     public int Hp = 3;
 
-    private float speed = 1f;
+    public float speed = 1f;
 
     public Line HpLine;
 
-    public bool canHit = false;
+    public bool isMove = false;
     public int spawnIndex = 0;
 
+    public float freezeMultiple = 1f;
+    public float freezeTime = 0f;
 
     protected override void Start()
     {
-        Vector3 pos = GameManager.inst.curStage.roads[roadIndex].transform.position;
+        Vector3 pos = GameManager.inst.curStage.roads[0].transform.position;
         pos.y = 1;
 
         transform.position = pos;
 
-        Invoke(nameof(Move), spawnIndex * 2f);
+        StartCoroutine(MoveCoroutine( spawnIndex * 2f));
     }
 
     public void Damaged(int damage)
     {
-        if (Hp == 0 || canHit == false)
+        if (Hp == 0 || isMove == false)
         {
             return;
         }
@@ -54,7 +56,6 @@ public class Monster : Character
 
     public IEnumerator DieCoroutine()
     {
-        Tile curTile = GameManager.inst.curStage.roads[roadIndex];
         transform.DOKill(false);
         yield return new WaitForSeconds(1f);
 
@@ -73,28 +74,52 @@ public class Monster : Character
                 }
             );
 
-
         Destroy(gameObject);
+    }
+    
+    public void SetFreeze(float _freezeMultiple, float _freezeTime)
+    {
+        if (freezeMultiple > _freezeMultiple)
+        {
+            freezeMultiple = _freezeMultiple;
+        }
+        freezeTime = _freezeTime;
     }
 
     protected override void Update()
     {
+        if (freezeTime > 0)
+        {
+            freezeTime -= Time.deltaTime;
+            if (freezeTime <= 0)
+            {
+                freezeMultiple = 1f;
+                freezeTime = 0f;
+            }
+        }
+        
         if (Hp == 0)
         {
             return;
         }
 
         base.Update();
+        
+        if (isMove)
+        {
+            Move();
+        }
+    }
+
+    public IEnumerator MoveCoroutine(float startTime)
+    {
+        yield return new WaitForSeconds(startTime);
+        isMove = true;
     }
 
     void Move()
     {
-        canHit = true;
-
-        Tile prevTile = GameManager.inst.curStage.roads[roadIndex];
-
-        roadIndex++;
-        if (GameManager.inst.curStage.roads.Count <= roadIndex)
+        if (GameManager.inst.curStage.roads.Count <= targetRoadIndex)
         {
             characterMesh.transform.DOKill(false);
             transform.DOKill(false);
@@ -102,16 +127,26 @@ public class Monster : Character
             return;
         }
 
-        Tile nextTile = GameManager.inst.curStage.roads[roadIndex];
-        Vector3 pos = nextTile.transform.position;
-        pos.y = 1;
+        Tile targetTile = GameManager.inst.curStage.roads[targetRoadIndex];
+        Vector3 targetPos = targetTile.transform.position;
+        targetPos.y = 1;
 
-        Vector3 dir = pos - transform.position;
+        Vector3 dir = targetPos - transform.position;
         dir.Normalize();
+        
+        Vector3 nextPos = transform.position + dir * (speed * freezeMultiple * Time.deltaTime);
+        if (dir == Vector3.zero || Vector3.Dot(dir, targetPos - nextPos) < 0)
+        {
+            nextPos = targetPos;
+            targetRoadIndex++;
+        }
 
-        characterMesh.transform.forward = dir;
+        if (dir != Vector3.zero)
+        {
+            characterMesh.transform.forward = dir;
+        }
 
-        transform.DOMove(pos, speed).SetEase(Ease.Linear).OnComplete(Move);
+        transform.position = nextPos;
     }
 
     private void OnDestroy()

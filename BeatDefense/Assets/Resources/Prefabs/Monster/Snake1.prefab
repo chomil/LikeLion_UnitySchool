@@ -1349,16 +1349,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be482fbf4a1556a42aca55838247ce9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabIndex: 0
   characterType: 3
   level: 0
   price: 0
+  upgradePrice: 0
+  attDamage: 1
   characterMesh: {fileID: 7705611564829764936}
   outline: {fileID: 0}
   range: {fileID: 0}
+  canInteractive: 1
   Hp: 3
+  speed: 2
   HpLine: {fileID: 1991747025268715681}
-  canHit: 0
+  isMove: 0
   spawnIndex: 0
+  freezeMultiple: 1
+  freezeTime: 0
 --- !u!1 &8019279003468182252
 GameObject:
   m_ObjectHideFlags: 0

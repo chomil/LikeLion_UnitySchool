@@ -90,12 +90,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58221687d42e74d4dad027c09cef8ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterType: 0
+  prefabIndex: 7
+  characterType: 2
   level: 2
-  price: 200
+  price: 300
+  upgradePrice: 400
+  attDamage: 1
   characterMesh: {fileID: 5083076566196316783}
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}
+  canInteractive: 1
 --- !u!1 &18993455585909056
 GameObject:
   m_ObjectHideFlags: 0
@@ -11097,7 +11101,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5083076566196316783}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11165,7 +11169,7 @@ Transform:
   - {fileID: 540724845297916913}
   - {fileID: 27393762176731554}
   m_Father: {fileID: 438990}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &610217507767455279
 MonoBehaviour:
   m_ObjectHideFlags: 0

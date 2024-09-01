@@ -72,10 +72,18 @@ public class Character_Bow : Character
     public IEnumerator AttackCoroutine()
     {
         outline.enabled = true;
+        if (targetMonster)
+        {
+            Effect arrow = Instantiate(GameManager.inst.effectPrefabs[1], transform); //Spawn Arrow
+            Vector3 dir = targetMonster.transform.position - transform.position;
+            dir.Normalize();
+            arrow.transform.forward = dir;
+            arrow.transform.DOMove(targetMonster.transform.position, 0.1f).SetEase(Ease.Linear).OnComplete(() => { arrow.DestroyEffect();});
+        }
         yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {
-            targetMonster.Damaged(1);
+            targetMonster.Damaged(attDamage);
         }
         yield return new WaitForSeconds(0.3f);
         outline.enabled = false;

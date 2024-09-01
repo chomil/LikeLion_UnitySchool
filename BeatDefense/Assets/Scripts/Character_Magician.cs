@@ -43,7 +43,8 @@ public class Character_Magician : Character
             }
             if (Vector3.Magnitude( curMon.transform.position - transform.position) <= rangeDisc.Radius)
             {
-                curMon.Damaged(1);
+                curMon.Damaged(attDamage);
+                curMon.SetFreeze(1-0.2f*level,1f);
             }
         }
         yield return new WaitForSeconds(0.3f);

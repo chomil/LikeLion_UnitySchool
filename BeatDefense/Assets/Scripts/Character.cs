@@ -14,9 +14,13 @@ public enum CharacterType
 
 public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler
 {
-    [HideInInspector] public CharacterType characterType;
+    public int prefabIndex;
+    
+    public CharacterType characterType;
     public int level;
     public int price;
+    public int upgradePrice;
+    public int attDamage;
     protected Animator anim;
 
     public GameObject characterMesh;
@@ -24,10 +28,11 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
     public GameObject range;
     protected Disc rangeDisc;
     protected bool isSelected = false;
-    protected bool canInteractive = true;
+    public bool canInteractive = true;
 
     private Collider collider;
     protected bool isAttack = false;
+    
     
     protected virtual void Awake()
     {
@@ -120,5 +125,10 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
         {
             outline.enabled = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        characterMesh.transform.DOKill();
     }
 }

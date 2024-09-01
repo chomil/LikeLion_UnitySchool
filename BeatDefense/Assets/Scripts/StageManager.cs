@@ -23,6 +23,7 @@ public class StageManager : MonoBehaviour
     public Character selectCharacter = null;
 
     public GameObject shop;
+    public UpgradeWindow upgradeWindow;
 
     public GameObject startButton;
 
@@ -182,6 +183,8 @@ public class StageManager : MonoBehaviour
             return;
         }
         
+
+        upgradeWindow.OpenWindow(false);
         if (selectCharacter)
         {
             SetSelectCharacter(selectCharacter);
@@ -193,38 +196,61 @@ public class StageManager : MonoBehaviour
         }
 
         spawnCharacter = Instantiate(GameManager.inst.characterPrefabs[chacterIndex]);
-        spawnCharacter.characterMesh.transform.forward = Vector3.back;
         SetSelectCharacter(spawnCharacter);
         spawnCharacter.SetInteractive(false);
 
         shop.SetActive(false);
     }
-    
+
     public void SpawnCharacterOnTile(Tile spawnTile)
     {
-        if (spawnTile.canSelect&& spawnCharacter)
+        if (spawnTile.canSelect && spawnCharacter)
         {
-            spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack,10f);
+            spawnCharacter.transform.DOMoveY(1f, 0.1f).SetEase(Ease.InBack, 10f);
             characters.Add(spawnCharacter);
             spawnCharacter = null;
-            
+
             foreach (Character character in GameManager.inst.curStage.characters)
             {
                 character.SetInteractive(true);
             }
-            
+
             SetSelectCharacter(spawnCharacter);
             spawnTile.SetCanSelect(false);
-            
+
             shop.SetActive(true);
         }
     }
 
+    public void UpgradeCharacter()
+    {
+        if (selectCharacter == null)
+        {
+            return;
+        }
+
+        if (selectCharacter.upgradePrice <= GameManager.inst.coin)
+        {
+            GameManager.inst.AddCoin(-selectCharacter.upgradePrice);
+            Character tempCharacter = Instantiate(GameManager.inst.characterPrefabs[selectCharacter.prefabIndex + 1],
+                selectCharacter.transform.position, quaternion.identity);
+            upgradeWindow.SetCharacter(tempCharacter);
+            int selectIndex = characters.IndexOf(selectCharacter);
+            Destroy(selectCharacter.gameObject);
+            characters[selectIndex] = tempCharacter;
+            SetSelectCharacter(tempCharacter);
+        }
+        else
+        {
+            return;
+        }
+    }
 
     public void SetSelectCharacter(Character character)
     {
         if (selectCharacter)
         {
+            upgradeWindow.OpenWindow(false);
             selectCharacter.SetSelect(false);
             if (selectCharacter == character)
             {
@@ -234,8 +260,15 @@ public class StageManager : MonoBehaviour
         }
 
         selectCharacter = character;
+        
         if (selectCharacter)
         {
+            if (spawnCharacter != selectCharacter)
+            {
+                upgradeWindow.SetCharacter(selectCharacter);
+                upgradeWindow.OpenWindow(true);
+            }
+
             selectCharacter.SetSelect(true);
         }
     }
@@ -245,8 +278,8 @@ public class StageManager : MonoBehaviour
         GameManager.inst.curStage = this;
         StartCoroutine(InitializeRoads());
         InitializeNotes();
-        
-        GameManager.inst.AddCoin(50);
+
+        GameManager.inst.AddCoin(5000);
         stageText.text = $"Stage {stageLevel}";
     }
 
