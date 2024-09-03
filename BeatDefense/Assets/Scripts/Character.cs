@@ -58,6 +58,7 @@ public abstract class Character : MonoBehaviour, IPointerClickHandler, IPointerE
 
         if (prevBeat != curBeat)
         {
+            characterMesh.transform.localScale = Vector3.one;
             characterMesh.transform.DOScaleY(0.75f, 0.05f).SetLoops(2, LoopType.Yoyo);
         }
 
