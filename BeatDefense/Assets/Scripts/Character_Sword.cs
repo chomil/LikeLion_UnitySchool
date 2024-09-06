@@ -8,6 +8,7 @@ using UnityEngine;
 public class Character_Sword : Character
 {
     private Monster targetMonster = null;
+    public Effect slashEffect;
 
     protected override void Start()
     {
@@ -56,6 +57,16 @@ public class Character_Sword : Character
     {
         isAttack = true;
         outline.enabled = true;
+        
+        if (targetMonster)
+        {
+            Effect slash = Instantiate(slashEffect, transform); //Spawn slash
+            Vector3 dir = targetMonster.transform.position - transform.position;
+            dir.Normalize();
+            slash.transform.forward = dir;
+            
+        }
+        
         yield return new WaitForSeconds(0.1f);
         if (targetMonster)
         {

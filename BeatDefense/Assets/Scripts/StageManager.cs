@@ -282,7 +282,7 @@ public class StageManager : MonoBehaviour
         StartCoroutine(InitializeRoads());
         InitializeNotes();
 
-        GameManager.inst.AddCoin(50);
+        GameManager.inst.AddCoin(5000);
         stageText.text = $"Stage {stageLevel}";
     }
 

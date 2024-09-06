@@ -64,7 +64,7 @@ public class UpgradeWindow : MonoBehaviour
                 break;
             case CharacterType.Magic:
                 characterText.text = "Magician";
-                contextText.text = $"근거리 적 모두에게 공격하고\n1초동안 속도를 {character.level * 20}% 늦춥니다";
+                contextText.text = $"근거리 적 모두에게 공격하고\n2초동안 속도를 {character.level * 20}% 늦춥니다";
                 break;
         }
     }

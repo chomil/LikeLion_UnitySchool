@@ -10,15 +10,20 @@ public class Effect : MonoBehaviour
 
     public void Start()
     {
-        Debug.Log("Spawn" + transform.ToString());
         if (spawnSfx)
         {
             SoundManager.inst.PlaySound(spawnSfx);
         }
     }
 
-    public void DestroyEffect()
+    public void DestroyEffect(float delay = 0f)
     {
+        StartCoroutine(DestroyCoroutine(delay));
+    }
+
+    IEnumerator DestroyCoroutine(float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
         if (destroySfx)
         {
             SoundManager.inst.PlaySound(destroySfx);

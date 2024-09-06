@@ -8,6 +8,8 @@ using UnityEngine;
 public class Character_Bow : Character
 {
     private Monster targetMonster = null;
+
+    public Effect arrowPrefab;
     
     protected override void Start()
     {
@@ -74,7 +76,7 @@ public class Character_Bow : Character
         outline.enabled = true;
         if (targetMonster)
         {
-            Effect arrow = Instantiate(GameManager.inst.effectPrefabs[1], transform); //Spawn Arrow
+            Effect arrow = Instantiate(arrowPrefab, transform); //Spawn Arrow
             Vector3 dir = targetMonster.transform.position - transform.position;
             dir.Normalize();
             arrow.transform.forward = dir;

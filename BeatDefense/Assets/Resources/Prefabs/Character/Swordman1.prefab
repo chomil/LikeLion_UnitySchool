@@ -8907,6 +8907,8 @@ MonoBehaviour:
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}
   canInteractive: 1
+  slashEffect: {fileID: 1958016215969459680, guid: 4411aae68fe900b458a5a113cf9c1a6b,
+    type: 3}
 --- !u!65 &6188332561771085209
 BoxCollider:
   m_ObjectHideFlags: 0

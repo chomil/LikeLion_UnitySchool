@@ -1366,6 +1366,8 @@ MonoBehaviour:
   spawnIndex: 0
   freezeMultiple: 1
   freezeTime: 0
+  debuffEffectPrefab: {fileID: -1419843250093268634, guid: 150dcdd670f2a61478898079309ba014,
+    type: 3}
 --- !u!1 &8019279003468182252
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,11 @@ using Shapes;
 using UnityEngine;
 using Sequence = Unity.VisualScripting.Sequence;
 
+public enum MonsterType
+{
+    Snake
+}
+
 public class Monster : Character
 {
     private int targetRoadIndex = 0;
@@ -22,6 +27,9 @@ public class Monster : Character
 
     public float freezeMultiple = 1f;
     public float freezeTime = 0f;
+
+    public Effect debuffEffectPrefab;
+    private Effect debuffEffect;
 
     protected override void Start()
     {
@@ -84,6 +92,11 @@ public class Monster : Character
             freezeMultiple = _freezeMultiple;
         }
         freezeTime = _freezeTime;
+
+        if (debuffEffect==null)
+        {
+            debuffEffect = Instantiate(debuffEffectPrefab, transform);
+        }
     }
 
     protected override void Update()
@@ -95,6 +108,12 @@ public class Monster : Character
             {
                 freezeMultiple = 1f;
                 freezeTime = 0f;
+                
+                if (debuffEffect)
+                {
+                    debuffEffect.DestroyEffect();
+                    debuffEffect = null;
+                }
             }
         }
         

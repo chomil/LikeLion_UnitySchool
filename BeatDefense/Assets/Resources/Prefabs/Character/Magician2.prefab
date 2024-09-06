@@ -100,6 +100,10 @@ MonoBehaviour:
   outline: {fileID: 0}
   range: {fileID: 4814812489879311673}
   canInteractive: 1
+  chargeMagicPrefab: {fileID: 3187932633058200018, guid: f3e86e20b9af5274689e13d28f6aab4b,
+    type: 3}
+  shootMagicPrefab: {fileID: 6622088362098906175, guid: 5636519afdcb2724faf896058e22e3e1,
+    type: 3}
 --- !u!1 &18993455585909056
 GameObject:
   m_ObjectHideFlags: 0
