@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -186,7 +187,15 @@ public class RhythmNote : MonoBehaviour
                         curCharacter.Attack();
                     }
 
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Good");
                     Debug.Log("GetKeyDown");
+                }
+                else if (SoundManager.inst.CompareBeat(4, keyBeat,0.7f))
+                {
+                    key = KeyCode.None;
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Miss");
                 }
             }
             else if (type == KeyType.Drag)
@@ -201,17 +210,24 @@ public class RhythmNote : MonoBehaviour
                         curCharacter.Attack();
                     }
 
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Good");
                     Debug.Log("Attack");
+                }
+                else if (SoundManager.inst.CompareBeat(4, keyBeat,0.7f))
+                {
+                    key = KeyCode.None;
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Miss");
                 }
             }
         }
-
 
         if (Input.GetKey(dragKey))
         {
             if (type == KeyType.Drag)
             {
-                if (SoundManager.inst.CompareBeat(4, (keyBeat + dragTargetBeat + 1) % 4)) //드래그 중인 키가 1박자 이상 늦춰지면
+                if (SoundManager.inst.CompareBeat(4, (keyBeat + dragTargetBeat + 1) % 4,0.5f)) //드래그 중인 키가 1박자 이상 늦춰지면
                 {
                     dragKey = KeyCode.None;
                     foreach (Character curCharacter in linkedCharacter)
@@ -219,6 +235,8 @@ public class RhythmNote : MonoBehaviour
                         curCharacter.CancelAttack();
                     }
 
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Miss");
                     Debug.Log("CancelAttack");
                 }
             }
@@ -236,6 +254,8 @@ public class RhythmNote : MonoBehaviour
                         curCharacter.Shoot();
                     }
 
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Good");
                     Debug.Log("Shoot");
                 }
                 else //cancel attack
@@ -245,6 +265,8 @@ public class RhythmNote : MonoBehaviour
                         curCharacter.CancelAttack();
                     }
 
+                    FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
+                    text.SetTextByPreset("Miss");
                     Debug.Log("CancelAttack");
                 }
             }

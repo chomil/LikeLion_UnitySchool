@@ -16,6 +16,8 @@ public class SoundManager : MonoBehaviour
     public int curBeat = 0;
     public float curBeatFloat = 0;
 
+    private AudioClip prevSfx = null;
+
     private void Awake()
     {
         if (inst == null)
@@ -31,10 +33,11 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound(AudioClip clip, float volume = 1f)
     {
-        if (clip)
+        if (clip && prevSfx != clip)
         {
             sfxAudioSource.PlayOneShot(clip, volume * GameManager.inst.gameData.sfxVol);
         }
+        prevSfx = clip;
     }
 
     public void PlaySound(List<AudioClip> clips, float volume = 1f)
@@ -119,6 +122,7 @@ public class SoundManager : MonoBehaviour
     public void LateUpdate()
     {
         prevBeat = curBeat;
+        prevSfx = null;
     }
 
     private void CountBeat()
@@ -141,7 +145,7 @@ public class SoundManager : MonoBehaviour
         float diff = beat - (float)checkBeat;
 
         //Debug.Log(diff);
-        if (Math.Abs(diff) <= tolerance || (Math.Abs(diff) >= 4f-tolerance && Math.Abs(diff) <= 4f+tolerance))
+        if (Math.Abs(diff) <= tolerance || (Math.Abs(diff) >= 4f - tolerance && Math.Abs(diff) <= 4f + tolerance))
         {
             return true;
         }

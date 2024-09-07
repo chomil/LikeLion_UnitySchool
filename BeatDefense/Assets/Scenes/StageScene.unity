@@ -14825,8 +14825,8 @@ MonoBehaviour:
   - {fileID: 8960566000452056546, guid: 243e247408d1a3a4f96796a6644696c9, type: 3}
   effectPrefabs:
   - {fileID: 7349119494615696341, guid: 98108f8b39be10d42ae8655b2b01aaf1, type: 3}
-  - {fileID: 4887125593856809358, guid: 97f031610fac2db429ffc3c5ceb90474, type: 3}
-  - {fileID: 6622088362098906175, guid: 59f2f01e9564cd1499d00fd702bed687, type: 3}
+  floatingTextPrefab: {fileID: 707019687409268642, guid: c9c7401a0b5c3014bb71e8066e1070bd,
+    type: 3}
   notePrefab: {fileID: -2091818137895443905, guid: 2b250996837a9bb4ea9b513a45841ff8,
     type: 3}
   mainCanvas: {fileID: 1244921356}

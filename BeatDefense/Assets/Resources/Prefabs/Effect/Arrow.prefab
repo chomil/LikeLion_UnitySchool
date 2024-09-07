@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5e06884b022045bcb4353aa7a66e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSfx: {fileID: 0}
+  spawnSfx: {fileID: 8300000, guid: d1880917df8ec3c4f8c17bdd064cf3f1, type: 3}
   destroySfx: {fileID: 0}
 --- !u!1001 &128569079563539294
 PrefabInstance:

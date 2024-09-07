@@ -9800,5 +9800,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5e06884b022045bcb4353aa7a66e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSfx: {fileID: 0}
+  spawnSfx: {fileID: 8300000, guid: 25769345ed0489345ae96c0cbe8df0ee, type: 3}
   destroySfx: {fileID: 0}

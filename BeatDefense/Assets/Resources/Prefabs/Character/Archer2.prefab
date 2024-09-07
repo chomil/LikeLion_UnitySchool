@@ -102,6 +102,7 @@ MonoBehaviour:
   canInteractive: 1
   arrowPrefab: {fileID: 4887125593856809358, guid: 97f031610fac2db429ffc3c5ceb90474,
     type: 3}
+  arrowChargeClip: {fileID: 8300000, guid: 793f0bf93fbaeab4a8ee0cab5a6c947f, type: 3}
 --- !u!1 &11392911222201269
 GameObject:
   m_ObjectHideFlags: 0

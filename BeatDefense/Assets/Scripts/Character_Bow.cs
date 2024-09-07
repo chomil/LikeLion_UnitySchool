@@ -10,6 +10,7 @@ public class Character_Bow : Character
     private Monster targetMonster = null;
 
     public Effect arrowPrefab;
+    public AudioClip arrowChargeClip;
     
     protected override void Start()
     {
@@ -56,6 +57,7 @@ public class Character_Bow : Character
     {
         base.Attack();
         
+        SoundManager.inst.PlaySound(arrowChargeClip);
         isAttack = true;
     }
 

@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public List<Character> characterPrefabs;
     public List<Monster> monsterPrefabs;
     public List<Effect> effectPrefabs;
+    public FloatingText floatingTextPrefab;
     public RhythmNote notePrefab;
 
     public Canvas mainCanvas;
