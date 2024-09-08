@@ -14810,6 +14810,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageBgm: {fileID: 8300000, guid: 7379de8fc068cae42a3487ab6b338100, type: 3}
   defaultBgm: {fileID: 8300000, guid: 01beb75263734b64c8f0177247aa1bb5, type: 3}
+  buttonClickClip: {fileID: 8300000, guid: 4bb16777ba9ce64428a1bcbf6ca34f3d, type: 3}
+  buttonPopClip: {fileID: 8300000, guid: 85172edf4b1fcc840b9150f512dffd8a, type: 3}
+  upgradeClip: {fileID: 8300000, guid: 55b3f0d450dc62d43b1e6a05e6d1d658, type: 3}
+  coinUseClip: {fileID: 8300000, guid: e830ccb5cd875bf419a57a5c2a826b4d, type: 3}
   curStage: {fileID: 0}
   characterPrefabs:
   - {fileID: 840515056246413834, guid: 16dd854c0814cab4db20e87610bcf52c, type: 3}
@@ -14822,10 +14826,11 @@ MonoBehaviour:
   - {fileID: 3929139225684975983, guid: 12a72b8c2111b5d43a0a1905aac4b69b, type: 3}
   - {fileID: 3929139225684975983, guid: 7fcf4865e6494e84db1842317ce52abf, type: 3}
   monsterPrefabs:
+  - {fileID: 8960566000452056546, guid: a71ca225ae52dcf4187db695f1f6a0d8, type: 3}
   - {fileID: 8960566000452056546, guid: 243e247408d1a3a4f96796a6644696c9, type: 3}
   effectPrefabs:
   - {fileID: 7349119494615696341, guid: 98108f8b39be10d42ae8655b2b01aaf1, type: 3}
-  floatingTextPrefab: {fileID: 707019687409268642, guid: c9c7401a0b5c3014bb71e8066e1070bd,
+  floatingTextPrefab: {fileID: 2290062603495943966, guid: c9c7401a0b5c3014bb71e8066e1070bd,
     type: 3}
   notePrefab: {fileID: -2091818137895443905, guid: 2b250996837a9bb4ea9b513a45841ff8,
     type: 3}
@@ -25578,7 +25583,7 @@ MonoBehaviour:
   sfxAudioSource: {fileID: 1347835795}
   bgmAudioSource: {fileID: 1331440779}
   bgmBpm: 105
-  bgmVol: 0.1
+  bgmVol: 0.5
   prevBeat: 0
   curBeat: 0
   curBeatFloat: 0

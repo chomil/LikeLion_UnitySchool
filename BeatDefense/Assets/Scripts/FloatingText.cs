@@ -9,7 +9,7 @@ using Color = UnityEngine.Color;
 
 public class FloatingText : Effect
 {
-    public TextMeshProUGUI floatingText;
+    public TextMeshPro floatingText;
 
     private void SetText(string text,float size,Color color, float yValue, float duration)
     {
@@ -21,15 +21,19 @@ public class FloatingText : Effect
         });
     }
 
-    public void SetTextByPreset(string preset)
+    public void SetTextByPreset(string preset, int value = 0)
     {
         if (preset == "Good")
         {
-            SetText("Good",50,Color.white,100,0.5f);
+            SetText("Good", 400, Color.white, 100, 0.5f);
         }
         else if (preset == "Miss")
         {
-            SetText("Miss",50,Color.white,100,0.5f);
+            SetText("Miss", 300, Color.white, 100, 0.5f);
+        }
+        else if (preset == "Damage")
+        {
+            SetText(value.ToString(), 6, Color.red, 2f, 0.5f);
         }
         else
         {

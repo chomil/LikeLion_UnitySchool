@@ -12,7 +12,7 @@ public class ShopWindow : MonoBehaviour
     public void ToggleWindow()
     {
         isOpen = !isOpen;
-        
+        SoundManager.inst.PlaySound(GameManager.inst.buttonPopClip);
         if (isOpen)
         {
            transform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.InOutBack, 1);

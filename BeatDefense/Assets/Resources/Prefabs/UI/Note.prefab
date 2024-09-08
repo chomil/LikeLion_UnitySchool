@@ -299,6 +299,10 @@ MonoBehaviour:
   keyBeat: 0
   type: 0
   linkedCharacter: []
+  rhythmClips:
+  - {fileID: 8300000, guid: 632cb7919b6551549a469c68889799bf, type: 3}
+  - {fileID: 8300000, guid: d22af9459956bef42adb7fbd23314576, type: 3}
+  - {fileID: 8300000, guid: b5a5805dbc426c24780fc25be037cbed, type: 3}
 --- !u!1 &5873116284430292805
 GameObject:
   m_ObjectHideFlags: 0

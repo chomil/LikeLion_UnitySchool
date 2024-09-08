@@ -89,4 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnSfx: {fileID: 0}
-  destroySfx: {fileID: 0}
+  destroySfx: {fileID: 8300000, guid: 98cef510912fdf643bce09d5b9450e28, type: 3}

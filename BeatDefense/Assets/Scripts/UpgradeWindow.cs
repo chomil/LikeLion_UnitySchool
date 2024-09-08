@@ -77,7 +77,7 @@ public class UpgradeWindow : MonoBehaviour
         }
 
         isOpen = _isOpen;
-
+        SoundManager.inst.PlaySound(GameManager.inst.buttonPopClip);
         if (isOpen)
         {
             transform.DOKill();

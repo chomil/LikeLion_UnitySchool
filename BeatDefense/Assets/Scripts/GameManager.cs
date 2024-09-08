@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
 
     public AudioClip stageBgm;
     public AudioClip defaultBgm;
+    public AudioClip buttonClickClip;
+    public AudioClip buttonPopClip;
+    public AudioClip upgradeClip;
+    public AudioClip coinUseClip;
 
     public StageManager curStage;
 
@@ -44,7 +48,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.inst.PlayBGM(defaultBgm,0.2f);
+        SoundManager.inst.PlayBGM(defaultBgm,0.5f);
         SoundManager.inst.bgmBpm = 84f;
         coinText.text = coin.ToString();
     }
@@ -88,7 +92,7 @@ public class GameManager : MonoBehaviour
     {
         if (name == "TitleScene")
         {
-            SoundManager.inst.PlayBGM(defaultBgm,0.2f);
+            SoundManager.inst.PlayBGM(defaultBgm,0.5f);
             SoundManager.inst.bgmBpm = 84f;
         }
         SceneManager.LoadScene(name);

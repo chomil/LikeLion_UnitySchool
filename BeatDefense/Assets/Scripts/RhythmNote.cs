@@ -30,10 +30,8 @@ public class RhythmNote : MonoBehaviour
     private KeyCode dragKey = KeyCode.None;
     public KeyType type = KeyType.None;
     public List<Character> linkedCharacter = new List<Character>();
-
-    void Start()
-    {
-    }
+    public List<AudioClip> rhythmClips; //dung,clap,miss
+    
 
     public void InitNote(int _keyBeat, Vector3 _moveDir)
     {
@@ -189,13 +187,17 @@ public class RhythmNote : MonoBehaviour
 
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Good");
-                    Debug.Log("GetKeyDown");
+                    //Debug.Log("GetKeyDown");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[0]);
                 }
                 else if (SoundManager.inst.CompareBeat(4, keyBeat,0.7f))
                 {
                     key = KeyCode.None;
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Miss");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[2]);
                 }
             }
             else if (type == KeyType.Drag)
@@ -212,13 +214,17 @@ public class RhythmNote : MonoBehaviour
 
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Good");
-                    Debug.Log("Attack");
+                    //Debug.Log("Attack");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[0]);
                 }
                 else if (SoundManager.inst.CompareBeat(4, keyBeat,0.7f))
                 {
                     key = KeyCode.None;
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Miss");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[2]);
                 }
             }
         }
@@ -237,7 +243,9 @@ public class RhythmNote : MonoBehaviour
 
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Miss");
-                    Debug.Log("CancelAttack");
+                    //Debug.Log("CancelAttack");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[2]);
                 }
             }
         }
@@ -256,7 +264,9 @@ public class RhythmNote : MonoBehaviour
 
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Good");
-                    Debug.Log("Shoot");
+                    //Debug.Log("Shoot");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[1]);
                 }
                 else //cancel attack
                 {
@@ -267,7 +277,9 @@ public class RhythmNote : MonoBehaviour
 
                     FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, GameManager.inst.curStage.rhythmSquare.transform.parent.parent);
                     text.SetTextByPreset("Miss");
-                    Debug.Log("CancelAttack");
+                    //Debug.Log("CancelAttack");
+                    
+                    SoundManager.inst.PlaySound(rhythmClips[2]);
                 }
             }
         }

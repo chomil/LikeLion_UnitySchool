@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using MoreMountains.Tools;
 using Shapes;
+using Unity.Mathematics;
 using UnityEngine;
 using Sequence = Unity.VisualScripting.Sequence;
 
@@ -15,7 +16,7 @@ public enum MonsterType
 public class Monster : Character
 {
     private int targetRoadIndex = 0;
-    private int MaxHp = 3;
+    private int MaxHp;
     public int Hp = 3;
 
     public float speed = 1f;
@@ -31,11 +32,14 @@ public class Monster : Character
     public Effect debuffEffectPrefab;
     private Effect debuffEffect;
 
+    public AudioClip hitClip;
+    public AudioClip dieClip;
+
     protected override void Start()
     {
         Vector3 pos = GameManager.inst.curStage.roads[0].transform.position;
         pos.y = 1;
-
+        MaxHp = Hp;
         transform.position = pos;
 
         StartCoroutine(MoveCoroutine( spawnIndex * 2f));
@@ -51,13 +55,20 @@ public class Monster : Character
         Hp -= damage;
         Hp = Hp < 0 ? 0 : Hp;
         HpLine.End = new Vector3((float)Hp / (float)MaxHp, 0, 0);
+        
+
+        FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, transform);
+        text.SetTextByPreset("Damage", damage);
+        
         if (Hp == 0)
         {
+            SoundManager.inst.PlaySound(dieClip);
             anim.SetTrigger("DieTrigger");
             StartCoroutine(DieCoroutine());
         }
         else
         {
+            SoundManager.inst.PlaySound(hitClip);
             anim.SetTrigger("HitTrigger");
         }
     }
@@ -140,6 +151,8 @@ public class Monster : Character
     {
         if (GameManager.inst.curStage.roads.Count <= targetRoadIndex)
         {
+            SoundManager.inst.PlaySound(dieClip);
+            
             GameManager.inst.curStage.homeHp.Damaged(attDamage);
             characterMesh.transform.DOKill(false);
             transform.DOKill(false);

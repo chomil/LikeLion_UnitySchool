@@ -11,7 +11,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource sfxAudioSource;
     public AudioSource bgmAudioSource;
     public float bgmBpm = 105f;
-    public float bgmVol = 0.2f;
+    public float bgmVol = 0.5f;
     public int prevBeat = 0;
     public int curBeat = 0;
     public float curBeatFloat = 0;
