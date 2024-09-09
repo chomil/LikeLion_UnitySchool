@@ -10,7 +10,7 @@ public class TimeController : MonoBehaviour
 
     public void TimeScaleUp()
     {
-        SoundManager.inst.PlaySound(GameManager.inst.buttonClickClip);
+        SoundManager.inst.PlaySound(GameManager.inst.sfxs["Click"]);
         
         timeScale += 0.25f;
         if (timeScale > 1.5f)

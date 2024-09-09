@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
     public void StartStage()
     {
         Debug.Log("Start");
-        SoundManager.inst.PlaySound(GameManager.inst.buttonClickClip);
+        SoundManager.inst.PlaySound(GameManager.inst.sfxs["Click"]);
         StartCoroutine(PlayStageCoroutine());
     }
 
@@ -63,7 +63,7 @@ public class StageManager : MonoBehaviour
             rhythmSquare.rect.Width = Mathf.Lerp(rhythmSquare.rect.Width, 100f, i / 10f);
         }
 
-        SoundManager.inst.PlayBGM(GameManager.inst.stageBgm, 0.5f);
+        SoundManager.inst.PlayBGM(GameManager.inst.bgms["Stage"], 0.5f);
         SoundManager.inst.bgmBpm = 105f;
 
 
@@ -166,7 +166,7 @@ public class StageManager : MonoBehaviour
 
         rhythmSquare.rect.Width = 300f;
 
-        SoundManager.inst.PlayBGM(GameManager.inst.defaultBgm, 0.5f);
+        SoundManager.inst.PlayBGM(GameManager.inst.bgms["Default"], 0.5f);
         SoundManager.inst.bgmBpm = 84f;
     }
 
@@ -181,11 +181,11 @@ public class StageManager : MonoBehaviour
         if (price <= GameManager.inst.coin)
         {
             GameManager.inst.AddCoin(-price);
-            SoundManager.inst.PlaySound(GameManager.inst.coinUseClip);
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["CoinUse"]);
         }
         else
         {
-            SoundManager.inst.PlaySound(GameManager.inst.buttonClickClip);
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["Click"]);
             return;
         }
         
@@ -224,7 +224,7 @@ public class StageManager : MonoBehaviour
             SetSelectCharacter(spawnCharacter);
             spawnTile.SetCanSelect(false);
 
-            SoundManager.inst.PlaySound(GameManager.inst.buttonClickClip);
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["Click"]);
             
             shop.SetActive(true);
         }
@@ -248,7 +248,7 @@ public class StageManager : MonoBehaviour
             characters[selectIndex] = tempCharacter;
             SetSelectCharacter(tempCharacter);
             
-            SoundManager.inst.PlaySound(GameManager.inst.upgradeClip);
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["Upgrade"]);
         }
         else
         {

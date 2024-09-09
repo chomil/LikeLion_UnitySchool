@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,12 +14,8 @@ public class GameManager : MonoBehaviour
 
     public GameData gameData;
 
-    public AudioClip stageBgm;
-    public AudioClip defaultBgm;
-    public AudioClip buttonClickClip;
-    public AudioClip buttonPopClip;
-    public AudioClip upgradeClip;
-    public AudioClip coinUseClip;
+    public SerializedDictionary<string,AudioClip> bgms;
+    public SerializedDictionary<string,AudioClip> sfxs;
 
     public StageManager curStage;
 
@@ -48,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.inst.PlayBGM(defaultBgm,0.5f);
+        SoundManager.inst.PlayBGM(bgms["Default"],0.5f);
         SoundManager.inst.bgmBpm = 84f;
         coinText.text = coin.ToString();
     }
@@ -92,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         if (name == "TitleScene")
         {
-            SoundManager.inst.PlayBGM(defaultBgm,0.5f);
+            SoundManager.inst.PlayBGM(bgms["Default"],0.5f);
             SoundManager.inst.bgmBpm = 84f;
         }
         SceneManager.LoadScene(name);
