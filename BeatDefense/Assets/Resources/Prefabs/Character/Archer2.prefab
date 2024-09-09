@@ -93,8 +93,8 @@ MonoBehaviour:
   prefabIndex: 4
   characterType: 1
   level: 2
-  price: 150
-  upgradePrice: 200
+  price: 130
+  upgradePrice: 120
   attDamage: 2
   characterMesh: {fileID: 5578957870524351600}
   outline: {fileID: 0}

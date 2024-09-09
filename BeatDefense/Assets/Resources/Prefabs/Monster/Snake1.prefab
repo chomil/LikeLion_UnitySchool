@@ -1352,7 +1352,7 @@ MonoBehaviour:
   prefabIndex: 0
   characterType: 3
   level: 0
-  price: 0
+  price: 10
   upgradePrice: 0
   attDamage: 1
   characterMesh: {fileID: 7705611564829764936}
@@ -1363,6 +1363,7 @@ MonoBehaviour:
   speed: 2
   HpLine: {fileID: 1991747025268715681}
   isMove: 0
+  moveLength: 0
   spawnIndex: 0
   freezeMultiple: 1
   freezeTime: 0

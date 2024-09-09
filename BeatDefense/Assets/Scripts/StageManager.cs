@@ -12,10 +12,21 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+[Serializable]
+public class MonsterWave
+{
+    public List<int> monsterList = new List<int>();
+}
+
 public class StageManager : MonoBehaviour
 {
+    public int coin = 0;
+    public TextMeshProUGUI coinText;
+    
     public Dictionary<Vector2Int, Tile> tiles = new Dictionary<Vector2Int, Tile>();
     public List<Tile> roads = new List<Tile>();
+    
+    public List<MonsterWave> monsterWaves = new List<MonsterWave>();
 
     public List<Monster> monsters = new List<Monster>();
     public List<Character> characters = new List<Character>();
@@ -39,6 +50,10 @@ public class StageManager : MonoBehaviour
     public TextMeshProUGUI stageText;
 
     public HomeHp homeHp;
+
+    public Canvas mainCanvas;
+    public ResultWindow resultWindow;
+    public bool isGameOver = false;
 
     public void StartStage()
     {
@@ -126,9 +141,9 @@ public class StageManager : MonoBehaviour
         }
 
         monsters.Clear();
-        for (int i = 0; i < GetMonNumInLevel(); i++)
+        for (int i = 0; i < monsterWaves[stageLevel-1].monsterList.Count; i++)
         {
-            Monster curMon = Instantiate(GameManager.inst.monsterPrefabs[0], roads[0].transform.position,
+            Monster curMon = Instantiate(GameManager.inst.monsterPrefabs[monsterWaves[stageLevel-1].monsterList[i]], roads[0].transform.position,
                 quaternion.identity);
             curMon.spawnIndex = i;
             monsters.Add(curMon);
@@ -136,11 +151,6 @@ public class StageManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         noteGround.GetComponent<RectTransform>().DOSizeDelta(new Vector2(1500f, 120f), 1f);
-    }
-
-    public int GetMonNumInLevel()
-    {
-        return 3 + 2 * stageLevel;
     }
 
     public IEnumerator EndStageCoroutine()
@@ -178,9 +188,9 @@ public class StageManager : MonoBehaviour
     public void BuyCharacter(int chacterIndex)
     {
         int price = GameManager.inst.characterPrefabs[chacterIndex].price;
-        if (price <= GameManager.inst.coin)
+        if (price <= coin)
         {
-            GameManager.inst.AddCoin(-price);
+            AddCoin(-price);
             SoundManager.inst.PlaySound(GameManager.inst.sfxs["CoinUse"]);
         }
         else
@@ -208,7 +218,7 @@ public class StageManager : MonoBehaviour
         shop.SetActive(false);
     }
 
-    public void SpawnCharacterOnTile(Tile spawnTile)
+    public bool SpawnCharacterOnTile(Tile spawnTile)
     {
         if (spawnTile.canSelect && spawnCharacter)
         {
@@ -227,6 +237,12 @@ public class StageManager : MonoBehaviour
             SoundManager.inst.PlaySound(GameManager.inst.sfxs["Click"]);
             
             shop.SetActive(true);
+            return true;
+        }
+        else
+        {
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["Delete"]);
+            return false;
         }
     }
 
@@ -237,9 +253,9 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        if (selectCharacter.upgradePrice <= GameManager.inst.coin)
+        if (selectCharacter.upgradePrice <= coin)
         {
-            GameManager.inst.AddCoin(-selectCharacter.upgradePrice);
+            AddCoin(-selectCharacter.upgradePrice);
             Character tempCharacter = Instantiate(GameManager.inst.characterPrefabs[selectCharacter.prefabIndex + 1],
                 selectCharacter.transform.position, quaternion.identity);
             upgradeWindow.SetCharacter(tempCharacter);
@@ -254,6 +270,20 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
+    }
+    
+    public void DeleteCharacter()
+    {
+        if (selectCharacter == null)
+        {
+            return;
+        }
+
+        upgradeWindow.OpenWindow(false);
+        characters.Remove(selectCharacter);
+        tiles[new Vector2Int((int)selectCharacter.transform.position.x,(int)selectCharacter.transform.position.z)].SetCanSelect(true);
+        Destroy(selectCharacter.gameObject);
+        SoundManager.inst.PlaySound(GameManager.inst.sfxs["Delete"]);
     }
 
     public void SetSelectCharacter(Character character)
@@ -283,23 +313,43 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    public void AddCoin(int addCoin)
+    {
+        coin += addCoin;
+        coinText.text = coin.ToString();
+    }
     private void Start()
     {
         GameManager.inst.curStage = this;
         StartCoroutine(InitializeRoads());
         InitializeNotes();
 
-        GameManager.inst.AddCoin(5000);
+        AddCoin(50);
+        coinText.text = coin.ToString();
+        
         stageText.text = $"Stage {stageLevel}";
+        
+        SoundManager.inst.PlayBGM(GameManager.inst.bgms["Default"],0.5f);
+        SoundManager.inst.bgmBpm = 84f;
+        Time.timeScale = 1;
+        SoundManager.inst.bgmAudioSource.pitch = 1;
     }
 
     private void Update()
     {
-        if (isPlaying)
+        if (isPlaying && isGameOver==false)
         {
-            if (diedMonsterNum == GetMonNumInLevel())
+            if (diedMonsterNum == monsterWaves[stageLevel-1].monsterList.Count)
             {
-                StartCoroutine(EndStageCoroutine());
+                if (stageLevel == 10)
+                {
+                    isGameOver = true;
+                    resultWindow.OpenWindow(true, true);
+                }
+                else
+                {
+                    StartCoroutine(EndStageCoroutine());
+                }
             }
         }
     }

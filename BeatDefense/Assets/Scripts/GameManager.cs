@@ -25,9 +25,6 @@ public class GameManager : MonoBehaviour
     public FloatingText floatingTextPrefab;
     public RhythmNote notePrefab;
 
-    public Canvas mainCanvas;
-    public TextMeshProUGUI coinText;
-    public int coin = 0;
 
     private void Awake()
     {
@@ -47,7 +44,6 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.inst.PlayBGM(bgms["Default"],0.5f);
         SoundManager.inst.bgmBpm = 84f;
-        coinText.text = coin.ToString();
     }
 
     private void OnApplicationQuit()
@@ -55,11 +51,6 @@ public class GameManager : MonoBehaviour
         SaveGameData();
     }
 
-    public void AddCoin(int addCoin)
-    {
-        coin += addCoin;
-        coinText.text = coin.ToString();
-    }
 
     public void SaveGameData()
     {
@@ -93,6 +84,12 @@ public class GameManager : MonoBehaviour
             SoundManager.inst.bgmBpm = 84f;
         }
         SceneManager.LoadScene(name);
+    }
+
+    public void RestartScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 
     public void ExitGame()

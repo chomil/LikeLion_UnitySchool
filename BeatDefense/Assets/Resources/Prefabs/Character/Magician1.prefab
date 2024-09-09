@@ -94,7 +94,7 @@ MonoBehaviour:
   characterType: 2
   level: 1
   price: 100
-  upgradePrice: 200
+  upgradePrice: 150
   attDamage: 1
   characterMesh: {fileID: 507464089502371400}
   outline: {fileID: 0}

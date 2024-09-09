@@ -24,6 +24,9 @@ public class HomeHp : MonoBehaviour
         if (hp <= 0)
         {
             hp = 0;
+            
+            GameManager.inst.curStage.isGameOver = true;
+            GameManager.inst.curStage.resultWindow.OpenWindow(true, false);
         }
 
         hpText.text = $"{hp} / {maxHp}";

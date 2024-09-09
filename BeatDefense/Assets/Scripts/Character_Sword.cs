@@ -39,11 +39,21 @@ public class Character_Sword : Character
             }
             if (Vector3.Magnitude( curMon.transform.position - transform.position) <= rangeDisc.Radius)
             {
-                targetMonster = curMon;
-                Vector3 lookDir = targetMonster.transform.position - transform.position;
-                characterMesh.transform.forward = lookDir;
-                break;
+                if (targetMonster == null)
+                {
+                    targetMonster = curMon;
+                }
+
+                if (targetMonster.moveLength < curMon.moveLength)
+                {
+                    targetMonster = curMon;
+                }
             }
+        }
+        if (targetMonster)
+        {
+            Vector3 lookDir = targetMonster.transform.position - transform.position;
+            characterMesh.transform.forward = lookDir;
         }
     }
 

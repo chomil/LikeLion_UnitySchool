@@ -24,6 +24,7 @@ public class Monster : Character
     public Line HpLine;
 
     public bool isMove = false;
+    public float moveLength = 0f;
     public int spawnIndex = 0;
 
     public float freezeMultiple = 1f;
@@ -56,6 +57,7 @@ public class Monster : Character
         Hp = Hp < 0 ? 0 : Hp;
         HpLine.End = new Vector3((float)Hp / (float)MaxHp, 0, 0);
         
+        isMove = false;
 
         FloatingText text = Instantiate(GameManager.inst.floatingTextPrefab, transform);
         text.SetTextByPreset("Damage", damage);
@@ -70,6 +72,7 @@ public class Monster : Character
         {
             SoundManager.inst.PlaySound(hitClip);
             anim.SetTrigger("HitTrigger");
+            StartCoroutine(MoveCoroutine( 0.2f));
         }
     }
 
@@ -79,7 +82,7 @@ public class Monster : Character
         yield return new WaitForSeconds(1f);
 
         Effect coinEffect =
-            Instantiate(GameManager.inst.effectPrefabs[0], GameManager.inst.mainCanvas.transform); //Spawn Coin
+            Instantiate(GameManager.inst.effectPrefabs[0], GameManager.inst.curStage.mainCanvas.transform); //Spawn Coin
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         screenPos.z = 0;
         screenPos.x -= Screen.width / 2f;
@@ -88,7 +91,7 @@ public class Monster : Character
         coinEffect.transform.DOLocalMove(new Vector3(-900f, -480f, 0f), 1f).SetEase(Ease.InBack,1f)
             .OnComplete(() =>
                 {
-                    GameManager.inst.AddCoin(10);
+                    GameManager.inst.curStage.AddCoin(price);
                     coinEffect.DestroyEffect();
                 }
             );
@@ -151,7 +154,7 @@ public class Monster : Character
     {
         if (GameManager.inst.curStage.roads.Count <= targetRoadIndex)
         {
-            SoundManager.inst.PlaySound(dieClip);
+            SoundManager.inst.PlaySound(GameManager.inst.sfxs["Broken"]);
             
             GameManager.inst.curStage.homeHp.Damaged(attDamage);
             characterMesh.transform.DOKill(false);
@@ -168,6 +171,8 @@ public class Monster : Character
         dir.Normalize();
         
         Vector3 nextPos = transform.position + dir * (speed * freezeMultiple * Time.deltaTime);
+        moveLength += (speed * freezeMultiple * Time.deltaTime);
+        
         if (dir == Vector3.zero || Vector3.Dot(dir, targetPos - nextPos) < 0)
         {
             nextPos = targetPos;

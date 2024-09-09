@@ -62,7 +62,9 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        GameManager.inst.curStage.SpawnCharacterOnTile(this);
-        SetSelect(false);
+        if (GameManager.inst.curStage.SpawnCharacterOnTile(this))
+        {
+            SetSelect(false);
+        }
     }
 }

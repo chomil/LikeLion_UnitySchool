@@ -93,7 +93,7 @@ MonoBehaviour:
   prefabIndex: 5
   characterType: 1
   level: 3
-  price: 350
+  price: 250
   upgradePrice: 0
   attDamage: 3
   characterMesh: {fileID: 5415564183457777595}
