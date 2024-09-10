@@ -2159,7 +2159,7 @@ MonoBehaviour:
   outline: {fileID: 0}
   range: {fileID: 0}
   canInteractive: 1
-  Hp: 20
+  Hp: 30
   speed: 2
   HpLine: {fileID: 1991747025268715681}
   isMove: 0

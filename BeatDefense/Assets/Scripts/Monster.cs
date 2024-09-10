@@ -48,7 +48,7 @@ public class Monster : Character
 
     public void Damaged(int damage)
     {
-        if (Hp == 0 || isMove == false)
+        if (Hp == 0)
         {
             return;
         }
